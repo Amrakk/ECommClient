@@ -8,9 +8,13 @@ import NotFound from "./pages/Errors/NotFound";
 import AdminRoute from "./components/Route/AdminRoute";
 import CustomerRoute from "./components/Route/CustomerRoute";
 
-const Dashboard = lazy(
-    async () => await new Promise((res, rej) => setTimeout(() => res(import("./pages/Admin/Dashboard")), 2000))
-);
+// use React.lazy to load the Dashboard component asynchronously
+const lazyPages = [
+    {
+        path: "dashboard",
+        component: lazy(async () => import("./pages/Admin/Dashboard")),
+    },
+];
 
 function App() {
     return (
@@ -24,14 +28,17 @@ function App() {
 
                 <Route path="/admin" element={<AdminRoute />}>
                     <Route path="" element={<Navigate to="/home" />} />
-                    <Route
-                        path="dashboard"
-                        element={
-                            <Suspense fallback={<div>Loading...</div>}>
-                                <Dashboard />
-                            </Suspense>
-                        }
-                    />
+                    {lazyPages.map((LazyPage) => (
+                        <Route
+                            key={LazyPage.path}
+                            path={LazyPage.path}
+                            element={
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <LazyPage.component />
+                                </Suspense>
+                            }
+                        />
+                    ))}
                     <Route path="*" element={<NotFound />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

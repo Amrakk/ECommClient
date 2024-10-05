@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { User } from "../../models/user";
-import useLogin from "../../hooks/useLogin";
+import { useState } from "react";
+import { User } from "@/models/user";
+import useLogin from "@/hooks/useLogin";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../../stores/user.store";
+import { useUserStore } from "@/stores/user.store";
 
 export default function LoginForm() {
     const { setUser } = useUserStore();
@@ -11,13 +11,13 @@ export default function LoginForm() {
 
     const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError(false);
 
-        const formData = new FormData(event.target);
-        const email = formData.get("email");
-        const password = formData.get("password");
+        const formData = new FormData(event.currentTarget);
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
 
         const data = { email, password };
         mutateAsync(data)
