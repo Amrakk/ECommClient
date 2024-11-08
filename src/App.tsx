@@ -8,42 +8,93 @@ import NotFound from "./pages/Errors/NotFound";
 import AdminRoute from "./components/Route/AdminRoute";
 import CustomerRoute from "./components/Route/CustomerRoute";
 
-// use React.lazy to load the Dashboard component asynchronously
-const lazyPages = [
-    {
-        path: "dashboard",
-        component: lazy(async () => import("./pages/Admin/Dashboard")),
-    },
-];
+// Lazy-load the admin components
+const Dashboard = lazy(() => import("./pages/Admin/Dashboard"));
+const Customer = lazy(() => import("./pages/Admin/CustomerManagement"));
+const Product = lazy(() => import("./pages/Admin/ProductManagement"));
+const CustomerDetailed = lazy(() => import("./pages/Admin/CustomerDetailed"));
+const ProductDetailed = lazy(() => import("./pages/Admin/ProductDetailed.tsx"));
+const SaleManagement = lazy(() => import("./pages/Admin/SaleManagement"));
+const SaleOrderDetailed = lazy(() => import("./pages/Admin/SaleOrderDetailed"));
 
 function App() {
     return (
-        <>
-            <Routes>
-                <Route path="/" element={<CustomerRoute />}>
-                    <Route path="" element={<Navigate to="/home" />} />
-                    <Route path="home" element={<Home />} />
-                    <Route path="login" element={<Login />} />
-                </Route>
+        <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<CustomerRoute />}>
+                <Route path="" element={<Navigate to="/home" />} />
+                <Route path="home" element={<Home />} />
+                <Route path="login" element={<Login />} />
+            </Route>
 
-                <Route path="/admin" element={<AdminRoute />}>
-                    <Route path="" element={<Navigate to="/home" />} />
-                    {lazyPages.map((LazyPage) => (
-                        <Route
-                            key={LazyPage.path}
-                            path={LazyPage.path}
-                            element={
-                                <Suspense fallback={<div>Loading...</div>}>
-                                    <LazyPage.component />
-                                </Suspense>
-                            }
-                        />
-                    ))}
-                    <Route path="*" element={<NotFound />} />
-                </Route>
+            {/* Admin routes */}
+            <Route path="/admin" element={<AdminRoute />}>
+                <Route path="" element={<Navigate to="/admin/dashboard" />} />
+                
+                <Route
+                    path="dashboard"
+                    element={
+                        <Suspense fallback={<div>Loading Dashboard...</div>}>
+                            <Dashboard />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="customer"
+                    element={
+                        <Suspense fallback={<div>Loading Customer...</div>}>
+                            <Customer />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="product"
+                    element={
+                        <Suspense fallback={<div>Loading Product...</div>}>
+                            <Product />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="customerdetailed"
+                    element={
+                        <Suspense fallback={<div>Loading Customer Details...</div>}>
+                            <CustomerDetailed />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="productdetailed"
+                    element={
+                        <Suspense fallback={<div>Loading Product Details...</div>}>
+                            <ProductDetailed />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="salemanagement"
+                    element={
+                        <Suspense fallback={<div>Loading Sales Management...</div>}>
+                            <SaleManagement />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="saleorderdetailed"
+                    element={
+                        <Suspense fallback={<div>Loading Sale Order Details...</div>}>
+                            <SaleOrderDetailed />
+                        </Suspense>
+                    }
+                />
+                
+                {/* Fallback for non-existing admin paths */}
                 <Route path="*" element={<NotFound />} />
-            </Routes>
-        </>
+            </Route>
+
+            {/* Fallback for non-existing public paths */}
+            <Route path="*" element={<NotFound />} />
+        </Routes>
     );
 }
 

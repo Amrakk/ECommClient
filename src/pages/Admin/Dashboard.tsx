@@ -42,7 +42,7 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="flex items-center space-x-3">
             <img
-              src="/admin.jpg"
+              src="/assets/admin.jpg"
               alt="Admin Avatar"
               className="w-10 h-10 rounded-full"
             />
