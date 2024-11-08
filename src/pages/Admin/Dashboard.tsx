@@ -1,10 +1,12 @@
 import {
   FaUsers,
   FaDollarSign,
-  FaShoppingCart,
+  
   FaChartPie,
   FaSearch,
 } from "react-icons/fa";
+
+import Header from '../../layouts/Header.tsx';
 
 // Define type for the pie chart data structure
 interface PieChartData {
@@ -23,24 +25,7 @@ const Dashboard: React.FC = () => {
     <div className="flex min-h-screen bg-gray-100 font-sans">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 text-white p-6">
-        <h2 className="text-2xl font-semibold text-center mb-8">Admin Panel</h2>
-        <ul className="space-y-4">
-          <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
-            <FaChartPie className="text-lg" /> <span>Dashboard</span>
-          </li>
-          <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
-            <FaUsers className="text-lg" /> <span>Customers</span>
-          </li>
-          <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
-            <FaShoppingCart className="text-lg" /> <span>Sales Management</span>
-          </li>
-          <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
-            <FaDollarSign className="text-lg" /> <span>Product Management</span>
-          </li>
-          <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
-            <FaChartPie className="text-lg" /> <span>Report & Analytics</span>
-          </li>
-        </ul>
+       <Header />
       </aside>
 
       {/* Main Content */}
