@@ -10,7 +10,7 @@ export default function Header() {
       <ul className="space-y-4">
         <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
           <FaChartPie className="text-lg" />
-          <Link to="/">Dashboard</Link>
+          <Link to="/admin/dashboard">Dashboard</Link>
         </li>
         <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
           <FaUsers className="text-lg" />
@@ -18,7 +18,7 @@ export default function Header() {
         </li>
         <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
           <FaShoppingCart className="text-lg" />
-          <Link to="/admin/sale">Sales Management</Link>
+          <Link to="/admin/salemanagement">Sales Management</Link>
         </li>
         <li className="flex items-center space-x-3 cursor-pointer hover:text-white text-gray-400">
           <FaDollarSign className="text-lg" />

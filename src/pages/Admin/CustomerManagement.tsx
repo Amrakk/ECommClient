@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Header from '../../layouts/Header.tsx';
-import { FaSearch } from "react-icons/fa";
+
 
 export default function Customer() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -8,11 +8,15 @@ export default function Customer() {
     name: '',
     email: '',
     phoneNumber: '',
+    dateOfBirth: '',
+    orders: '',
+    totalSpent: '',
+    customerReview: '',
     avatar: '',
   });
 
   // Function to handle form data change
-  const handleChange = (element) => {
+  const handleChange = (element: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = element.target;
     setCustomerData((prevData) => ({
       ...prevData,
@@ -38,14 +42,7 @@ export default function Customer() {
       <div className="flex-1 p-6">
         {/* Header Section */}
         <header className="flex justify-between items-center mb-6">
-          <div className="flex items-center bg-white border border-gray-300 rounded-md px-4 py-2 w-1/2">
-            <FaSearch className="text-gray-500" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="ml-2 outline-none w-full"
-            />
-          </div>
+          
           <div className="flex items-center space-x-3">
             <img
               src="/assets/admin.jpg"
@@ -59,12 +56,13 @@ export default function Customer() {
         {/* Filter and Add Customer Section */}
         <div className="flex justify-between items-center bg-white p-4 shadow-md mb-4">
           <div className="flex items-center space-x-2">
-            <button className="bg-gray-700 text-white px-4 py-2 rounded">Filter options</button>
+          
             <input
               type="text"
               placeholder="Search by name, id, ..."
               className="border border-gray-300 px-4 py-2 rounded w-64 focus:outline-none focus:border-gray-500"
             />
+             <button className="bg-gray-700 text-white px-4 py-2 rounded">Search</button>
           </div>
           <button
             className="bg-gray-700 text-white px-4 py-2 rounded"
@@ -134,6 +132,16 @@ export default function Customer() {
                     type="text"
                     name="phoneNumber"
                     value={customerData.phoneNumber}
+                    onChange={handleChange}
+                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700">Date of Birth</label>
+                  <input
+                    type="text"
+                    name="dateOfBirth"
+                    value={customerData.dateOfBirth}
                     onChange={handleChange}
                     className="border border-gray-300 px-4 py-2 w-full rounded-md"
                   />
