@@ -24,7 +24,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-gray-100 font-sans">
       {/* Sidebar */}
-      <aside className="w-64 bg-gray-800 text-white p-6">
+      <aside className="w-64 bg-black text-white p-6">
        <Header />
       </aside>
 

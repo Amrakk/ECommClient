@@ -16,6 +16,7 @@ const CustomerDetailed = lazy(() => import("./pages/Admin/CustomerDetailed"));
 const ProductDetailed = lazy(() => import("./pages/Admin/ProductDetailed.tsx"));
 const SaleManagement = lazy(() => import("./pages/Admin/SaleManagement"));
 const SaleOrderDetailed = lazy(() => import("./pages/Admin/SaleOrderDetailed"));
+const VoucherManagement = lazy(() => import("./pages/Admin/VoucherManagement"));
 
 function App() {
     return (
@@ -56,7 +57,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="customerdetailed"
+                    path="customer/:id"
                     element={
                         <Suspense fallback={<div>Loading Customer Details...</div>}>
                             <CustomerDetailed />
@@ -64,7 +65,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="productdetailed"
+                    path="product/:id"
                     element={
                         <Suspense fallback={<div>Loading Product Details...</div>}>
                             <ProductDetailed />
@@ -84,6 +85,14 @@ function App() {
                     element={
                         <Suspense fallback={<div>Loading Sale Order Details...</div>}>
                             <SaleOrderDetailed />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="voucher"
+                    element={
+                        <Suspense fallback={<div>Loading Voucher Order Details...</div>}>
+                            <VoucherManagement/>
                         </Suspense>
                     }
                 />

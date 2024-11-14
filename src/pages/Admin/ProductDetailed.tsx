@@ -1,17 +1,17 @@
-// Customer.tsx
+// productdetailed.tsx
 import React from 'react';
 import Header from '../../layouts/Header.tsx';
 
-export default function Customer() {
+export default function ProductDetailed() {
   return (
     <div className="bg-gray-100 min-h-screen p-6">
       {/* Header Section */}
       <Header />
       <div className="bg-gray-200 text-center p-4 mb-6">
-        <h1 className="text-xl font-semibold">Search bar customer</h1>
+        <h1 className="text-xl font-semibold">Search bar productdetailed</h1>
       </div>
 
-      {/* Filter and Add Customer Section */}
+      {/* Filter and Add productdetailed Section */}
       <div className="flex justify-between items-center bg-white p-4 shadow-md mb-4">
         <div className="flex items-center space-x-2">
           <button className="bg-gray-700 text-white px-4 py-2 rounded">Filter options</button>
@@ -21,10 +21,10 @@ export default function Customer() {
             className="border border-gray-300 px-4 py-2 rounded w-64 focus:outline-none focus:border-gray-500"
           />
         </div>
-        <button className="bg-gray-700 text-white px-4 py-2 rounded">Add customer</button>
+        <button className="bg-gray-700 text-white px-4 py-2 rounded">Add productdetailed</button>
       </div>
 
-      {/* Customer Table */}
+      {/* productdetailed Table */}
       <div className="overflow-x-auto">
         <table className="w-full bg-white shadow-md">
           <thead className="bg-gray-700 text-white">

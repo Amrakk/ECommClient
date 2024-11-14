@@ -1,179 +1,144 @@
-import React, { useState } from 'react';
-import Header from '../../layouts/Header.tsx';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../../layouts/Header.tsx";
+import Sidebar from '../../layouts/Sidebar.tsx';
+import { getProducts } from "../../apis/api.ts";
 
+interface Product {
+  _id: number;
+  name: string;
+  category: string;
+  brand: string;
+}
 
 export default function Product() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [productData, setproductData] = useState({
-    name: '',
-    category: '',
-    quantity: '',
-    price: '',
-    detailed: '',
-    product_review: '',
-    product_avatar: '',
+  const navigate = useNavigate();
+  const [products, setProducts] = useState<Product[]>([]);
+  
+  // Define filter states
+  const [filters, setFilters] = useState({
+    searchTerm: "",
+    category: "",
+    brand: "",
+    minPrice: undefined,
+    maxPrice: undefined,
+    minRating: undefined,
+    limit: 10,
+    page: 1,
   });
 
-  // Function to handle form data change
-  const handleChange = (element: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = element.target;
-    setproductData((prevData) => ({
-      ...prevData,
-      [name]: files ? files[0] : value,
+  // Fetch products with the filters applied
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const data = await getProducts(filters);
+      console.log("Fetched Products:", data);
+      if (Array.isArray(data)) {
+        setProducts(data);
+      } else {
+        setProducts([]);
+      }
+    };
+
+    fetchProducts();
+  }, [filters]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value === "" ? undefined : value,
     }));
   };
 
-  // Function to handle form submission
-  const handleSave = () => {
-    // Logic to save product data goes here
-    console.log("product data saved:", productData);
-    setIsModalOpen(false); // Close the modal
+  const handleRowClick = (id: number) => {
+    navigate(`/admin/product/${id}`);
   };
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-800 text-white p-6">
-        <Header />
+      <aside className="w-64 bg-black text-white p-6">
+        <Sidebar />
       </aside>
 
-      {/* Main Content */}
       <div className="flex-1 p-6">
-        {/* Header Section */}
-        <header className="flex justify-between items-center mb-6">
-          
-          <div className="flex items-center space-x-3">
-            <img
-              src="/assets/admin.jpg"
-              alt="Admin Avatar"
-              className="w-10 h-10 rounded-full"
-            />
-            <span className="font-semibold">Admin</span>
-          </div>
+        <header>
+          <Header />
         </header>
 
-        {/* Filter and Add product Section */}
         <div className="flex justify-between items-center bg-white p-4 shadow-md mb-4">
           <div className="flex items-center space-x-2">
-          
             <input
               type="text"
+              name="searchTerm"
+              value={filters.searchTerm}
+              onChange={handleSearchChange}
               placeholder="Search by name, id, ..."
               className="border border-gray-300 px-4 py-2 rounded w-64 focus:outline-none focus:border-gray-500"
             />
-             <button className="bg-gray-700 text-white px-4 py-2 rounded">Search</button>
+            <select
+              name="category"
+              value={filters.category}
+              onChange={handleFilterChange}
+              className="border border-gray-300 px-4 py-2 rounded w-48"
+            >
+              <option value="">All Categories</option>
+              <option value="home">Home</option>
+              <option value="electronics">Electronics</option>
+              <option value="office">Office</option>
+            </select>
+            <select
+              name="brand"
+              value={filters.brand}
+              onChange={handleFilterChange}
+              className="border border-gray-300 px-4 py-2 rounded w-48"
+            >
+              <option value="">All Brands</option>
+              <option value="ComfortSeating">ComfortSeating</option>
+              <option value="LG">LG</option>
+              <option value="Samsung">Samsung</option>
+            </select>
+            <button className="bg-black text-white px-4 py-2 rounded">Search</button>
           </div>
           <button
-            className="bg-gray-700 text-white px-4 py-2 rounded"
-            onClick={() => setIsModalOpen(true)}
+            className="bg-black text-white px-4 py-2 rounded"
+            // onClick={() => setIsModalOpen(true)}
           >
             Add product
           </button>
         </div>
 
-        {/* product Table */}
         <div className="overflow-x-auto">
           <table className="w-full bg-white shadow-md">
-            <thead className="bg-gray-700 text-white">
+            <thead className="bg-black text-white">
               <tr>
-                <th className="px-4 py-2 text-left">ID</th>
-                <th className="px-4 py-2 text-left">Name</th>
-                <th className="px-4 py-2 text-left">Category</th>
-                <th className="px-4 py-2 text-left">Price</th>
-                <th className="px-4 py-2 text-left">Quantity</th>
-                <th className="px-4 py-2 text-left">Review</th>
+                <th className="px-4 py-2 text-center">ID</th>
+                <th className="px-4 py-2 text-center">Name</th>
+                <th className="px-4 py-2 text-center">Category</th>
+                <th className="px-4 py-2 text-center">Brand</th>
               </tr>
             </thead>
             <tbody>
-              {[...Array(10)].map((_, index) => (
-                <tr key={index} className="border-b border-gray-200">
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                </tr>
-              ))}
+              {Array.isArray(products) &&
+                products.map((product) => (
+                  <tr
+                    key={product._id}
+                    className="border-b cursor-pointer hover:bg-gray-100"
+                    onClick={() => handleRowClick(product._id)}
+                  >
+                    <td className="px-4 py-3 bg-gray-100">{product._id}</td>
+                    <td className="px-4 py-3 bg-gray-100">{product.name}</td>
+                    <td className="px-4 py-3 bg-gray-100">{product.category}</td>
+                    <td className="px-4 py-3 bg-gray-100">{product.brand}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
-
-        {/* Modal Form */}
-        {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg w-96">
-              <h2 className="text-xl font-semibold mb-4">Add new Product</h2>
-              <form>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={productData.name}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Price</label>
-                  <input
-                    type="text"
-                    name="Price"
-                    value={productData.price}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Category</label>
-                  <input
-                    type="text"
-                    name="Category"
-                    value={productData.category}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Quantity</label>
-                  <input
-                    type="text"
-                    name="Quantity"
-                    value={productData.quantity}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Product's Avatar</label>
-                  <input
-                    type="file"
-                    name="avatar"
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="flex justify-end space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="bg-gray-500 text-white px-4 py-2 rounded-md"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSave}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

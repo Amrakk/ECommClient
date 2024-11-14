@@ -1,180 +1,81 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../layouts/Header.tsx';
-
+import Sidebar from '../../layouts/Sidebar.tsx';
 
 export default function Customer() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [customerData, setCustomerData] = useState({
-    name: '',
-    email: '',
-    phoneNumber: '',
-    dateOfBirth: '',
-    orders: '',
-    totalSpent: '',
-    customerReview: '',
-    avatar: '',
-  });
+  const navigate = useNavigate();
+  
+  
 
-  // Function to handle form data change
-  const handleChange = (element: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = element.target;
-    setCustomerData((prevData) => ({
-      ...prevData,
-      [name]: files ? files[0] : value,
-    }));
-  };
+  const mockCustomers = [
+    { id: 1, name: 'John Doe', email: 'john@example.com', phoneNumber: '123-456-7890', orders: 5, totalSpent: '$500' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com', phoneNumber: '234-567-8901', orders: 3, totalSpent: '$300' },
+    { id: 3, name: 'Alice Johnson', email: 'alice@example.com', phoneNumber: '345-678-9012', orders: 8, totalSpent: '$800' },
+    // Add more customers as needed
+  ];
 
-  // Function to handle form submission
-  const handleSave = () => {
-    // Logic to save customer data goes here
-    console.log("Customer data saved:", customerData);
-    setIsModalOpen(false); // Close the modal
+  
+
+  const handleRowClick = (id: number ) => {
+    navigate(`/admin/customer/${id}`);
   };
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 bg-gray-800 text-white p-6">
-        <Header />
+      <aside className="w-64 bg-black text-white p-6">
+        <Sidebar />
       </aside>
 
-      {/* Main Content */}
       <div className="flex-1 p-6">
-        {/* Header Section */}
-        <header className="flex justify-between items-center mb-6">
-          
-          <div className="flex items-center space-x-3">
-            <img
-              src="/assets/admin.jpg"
-              alt="Admin Avatar"
-              className="w-10 h-10 rounded-full"
-            />
-            <span className="font-semibold">Admin</span>
-          </div>
+        <header >
+         <Header/>
         </header>
 
-        {/* Filter and Add Customer Section */}
         <div className="flex justify-between items-center bg-white p-4 shadow-md mb-4">
           <div className="flex items-center space-x-2">
-          
             <input
               type="text"
               placeholder="Search by name, id, ..."
               className="border border-gray-300 px-4 py-2 rounded w-64 focus:outline-none focus:border-gray-500"
             />
-             <button className="bg-gray-700 text-white px-4 py-2 rounded">Search</button>
+            <button className="bg-black text-white px-4 py-2 rounded">Search</button>
           </div>
-          <button
-            className="bg-gray-700 text-white px-4 py-2 rounded"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Add customer
-          </button>
+         
         </div>
 
-        {/* Customer Table */}
         <div className="overflow-x-auto">
           <table className="w-full bg-white shadow-md">
-            <thead className="bg-gray-700 text-white">
+            <thead className="bg-black text-white">
               <tr>
-                <th className="px-4 py-2 text-left">ID</th>
-                <th className="px-4 py-2 text-left">Name</th>
-                <th className="px-4 py-2 text-left">Email</th>
-                <th className="px-4 py-2 text-left">Phone number</th>
-                <th className="px-4 py-2 text-left">Orders</th>
-                <th className="px-4 py-2 text-left">Total spent</th>
+                <th className="px-4 py-2 text-center">ID</th>
+                <th className="px-4 py-2 text-center">Name</th>
+                <th className="px-4 py-2 text-center">Email</th>
+                <th className="px-4 py-2 text-center">Phone number</th>
+                <th className="px-4 py-2 text-center">Orders</th>
+                <th className="px-4 py-2 text-center">Total spent</th>
               </tr>
             </thead>
             <tbody>
-              {[...Array(10)].map((_, index) => (
-                <tr key={index} className="border-b border-gray-200">
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
+              {mockCustomers.map((customer) => (
+                <tr
+                  key={customer.id}
+                  className="border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                  onClick={() => handleRowClick(customer.id)}
+                >
+                  <td className="px-4 py-3 bg-gray-100 text-center">{customer.id}</td>
+                  <td className="px-4 py-3 bg-gray-100 text-center">{customer.name}</td>
+                  <td className="px-4 py-3 bg-gray-100 text-center">{customer.email}</td>
+                  <td className="px-4 py-3 bg-gray-100 text-center">{customer.phoneNumber}</td>
+                  <td className="px-4 py-3 bg-gray-100 text-center">{customer.orders}</td>
+                  <td className="px-4 py-3 bg-gray-100 text-center">{customer.totalSpent}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        {/* Modal Form */}
-        {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg w-96">
-              <h2 className="text-xl font-semibold mb-4">Add Customer</h2>
-              <form>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={customerData.name}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={customerData.email}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Phone Number</label>
-                  <input
-                    type="text"
-                    name="phoneNumber"
-                    value={customerData.phoneNumber}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Date of Birth</label>
-                  <input
-                    type="text"
-                    name="dateOfBirth"
-                    value={customerData.dateOfBirth}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Avatar</label>
-                  <input
-                    type="file"
-                    name="avatar"
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="flex justify-end space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="bg-gray-500 text-white px-4 py-2 rounded-md"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSave}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+       
       </div>
     </div>
   );
