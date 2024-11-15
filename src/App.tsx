@@ -81,7 +81,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="saleorderdetailed"
+                    path="sale/:id"
                     element={
                         <Suspense fallback={<div>Loading Sale Order Details...</div>}>
                             <SaleOrderDetailed />

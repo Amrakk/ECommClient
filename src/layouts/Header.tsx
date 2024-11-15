@@ -1,6 +1,6 @@
 // Header.tsx
 import React from 'react';
-import adminImage from '@/assets/error/sad.png';
+import adminImage from '@/assets/adminIcon.png';
 // import { Link } from 'react-router-dom';
 // import ecommImage from '@/assets/EComm.png';
 // import { FaChartPie, FaUsers, FaShoppingCart, FaDollarSign } from 'react-icons/fa';

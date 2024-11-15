@@ -1,56 +1,40 @@
-// Customer.tsx
-import React from 'react';
-import Header from '../../layouts/Header.tsx';
+import { useLocation} from 'react-router-dom';
+import Header from '../../layouts/Header';
+import Sidebar from '../../layouts/Sidebar';
 
-export default function Customer() {
+export default function SaleOrderDetailed() {
+  const location = useLocation();
+
+  const sale = location.state;
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
-      {/* Header Section */}
-      <Header />
-      <div className="bg-gray-200 text-center p-4 mb-6">
-        <h1 className="text-xl font-semibold">Search bar customer</h1>
-      </div>
+    <div className="flex bg-gray-100 min-h-screen">
+      <aside className="w-64 bg-black text-white p-6">
+        <Sidebar />
+      </aside>
 
-      {/* Filter and Add Customer Section */}
-      <div className="flex justify-between items-center bg-white p-4 shadow-md mb-4">
-        <div className="flex items-center space-x-2">
-          <button className="bg-gray-700 text-white px-4 py-2 rounded">Filter options</button>
-          <input
-            type="text"
-            placeholder="Search by name, id, ..."
-            className="border border-gray-300 px-4 py-2 rounded w-64 focus:outline-none focus:border-gray-500"
-          />
+      <div className="flex-1 p-6 space-y-6">
+        <Header />
+
+        <div className="flex gap-6 bg-white shadow rounded-lg p-6">
+          <div className="bg-gray-300 flex items-center justify-center w-64 h-64 rounded-lg overflow-hidden">
+            <span className="text-gray-700 font-semibold text-xl">Sale Order Avatar</span>
+          </div>
+
+          <div className="flex-1 bg-gray-50 rounded-lg p-6 shadow-md">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Sale Order Information</h2>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">User ID:</span> {sale?.userId}</p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Items:</span></p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Is Paid:</span> {sale?.isPaid ? "Yes" : "No"}</p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Shipping Address:</span></p>
+            <p className="text-gray-600 mb-1">{sale?.shippingAddress.street}, {sale?.shippingAddress.ward.name}, {sale?.shippingAddress.district.name}, {sale?.shippingAddress.province.name}</p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Contact:</span> {sale?.shippingAddress.contactInfo}</p>
+
+           
+          </div>
+
+        
         </div>
-        <button className="bg-gray-700 text-white px-4 py-2 rounded">Add customer</button>
-      </div>
 
-      {/* Customer Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full bg-white shadow-md">
-          <thead className="bg-gray-700 text-white">
-            <tr>
-              <th className="px-4 py-2 text-left">ID</th>
-              <th className="px-4 py-2 text-left">Name</th>
-              <th className="px-4 py-2 text-left">Email</th>
-              <th className="px-4 py-2 text-left">Phone number</th>
-              <th className="px-4 py-2 text-left">Orders</th>
-              <th className="px-4 py-2 text-left">Total spent</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Placeholder rows for data */}
-            {[...Array(10)].map((_, index) => (
-              <tr key={index} className="border-b border-gray-200">
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </div>
   );

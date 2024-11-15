@@ -1,179 +1,218 @@
-import React, { useState } from 'react';
-import Header from '../../layouts/Header.tsx';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../../layouts/Header.tsx";
+import Sidebar from "../../layouts/Sidebar.tsx";
 
+type Discount = {
+  type: 'percent' | 'amount';
+  value: number;
+};
+
+type Voucher = {
+  code: string;
+  discount: Discount;
+  expirationDate: string; // ISO 8601 format
+};
+
+const mockVouchers: Voucher[] = [
+  {
+    code: "MYCODE-C332-060A-4E4F-BF1B-9ECB",
+    discount: {
+      type: "percent",
+      value: 10,
+    },
+    expirationDate: "2024-10-19T19:20:00.000Z",
+  },
+  {
+    code: "SAVE20-4A3B-9C1D-8E7F-GH6J-KL5M",
+    discount: {
+      type: "amount",
+      value: 20,
+    },
+    expirationDate: "2025-05-15T12:00:00.000Z",
+  },
+  {
+    code: "WELCOME-NEW-USER-123",
+    discount: {
+      type: "percent",
+      value: 15,
+    },
+    expirationDate: "2024-12-31T23:59:59.000Z",
+  },
+];
 
 export default function Voucher() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [voucherData, setvoucherData] = useState({
-    name: '',
-    category: '',
-    quantity: '',
-    price: '',
-    detailed: '',
-    voucher_review: '',
-    voucher_avatar: '',
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const VouchersPerPage = 5;
+
+  const [newVoucher, setNewVoucher] = useState<Voucher>({
+    code: "",
+    discount: { type: "percent", value: 0 },
+    expirationDate: "",
   });
 
-  // Function to handle form data change
-  const handleChange = (element: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, files } = element.target;
-    setvoucherData((prevData) => ({
-      ...prevData,
-      [name]: files ? files[0] : value,
-    }));
+  
+  const handlePageChange = (newPage: number) => setCurrentPage(newPage);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setNewVoucher({
+      ...newVoucher,
+      [name]: value,
+    });
   };
 
-  // Function to handle form submission
-  const handleSave = () => {
-    // Logic to save voucher data goes here
-    console.log("voucher data saved:", voucherData);
-    setIsModalOpen(false); // Close the modal
+  const handleDiscountTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setNewVoucher({
+      ...newVoucher,
+      discount: {
+        ...newVoucher.discount,
+        type: value as 'percent' | 'amount',
+      },
+    });
   };
+
+  const handleVoucherSubmit = () => {
+    // Here, you can push the new voucher to your mockVouchers or make an API call to save it
+    mockVouchers.push(newVoucher);
+    alert("Voucher Created!");
+    // Optionally, navigate back to the voucher list page
+    navigate("/admin/voucher");
+  };
+
+  const filteredVouchers = mockVouchers.filter((voucher) =>
+    voucher.code.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const currentVouchers = filteredVouchers.slice(
+    (currentPage - 1) * VouchersPerPage,
+    currentPage * VouchersPerPage
+  );
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
-      {/* Sidebar */}
       <aside className="w-64 bg-black text-white p-6">
-        <Header />
+        <Sidebar />
       </aside>
-
-      {/* Main Content */}
       <div className="flex-1 p-6">
-        {/* Header Section */}
-        <header className="flex justify-between items-center mb-6">
-          
-          <div className="flex items-center space-x-3">
-            <img
-              src="src/assets/EComm.png"
-              alt="Admin Avatar"
-              className="w-10 h-10 rounded-full"
-            />
-           
+        <Header />
+        <div className="mb-4">
+          <h2 className="text-2xl font-semibold text-gray-800">Create Voucher</h2>
+          <div className="bg-white shadow-md p-6 rounded-md">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="code" className="block text-gray-700">Voucher Code</label>
+                <input
+                  type="text"
+                  id="code"
+                  name="code"
+                  value={newVoucher.code}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="discount" className="block text-gray-700">Discount Type</label>
+                <select
+                  id="discount"
+                  name="discountType"
+                  value={newVoucher.discount.type}
+                  onChange={handleDiscountTypeChange}
+                  className="w-full px-4 py-2 border rounded-md"
+                  required
+                >
+                  <option value="percent">Percent</option>
+                  <option value="amount">Amount</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="value" className="block text-gray-700">Discount Value</label>
+                <input
+                  type="number"
+                  id="value"
+                  name="value"
+                  value={newVoucher.discount.value}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-md"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="expirationDate" className="block text-gray-700">Expiration Date</label>
+                <input
+                  type="datetime-local"
+                  id="expirationDate"
+                  name="expirationDate"
+                  value={newVoucher.expirationDate}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border rounded-md"
+                  required
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={handleVoucherSubmit}
+                  className="px-6 py-2 bg-black text-white rounded-md"
+                >
+                  Create Voucher
+                </button>
+              </div>
+            </div>
           </div>
-        </header>
-
-        {/* Filter and Add voucher Section */}
-        <div className="flex justify-between items-center bg-white p-4 shadow-md mb-4">
-          <div className="flex items-center space-x-2">
-          
-            <input
-              type="text"
-              placeholder="Search by name, id, ..."
-              className="border border-gray-300 px-4 py-2 rounded w-64 focus:outline-none focus:border-gray-500"
-            />
-             <button className="bg-black text-white px-4 py-2 rounded">Search</button>
-          </div>
-          <button
-            className="bg-black text-white px-4 py-2 rounded"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Add voucher
-          </button>
         </div>
 
-        {/* voucher Table */}
+        {/* Voucher List Table */}
         <div className="overflow-x-auto">
-          <table className="w-full bg-white shadow-md">
+          <table className="w-full bg-white shadow-md rounded-md">
             <thead className="bg-black text-white">
               <tr>
-                <th className="px-4 py-2 text-left">ID</th>
-                <th className="px-4 py-2 text-left">Name</th>
-                <th className="px-4 py-2 text-left">Category</th>
-                <th className="px-4 py-2 text-left">Price</th>
-                <th className="px-4 py-2 text-left">Quantity</th>
-                <th className="px-4 py-2 text-left">Review</th>
+                <th className="px-4 py-2 text-center">Code</th>
+                <th className="px-4 py-2 text-center">Discount Type</th>
+                <th className="px-4 py-2 text-center">Discount Value</th>
+                <th className="px-4 py-2 text-center">Expiration Date</th>
               </tr>
             </thead>
             <tbody>
-              {[...Array(10)].map((_, index) => (
-                <tr key={index} className="border-b border-gray-200">
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
-                  <td className="px-4 py-3 bg-gray-100"></td>
+              {currentVouchers.map((voucher) => (
+                <tr
+                  key={voucher.code}
+                  className="border-b border-gray-200 cursor-pointer hover:bg-gray-100"
+                 
+                >
+                  <td className="px-4 py-3 bg-gray-100 text-center">{voucher.code}</td>
+                  <td className="px-4 py-3 bg-gray-100 text-center">{voucher.discount.type}</td>
+                  <td className="px-4 py-3 bg-gray-100 text-center">{voucher.discount.value}</td>
+                  <td className="px-4 py-3 bg-gray-100 text-center">{new Date(voucher.expirationDate).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        {/* Modal Form */}
-        {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg w-96">
-              <h2 className="text-xl font-semibold mb-4">Add new voucher</h2>
-              <form>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={voucherData.name}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Price</label>
-                  <input
-                    type="text"
-                    name="Price"
-                    value={voucherData.price}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Category</label>
-                  <input
-                    type="text"
-                    name="Category"
-                    value={voucherData.category}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">Quantity</label>
-                  <input
-                    type="text"
-                    name="Quantity"
-                    value={voucherData.quantity}
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700">voucher's Avatar</label>
-                  <input
-                    type="file"
-                    name="avatar"
-                    onChange={handleChange}
-                    className="border border-gray-300 px-4 py-2 w-full rounded-md"
-                  />
-                </div>
-                <div className="flex justify-end space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="bg-gray-500 text-white px-4 py-2 rounded-md"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSave}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+        {/* Pagination */}
+        <div className="flex justify-center items-center space-x-4 mt-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-gray-600">
+            Page {currentPage} of {Math.ceil(filteredVouchers.length / VouchersPerPage)}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage * VouchersPerPage >= filteredVouchers.length}
+            className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,56 +1,103 @@
-// productdetailed.tsx
-import React from 'react';
-import Header from '../../layouts/Header.tsx';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Header from '../../layouts/Header';
+import Sidebar from '../../layouts/Sidebar';
 
 export default function ProductDetailed() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const product = location.state;
+
+  const [showConfirm, setShowConfirm] = useState(false); // Show confirmation modal
+
+
+  const handleDeleteToggle = () => {
+    setShowConfirm(true);
+  };
+
+  
+  const confirmDelete = () => {
+ 
+    console.log(`Product with ID ${product?.id} deleted`);
+
+    setShowConfirm(false); 
+
+
+    navigate('/admin/product-management');
+  };
+
+
+  const handleCancel = () => {
+    setShowConfirm(false); 
+  };
+
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
-      {/* Header Section */}
-      <Header />
-      <div className="bg-gray-200 text-center p-4 mb-6">
-        <h1 className="text-xl font-semibold">Search bar productdetailed</h1>
-      </div>
+    <div className="flex bg-gray-100 min-h-screen">
+      <aside className="w-64 bg-black text-white p-6">
+        <Sidebar />
+      </aside>
 
-      {/* Filter and Add productdetailed Section */}
-      <div className="flex justify-between items-center bg-white p-4 shadow-md mb-4">
-        <div className="flex items-center space-x-2">
-          <button className="bg-gray-700 text-white px-4 py-2 rounded">Filter options</button>
-          <input
-            type="text"
-            placeholder="Search by name, id, ..."
-            className="border border-gray-300 px-4 py-2 rounded w-64 focus:outline-none focus:border-gray-500"
-          />
+      <div className="flex-1 p-6 space-y-6">
+        <Header />
+
+        <div className="flex gap-6 bg-white shadow rounded-lg p-6">
+          <div className="bg-gray-300 flex items-center justify-center w-64 h-64 rounded-lg overflow-hidden">
+            <span className="text-gray-700 font-semibold text-xl">Product's Avatar</span>
+          </div>
+
+          <div className="flex-1 bg-gray-50 rounded-lg p-6 shadow-md">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Product Information</h2>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">ID:</span> {product?.id}</p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Name:</span> {product?.name}</p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Category:</span> {product?.category}</p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Brand:</span> {product?.brand}</p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Ratings:</span> {product?.ratings}</p>
+            <p className="text-gray-600 mb-1"><span className="font-semibold">Description:</span> {product?.description}</p>
+            <div className="mt-6 flex space-x-4">
+              <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 rounded-lg shadow transition">
+                Update
+              </button>
+              <button
+                className="px-6 py-2 rounded-lg shadow transition bg-red-500 text-white"
+                onClick={handleDeleteToggle}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <div className="w-64 bg-gray-50 rounded-lg p-6 shadow-md">
+            <h2 className="font-semibold text-xl text-gray-800 mb-4">Product's Review</h2>
+            <p className="text-gray-600">{product?.productReview}</p>
+          </div>
         </div>
-        <button className="bg-gray-700 text-white px-4 py-2 rounded">Add productdetailed</button>
-      </div>
 
-      {/* productdetailed Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full bg-white shadow-md">
-          <thead className="bg-gray-700 text-white">
-            <tr>
-              <th className="px-4 py-2 text-left">ID</th>
-              <th className="px-4 py-2 text-left">Name</th>
-              <th className="px-4 py-2 text-left">Email</th>
-              <th className="px-4 py-2 text-left">Phone number</th>
-              <th className="px-4 py-2 text-left">Orders</th>
-              <th className="px-4 py-2 text-left">Total spent</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Placeholder rows for data */}
-            {[...Array(10)].map((_, index) => (
-              <tr key={index} className="border-b border-gray-200">
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-                <td className="px-4 py-3 bg-gray-100"></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      
+
+        {/* Delete Confirmation Modal */}
+        {showConfirm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <p className="text-gray-800 text-lg mb-4">
+                Are you sure you want to delete this product?
+              </p>
+              <div className="flex justify-end space-x-4">
+                <button
+                  className="bg-gray-200 px-4 py-2 rounded"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 rounded bg-red-500 text-white"
+                  onClick={confirmDelete}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
