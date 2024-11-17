@@ -33,7 +33,7 @@ export default function UserTable() {
         <>
             <Table
                 columns={["Name", "Email", "Role", "Status", "Phone Number"]}
-                rows={rows}
+                rows={[...rows, ...rows, ...rows]}
                 total={totalDocuments}
                 isLoading={users.isFetching}
                 navigatePath="/admin/users"

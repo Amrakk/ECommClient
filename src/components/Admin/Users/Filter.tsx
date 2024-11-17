@@ -103,8 +103,10 @@ export default function Filter() {
                     Search
                 </button>
 
+                <div className="w-1/4"></div>
+
                 <div
-                    className="border border-gray-300 px-4 rounded w-48 focus:outline-none focus:border-gray-500 ml-96 relative"
+                    className="border border-gray-300 px-4 rounded w-48 focus:outline-none focus:border-gray-500 relative"
                     id="filterBtn"
                 >
                     <button

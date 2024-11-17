@@ -13,7 +13,7 @@ import Loading from "./components/Shared/Loading";
 import AdminRoute from "./components/Route/AdminRoute";
 import CustomerRoute from "./components/Route/CustomerRoute";
 
-function sleep(ms: number = 1000) {
+function sleep(ms: number = 200) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
