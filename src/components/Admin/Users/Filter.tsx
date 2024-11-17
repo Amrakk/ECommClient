@@ -4,7 +4,7 @@ import { useDebounce } from "@/hooks/Shared/useDebounce";
 import FilterContent from "@/components/Shared/FilterContent";
 import useUserFilter from "@/hooks/Admin/Users/useUserFilter";
 import CustomCheckbox from "@/components/Shared/CustomCheckbox";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 
 export default function Filter() {
     const searchRef = useRef<HTMLInputElement>(null);

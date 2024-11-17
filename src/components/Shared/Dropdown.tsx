@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import { useEffect, useRef, useState } from "react";
 
 export type Option = {
     name: string;

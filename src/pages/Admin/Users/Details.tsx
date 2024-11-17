@@ -1,7 +1,6 @@
 import Addresses from "@/components/Admin/Users/Addresses";
 import OrderTable from "@/components/Admin/Users/OrderTable";
 import PersonalDetails from "@/components/Admin/Users/PersonalDetails";
-import React from "react";
 
 export default function Details() {
     return (

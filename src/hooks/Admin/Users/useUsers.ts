@@ -1,7 +1,7 @@
 import * as UserAPI from "@/apis/users";
-import usePagination from "@/hooks/Shared/usePagination";
-import { useQuery } from "@tanstack/react-query";
 import useUserFilter from "./useUserFilter";
+import { useQuery } from "@tanstack/react-query";
+import usePagination from "@/hooks/Shared/usePagination";
 
 export default function useUsers() {
     const { currentPage, limitPage } = usePagination();

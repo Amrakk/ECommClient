@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function PersonalDetails() {
     const customer = {} as any;
     let isBanned = false;

@@ -2,7 +2,15 @@ import Header from "@/layouts/admin/Header";
 import Sidebar from "@/layouts/admin/Sidebar";
 import { Outlet, Navigate, useLocation, matchPath } from "react-router-dom";
 
-const existPaths = ["/users/:id?", "/products/:id?", "/orders/:id?", "/vouchers", "/dashboard", "/settings"];
+const existPaths = [
+    "/reports",
+    "/vouchers",
+    "/settings",
+    "/dashboard",
+    "/users/:id?",
+    "/orders/:id?",
+    "/products/:id?",
+];
 
 export default function AdminRoute() {
     const user = "admin";
@@ -23,7 +31,7 @@ export default function AdminRoute() {
             <>
                 {isValidPath ? (
                     <div className="flex bg-gray-100 min-h-screen">
-                        <aside className="w-64 bg-black text-white p-6">
+                        <aside className="w-72 bg-black text-white p-6">
                             <Sidebar />
                         </aside>
                         <div className="flex-1">

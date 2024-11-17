@@ -1,9 +1,9 @@
 import Dropdown from "./Dropdown";
+import { useEffect } from "react";
 import { PaginationLimitOptions } from "@/constants";
+import usePagination from "@/hooks/Shared/usePagination";
 import { HiOutlineChevronDoubleLeft } from "react-icons/hi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import usePagination from "@/hooks/Shared/usePagination";
-import { useEffect } from "react";
 
 type Props = {
     total: number;

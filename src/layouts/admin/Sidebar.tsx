@@ -1,9 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
-import ecommLogo from "@/assets/EComm-transparent-crop.webp";
-import { FaChartPie, FaUsers, FaShoppingCart } from "react-icons/fa";
 import { RxDashboard } from "react-icons/rx";
 import { FaBox, FaGear } from "react-icons/fa6";
+import { Link, useLocation } from "react-router-dom";
 import { RiDiscountPercentFill } from "react-icons/ri";
+import ecommLogo from "@/assets/EComm-transparent-crop.webp";
+import { FaChartPie, FaUsers, FaShoppingCart } from "react-icons/fa";
 
 const menuItems = [
     { to: "/admin/dashboard", label: "Dashboard", icon: <RxDashboard className="text-lg transition-all" /> },
@@ -11,7 +11,7 @@ const menuItems = [
     { to: "/admin/orders", label: "Orders", icon: <FaShoppingCart className="text-lg transition-all" /> },
     { to: "/admin/products", label: "Products", icon: <FaBox className="text-lg transition-all" /> },
     { to: "/admin/vouchers", label: "Vouchers", icon: <RiDiscountPercentFill className="text-lg transition-all" /> },
-    { to: "/admin/report", label: "Report & Analytics", icon: <FaChartPie className="text-lg transition-all" /> },
+    { to: "/admin/reports", label: "Report & Analytics", icon: <FaChartPie className="text-lg transition-all" /> },
     { to: "/admin/settings", label: "Settings", icon: <FaGear className="text-lg transition-all" /> },
 ];
 
@@ -19,7 +19,7 @@ export default function Sidebar() {
     const { pathname } = useLocation();
 
     return (
-        <div className="bg-black h-full ">
+        <div className="bg-black h-full">
             <div className="">
                 <img src={ecommLogo} className="mx-auto size-full object-center " />
             </div>

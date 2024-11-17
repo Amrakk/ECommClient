@@ -1,7 +1,7 @@
+import { toast } from "react-toastify";
 import { USER_STATUS } from "@/constants";
 import Table from "@/components/Shared/Table";
 import useUsers from "@/hooks/Admin/Users/useUsers";
-import { toast } from "react-toastify";
 
 export default function UserTable() {
     const users = useUsers();

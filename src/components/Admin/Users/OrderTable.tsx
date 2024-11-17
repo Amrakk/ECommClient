@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function OrderTable() {
     return (
         <div className="bg-white shadow rounded-lg p-6">
