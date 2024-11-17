@@ -2,23 +2,35 @@ import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import "./styles/style.css";
+import "./styles/myStyle.css";
+import "react-toastify/dist/ReactToastify.css";
+
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/Errors/NotFound";
 import AdminRoute from "./components/Route/AdminRoute";
 import CustomerRoute from "./components/Route/CustomerRoute";
+import { ToastContainer } from "react-toastify";
 
-// use React.lazy to load the Dashboard component asynchronously
-const lazyPages = [
+const adminLazyPages = [
     {
         path: "dashboard",
         component: lazy(async () => import("./pages/Admin/Dashboard")),
+    },
+    {
+        path: "users",
+        component: lazy(async () => import("./pages/Admin/Users/Users")),
+    },
+    {
+        path: "users/:id",
+        component: lazy(async () => import("./pages/Admin/Users/Details")),
     },
 ];
 
 function App() {
     return (
         <>
+            <ToastContainer />
             <Routes>
                 <Route path="/" element={<CustomerRoute />}>
                     <Route path="" element={<Navigate to="/home" />} />
@@ -28,7 +40,7 @@ function App() {
 
                 <Route path="/admin" element={<AdminRoute />}>
                     <Route path="" element={<Navigate to="/home" />} />
-                    {lazyPages.map((LazyPage) => (
+                    {adminLazyPages.map((LazyPage) => (
                         <Route
                             key={LazyPage.path}
                             path={LazyPage.path}

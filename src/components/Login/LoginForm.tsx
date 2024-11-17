@@ -22,7 +22,14 @@ export default function LoginForm() {
         const data = { email, password };
         mutateAsync(data)
             .then((response) => {
-                const newUser = new User(response.data.email, response.data.role);
+                const newUser = new User(
+                    response.data._id,
+                    response.data.name,
+                    response.data.email,
+                    response.data.role,
+                    response.data.avatarUrl,
+                    response.data.cartId
+                );
                 setUser(newUser);
                 navigate("/admin/dashboard");
             })
