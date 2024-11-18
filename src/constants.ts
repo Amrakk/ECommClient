@@ -50,3 +50,19 @@ export enum USER_STATUS {
 export enum SOCIAL_MEDIA_PROVIDER {
     GOOGLE = "google",
 }
+
+export enum PRODUCT_CATEGORY {
+    HOME = "home",
+    BOOKS = "books",
+    SPORTS = "sports",
+    ELECTRONICS = "electronics",
+    OTHERS = "others",
+}
+
+export const PRODUCT_CATEGORY_LIST = [
+    PRODUCT_CATEGORY.HOME,
+    PRODUCT_CATEGORY.BOOKS,
+    PRODUCT_CATEGORY.SPORTS,
+    PRODUCT_CATEGORY.ELECTRONICS,
+    PRODUCT_CATEGORY.OTHERS,
+] as const;

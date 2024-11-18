@@ -14,26 +14,38 @@ export default function UserTable() {
 
     const rows =
         usersData.map((user) => {
-            const statusElement =
-                user.status === USER_STATUS.NORMAL ? (
-                    <span className="status_btn !min-w-0 rounded-full size-4 block mx-auto"></span>
-                ) : (
-                    <span className="status_btn !min-w-0 orange_bg rounded-full size-4 block mx-auto"></span>
-                );
+            const statusElement = (
+                <div className="text-center">
+                    {user.status === USER_STATUS.NORMAL ? (
+                        <span className="status_btn !min-w-0 rounded-full size-4 block mx-auto"></span>
+                    ) : (
+                        <span className="status_btn !min-w-0 orange_bg rounded-full size-4 block mx-auto"></span>
+                    )}
+                </div>
+            );
+
+            const phoneNumberElement = <div className="text-center">{user.phoneNumber ?? "―"}</div>;
 
             const role = user.role === "admin" ? "Admin" : "Customer";
 
             return {
                 _id: user._id,
-                data: [user.name, user.email, role, statusElement, user.phoneNumber ?? "―"],
+                data: [user.name, user.email, role, statusElement, phoneNumberElement],
             };
         }) ?? [];
 
+    const columns = [
+        <div className="text-left">Name</div>,
+        <div className="text-left">Email</div>,
+        <div className="text-left">Role</div>,
+        "Status",
+        "Phone Number",
+    ];
     return (
         <>
             <Table
-                columns={["Name", "Email", "Role", "Status", "Phone Number"]}
-                rows={[...rows, ...rows, ...rows]}
+                columns={columns}
+                rows={rows}
                 total={totalDocuments}
                 isLoading={users.isFetching}
                 navigatePath="/admin/users"

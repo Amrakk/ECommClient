@@ -3,7 +3,7 @@ import { USER_ROLE, USER_STATUS } from "@/constants";
 import { useDebounce } from "@/hooks/Shared/useDebounce";
 import FilterContent from "@/components/Shared/FilterContent";
 import useUserFilter from "@/hooks/Admin/Users/useUserFilter";
-import CustomCheckbox from "@/components/Shared/CustomCheckbox";
+import CustomRadio from "@/components/Shared/CustomRadio";
 import { ReactElement, useEffect, useRef, useState } from "react";
 
 export default function Filter() {
@@ -21,7 +21,7 @@ export default function Filter() {
             label: "Role",
             builder: (): ReactElement => (
                 <div className="flex gap-10">
-                    <CustomCheckbox
+                    <CustomRadio
                         id="filterRoleAdmin"
                         name="role"
                         value="admin"
@@ -29,7 +29,7 @@ export default function Filter() {
                         onChange={(e) => setRole(e.target.value as USER_ROLE)}
                         checked={role === "admin"}
                     />
-                    <CustomCheckbox
+                    <CustomRadio
                         id="filterRoleUser"
                         name="role"
                         value="customer"
@@ -44,7 +44,7 @@ export default function Filter() {
             label: "Status",
             builder: (): ReactElement => (
                 <div className="flex gap-10">
-                    <CustomCheckbox
+                    <CustomRadio
                         id="filterNormalStatus"
                         name="status"
                         value="normal"
@@ -52,7 +52,7 @@ export default function Filter() {
                         onChange={(e) => setStatus(e.target.value as USER_STATUS)}
                         checked={status === "normal"}
                     />
-                    <CustomCheckbox
+                    <CustomRadio
                         id="filterBlockedStatus"
                         name="status"
                         value="blocked"

@@ -9,7 +9,7 @@ export default function Table<T extends { _id: string; data: any[] }>({
     isLoading,
     navigatePath,
 }: {
-    columns: string[];
+    columns: any[];
     rows: T[];
     total: number;
     isLoading?: boolean;
@@ -28,8 +28,8 @@ export default function Table<T extends { _id: string; data: any[] }>({
                     <table className="w-full shadow-md rounded-xl table-fixed">
                         <thead className="bg-black text-white sticky top-0">
                             <tr>
-                                {columns.map((column) => (
-                                    <th className="px-4 py-2 text-center" key={column}>
+                                {columns.map((column, i) => (
+                                    <th className="px-4 py-2" key={i}>
                                         {column}
                                     </th>
                                 ))}
@@ -52,7 +52,7 @@ export default function Table<T extends { _id: string; data: any[] }>({
                                     >
                                         {row.data.map((value, y) => (
                                             <td
-                                                className="px-4 py-3 bg-inherit text-center data-[is-last-row=false]:border-b data-[is-last-row=true]:data-[is-first-cell=true]:rounded-bl-xl data-[is-last-row=true]:data-[is-last-cell=true]:rounded-br-xl"
+                                                className="px-4 py-3 bg-inherit data-[is-last-row=false]:border-b data-[is-last-row=true]:data-[is-first-cell=true]:rounded-bl-xl data-[is-last-row=true]:data-[is-last-cell=true]:rounded-br-xl"
                                                 data-is-first-cell={(y ?? -1) === 0}
                                                 data-is-last-row={(i ?? -1) === rows.length - 1}
                                                 data-is-last-cell={(y ?? -1) === columns.length - 1}

@@ -71,3 +71,7 @@
 ::-webkit-scrollbar-thumb:hover {
     background-color: #888888c0;
 }
+
+.star-rating-shadow {
+    text-shadow: 0px 0px 15px 5px rgba(255, 193, 7, 0.6);
+}
