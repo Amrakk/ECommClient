@@ -30,8 +30,8 @@ export interface ProductFilter {
     name?: string;
     /** Search by name, brand, category, or tags (mainly use by User to search for products) */
     searchTerm?: string;
-    category?: PRODUCT_CATEGORY;
-    brand?: string;
+    categories?: PRODUCT_CATEGORY[];
+    brands?: string[];
     minRating?: number;
     minPrice?: number;
     maxPrice?: number;

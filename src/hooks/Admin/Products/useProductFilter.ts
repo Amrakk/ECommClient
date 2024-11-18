@@ -1,12 +1,12 @@
+import { PRODUCT_CATEGORY } from "@/constants";
 import { useCallback, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { PRODUCT_CATEGORY } from "@/constants";
 import { parseNumber } from "@/utils/parseNumber";
 
 type Props = {
     name?: string;
-    category?: PRODUCT_CATEGORY[];
-    brand?: string[];
+    categories?: PRODUCT_CATEGORY[];
+    brands?: string[];
     minRating?: number;
     minPrice?: number;
     maxPrice?: number;
@@ -16,8 +16,8 @@ export default function useProductFilter() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const name = searchParams.get("name") ?? undefined;
-    const category = (searchParams.get("category") ?? undefined) as PRODUCT_CATEGORY | undefined;
-    const brand = searchParams.get("brand") ?? undefined;
+    const categories = searchParams.getAll("categories") as PRODUCT_CATEGORY[];
+    const brands = searchParams.getAll("brands");
     const minRating = parseNumber(searchParams.get("minRating"));
     const minPrice = parseNumber(searchParams.get("minPrice"));
     const maxPrice = parseNumber(searchParams.get("maxPrice"));
@@ -28,13 +28,13 @@ export default function useProductFilter() {
                 if (props.name) params.set("name", props.name);
                 else params.delete("name");
 
-                params.delete("category");
-                if (props.category && props.category.length > 0)
-                    props.category.forEach((category) => params.append("category", category));
+                params.delete("categories");
+                if (props.categories && props.categories.length > 0)
+                    props.categories.forEach((category) => params.append("categories", category));
 
-                params.delete("brand");
-                if (props.brand && props.brand.length > 0)
-                    props.brand.forEach((brand) => params.append("brand", brand));
+                params.delete("brands");
+                if (props.brands && props.brands.length > 0)
+                    props.brands.forEach((brand) => params.append("brands", brand));
 
                 if (props.minRating) params.set("minRating", `${props.minRating}`);
                 else params.delete("minRating");
@@ -60,8 +60,8 @@ export default function useProductFilter() {
 
     return {
         name,
-        category,
-        brand,
+        categories,
+        brands,
         minRating,
         minPrice,
         maxPrice,

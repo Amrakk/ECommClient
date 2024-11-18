@@ -11,28 +11,29 @@ import { PRODUCT_CATEGORY, PRODUCT_CATEGORY_LIST } from "@/constants";
 import useProductFilter from "@/hooks/Admin/Products/useProductFilter";
 
 export default function Filter() {
-    const brands = useBrands();
+    const brandHook = useBrands();
     const searchRef = useRef<HTMLInputElement>(null);
+
+    const { name, brands, categories, maxPrice, minPrice, minRating, changeFilter } = useProductFilter();
 
     const [open, setOpen] = useState(false);
 
-    const [categories, setCategory] = useState<PRODUCT_CATEGORY[]>([]);
-    const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+    const [selectedCategories, setSelectedCategory] = useState<PRODUCT_CATEGORY[]>([...categories]);
+    const [selectedBrands, setSelectedBrands] = useState<string[]>([...brands]);
 
-    const [minRating, setMinRating] = useState<number | undefined>(undefined);
-    const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
-    const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+    const [selectedMinRating, setSelectedMinRating] = useState<number | undefined>(minRating);
+    const [selectedMinPrice, setSelectedMinPrice] = useState<number | undefined>(minPrice);
+    const [selectedMaxPrice, setSelectedMaxPrice] = useState<number | undefined>(maxPrice);
 
-    const { name, changeFilter } = useProductFilter();
     const changeFilterDebounce = useDebounce(changeFilter, 500);
 
-    if (brands.error) toast.error("Invalid query parameters", { toastId: "product filter" });
+    if (brandHook.error) toast.error("Invalid query parameters", { toastId: "product filter" });
 
-    const brandsData = brands.data ?? [];
+    const brandsData = brandHook.data ?? [];
 
     const elements = [
         {
-            label: "Category",
+            label: "Categories",
             builder: (): ReactElement => (
                 <div className="flex gap-10 mt-4">
                     {PRODUCT_CATEGORY_LIST.map((category) => (
@@ -40,11 +41,12 @@ export default function Filter() {
                             id={`filterCategory${category}`}
                             key={category}
                             label={category.substring(0, 1).toUpperCase() + category.substring(1)}
-                            onChange={(e) => {
-                                if (e.target.checked) setCategory((s) => [...s, category]);
-                                else setCategory((s) => s.filter((c) => c !== category));
-                            }}
-                            checked={categories.includes(category)}
+                            onChange={(e) =>
+                                setSelectedCategory((s) =>
+                                    e.target.checked ? [...s, category] : s.filter((c) => c !== category)
+                                )
+                            }
+                            checked={selectedCategories.includes(category)}
                             name="category"
                             value={category}
                         />
@@ -53,7 +55,7 @@ export default function Filter() {
             ),
         },
         {
-            label: "Brand",
+            label: "Brands",
             builder: (): ReactElement => (
                 <div className="mt-4">
                     {brandsData.map((brand) => (
@@ -62,10 +64,11 @@ export default function Filter() {
                                 id={`filterBrand${brand}`}
                                 key={brand}
                                 label={brand}
-                                onChange={(e) => {
-                                    if (e.target.checked) setSelectedBrands((s) => [...s, brand]);
-                                    else setSelectedBrands((s) => s.filter((c) => c !== brand));
-                                }}
+                                onChange={(e) =>
+                                    setSelectedBrands((s) =>
+                                        e.target.checked ? [...s, brand] : s.filter((b) => b !== brand)
+                                    )
+                                }
                                 checked={selectedBrands.includes(brand)}
                                 name="brand"
                                 value={brand}
@@ -79,7 +82,7 @@ export default function Filter() {
             label: "Min Rating",
             builder: (): ReactElement => (
                 <div className="flex gap-10">
-                    <RatingSelector minRating={minRating} onChange={(rating) => setMinRating(rating)} />
+                    <RatingSelector minRating={selectedMinRating} onChange={(rating) => setSelectedMinRating(rating)} />
                 </div>
             ),
         },
@@ -91,11 +94,11 @@ export default function Filter() {
                         min={0}
                         max={100000000}
                         isPrice={true}
-                        defaultMin={minPrice}
-                        defaultMax={maxPrice}
+                        defaultMin={selectedMinPrice}
+                        defaultMax={selectedMaxPrice}
                         onChange={(min, max) => {
-                            setMinPrice(min);
-                            setMaxPrice(max);
+                            setSelectedMinPrice(min);
+                            setSelectedMaxPrice(max);
                         }}
                     />
                 </div>
@@ -104,29 +107,39 @@ export default function Filter() {
     ];
 
     function handleSearch() {
-        changeFilterDebounce({ name: searchRef.current!.value });
+        changeFilterDebounce({
+            name: searchRef.current!.value,
+            categories: [...selectedCategories],
+            brands: [...selectedBrands],
+            minPrice: selectedMinPrice,
+            maxPrice: selectedMaxPrice,
+            minRating: selectedMinRating,
+        });
     }
 
     function applyFilter() {
-        changeFilter({ name, category: categories, brand: selectedBrands, minPrice, maxPrice, minRating });
+        changeFilter({
+            name,
+            categories: [...selectedCategories],
+            brands: [...selectedBrands],
+            minPrice: selectedMinPrice,
+            maxPrice: selectedMaxPrice,
+            minRating: selectedMinRating,
+        });
         setOpen(false);
     }
 
     function resetFilter() {
         changeFilter({});
 
-        setCategory([]);
+        setSelectedCategory([]);
         setSelectedBrands([]);
-        setMinRating(undefined);
-        setMinPrice(undefined);
-        setMaxPrice(undefined);
+        setSelectedMinRating(undefined);
+        setSelectedMinPrice(undefined);
+        setSelectedMaxPrice(undefined);
 
         setOpen(false);
     }
-
-    useEffect(() => {
-        changeFilter({});
-    }, []);
 
     return (
         <div className="bg-white p-4 shadow-md mb-4 rounded-md space-x-4">

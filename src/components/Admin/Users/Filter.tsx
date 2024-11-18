@@ -1,19 +1,19 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { USER_ROLE, USER_STATUS } from "@/constants";
+import { ReactElement, useRef, useState } from "react";
 import { useDebounce } from "@/hooks/Shared/useDebounce";
+import CustomRadio from "@/components/Shared/CustomRadio";
 import FilterContent from "@/components/Shared/FilterContent";
 import useUserFilter from "@/hooks/Admin/Users/useUserFilter";
-import CustomRadio from "@/components/Shared/CustomRadio";
-import { ReactElement, useEffect, useRef, useState } from "react";
 
 export default function Filter() {
     const searchRef = useRef<HTMLInputElement>(null);
+    const { searchTerm, role, status, changeFilter } = useUserFilter();
 
     const [open, setOpen] = useState(false);
-    const [role, setRole] = useState<USER_ROLE | undefined>(undefined);
-    const [status, setStatus] = useState<USER_STATUS | undefined>(undefined);
+    const [selectedRole, setSelectedRole] = useState<USER_ROLE | undefined>(role);
+    const [selectedStatus, setSelectedStatus] = useState<USER_STATUS | undefined>(status);
 
-    const { searchTerm, changeFilter } = useUserFilter();
     const changeFilterDebounce = useDebounce(changeFilter, 500);
 
     const elements = [
@@ -26,16 +26,16 @@ export default function Filter() {
                         name="role"
                         value="admin"
                         label="Admin"
-                        onChange={(e) => setRole(e.target.value as USER_ROLE)}
-                        checked={role === "admin"}
+                        onChange={(e) => setSelectedRole(e.target.value as USER_ROLE)}
+                        checked={selectedRole === "admin"}
                     />
                     <CustomRadio
                         id="filterRoleUser"
                         name="role"
                         value="customer"
                         label="Customer"
-                        onChange={(e) => setRole(e.target.value as USER_ROLE)}
-                        checked={role === "customer"}
+                        onChange={(e) => setSelectedRole(e.target.value as USER_ROLE)}
+                        checked={selectedRole === "customer"}
                     />
                 </div>
             ),
@@ -49,16 +49,16 @@ export default function Filter() {
                         name="status"
                         value="normal"
                         label="Normal"
-                        onChange={(e) => setStatus(e.target.value as USER_STATUS)}
-                        checked={status === "normal"}
+                        onChange={(e) => setSelectedStatus(e.target.value as USER_STATUS)}
+                        checked={selectedStatus === "normal"}
                     />
                     <CustomRadio
                         id="filterBlockedStatus"
                         name="status"
                         value="blocked"
                         label="Blocked"
-                        onChange={(e) => setStatus(e.target.value as USER_STATUS)}
-                        checked={status === "blocked"}
+                        onChange={(e) => setSelectedStatus(e.target.value as USER_STATUS)}
+                        checked={selectedStatus === "blocked"}
                     />
                 </div>
             ),
@@ -66,25 +66,21 @@ export default function Filter() {
     ];
 
     function handleSearch() {
-        changeFilterDebounce(searchRef.current!.value, role, status);
+        changeFilterDebounce(searchRef.current!.value, selectedRole, selectedStatus);
     }
 
     function applyFilter() {
-        changeFilter(searchTerm, role, status);
+        changeFilter(searchTerm, selectedRole, selectedStatus);
         setOpen(false);
     }
 
     function resetFilter() {
-        setRole(undefined);
-        setStatus(undefined);
+        setSelectedRole(undefined);
+        setSelectedStatus(undefined);
 
         changeFilter(searchTerm);
         setOpen(false);
     }
-
-    useEffect(() => {
-        changeFilter();
-    }, []);
 
     return (
         <div className="bg-white p-4 shadow-md mb-4 rounded-md space-x-4">

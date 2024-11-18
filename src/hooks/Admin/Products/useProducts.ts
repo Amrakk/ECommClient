@@ -5,17 +5,17 @@ import usePagination from "@/hooks/Shared/usePagination";
 
 export default function useUsers() {
     const { currentPage, limitPage } = usePagination();
-    const { name, brand, category, maxPrice, minPrice, minRating } = useProductFilter();
+    const { name, brands, categories, maxPrice, minPrice, minRating } = useProductFilter();
 
     const productQuery = useQuery({
-        queryKey: ["products", currentPage, limitPage, name, brand, category, maxPrice, minPrice, minRating],
+        queryKey: ["products", currentPage, limitPage, name, brands, categories, maxPrice, minPrice, minRating],
         queryFn: () =>
             ProductAPI.getProducts({
                 page: currentPage,
                 limit: limitPage,
                 name,
-                brand,
-                category,
+                brands,
+                categories,
                 maxPrice,
                 minPrice,
                 minRating,

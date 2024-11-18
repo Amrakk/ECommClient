@@ -59,12 +59,12 @@ export default function RatingSelector(props: Props) {
     }
 
     useEffect(() => {
-        if (props.onChange) {
-            props.onChange(rating);
-        }
-
         debounceHover(rating);
-    }, [rating, selectedRating]);
+    }, [rating]);
+
+    useEffect(() => {
+        props.onChange(selectedRating);
+    }, [selectedRating]);
 
     return (
         <div
