@@ -1,11 +1,11 @@
 import { toast } from "react-toastify";
 import { IoIosArrowDown } from "react-icons/io";
+import { ReactElement, useRef, useState } from "react";
 import useBrands from "@/hooks/Admin/Products/useBrands";
 import { useDebounce } from "@/hooks/Shared/useDebounce";
 import FilterContent from "@/components/Shared/FilterContent";
 import CustomCheckbox from "@/components/Shared/CustomCheckbox";
 import RatingSelector from "@/components/Shared/RatingSelector";
-import { ReactElement, useEffect, useRef, useState } from "react";
 import MultiRangeSlider from "@/components/Shared/MultiRangeSlider";
 import { PRODUCT_CATEGORY, PRODUCT_CATEGORY_LIST } from "@/constants";
 import useProductFilter from "@/hooks/Admin/Products/useProductFilter";
@@ -130,7 +130,7 @@ export default function Filter() {
     }
 
     function resetFilter() {
-        changeFilter({});
+        changeFilter({ name });
 
         setSelectedCategory([]);
         setSelectedBrands([]);

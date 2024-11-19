@@ -25,7 +25,7 @@ export default function FilterContent(props: Props) {
 
     return (
         <div
-            className="absolute min-w-64 right-0 top-14 overflow-hidden rounded-md z-10 bg-white fade-in"
+            className="absolute min-w-64 right-0 top-14 overflow-hidden rounded-md z-10 bg-white fade-in max-w-[50vw]"
             ref={ref}
             style={{
                 boxShadow:

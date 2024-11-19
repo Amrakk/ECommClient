@@ -1,6 +1,7 @@
 import { API } from "@/apis/api";
-import { IResponse } from "@/interfaces/response";
-import { UserDetail, UserFilter } from "@/models/user";
+
+import type { IResponse } from "@/interfaces/response";
+import type { UserDetail, UserFilter } from "@/models/user";
 
 interface GetUsersResponse {
     users: Omit<UserDetail, "password">[];

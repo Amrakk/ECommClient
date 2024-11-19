@@ -47,7 +47,7 @@ export default function Table<T extends { _id: string; data: any[] }>({
                                 rows.map((row, i) => (
                                     <tr
                                         key={row._id}
-                                        className="border-gray-200 cursor-pointer bg-white hover:bg-gray-200"
+                                        className="border-gray-200 cursor-pointer bg-white hover:bg-gray-200 transition-all duration-100 fade-in"
                                         onClick={() => handleRowClick(row._id)}
                                     >
                                         {row.data.map((value, y) => (

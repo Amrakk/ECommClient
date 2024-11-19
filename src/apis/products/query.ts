@@ -1,5 +1,6 @@
 import { API } from "@/apis/api";
-import { IResponse } from "@/interfaces/response";
+
+import type { IResponse } from "@/interfaces/response";
 import type { ProductDetail, ProductFilter } from "@/models/product";
 
 interface GetProductsResponse {

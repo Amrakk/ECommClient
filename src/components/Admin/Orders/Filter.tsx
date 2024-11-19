@@ -1,49 +1,46 @@
+import { ORDER_STATUS, ORDER_STATUS_LIST } from "@/constants";
 import { IoIosArrowDown } from "react-icons/io";
-import { USER_ROLE, USER_STATUS } from "@/constants";
 import { ReactElement, useRef, useState } from "react";
 import { useDebounce } from "@/hooks/Shared/useDebounce";
 import CustomRadio from "@/components/Shared/CustomRadio";
 import FilterContent from "@/components/Shared/FilterContent";
-import useUserFilter from "@/hooks/Admin/Users/useUserFilter";
+import useOrderFilter from "@/hooks/Admin/Orders/useOrderFilter";
+import CustomCheckbox from "@/components/Shared/CustomCheckbox";
 
 export default function Filter() {
     const searchRef = useRef<HTMLInputElement>(null);
-    const { searchTerm, role, status, changeFilter } = useUserFilter();
+    const { searchTerm, isPaid, statuses, changeFilter } = useOrderFilter();
 
     const [open, setOpen] = useState(false);
-    const [selectedRole, setSelectedRole] = useState<USER_ROLE | undefined>(role);
-    const [selectedStatus, setSelectedStatus] = useState<USER_STATUS | undefined>(status);
+    const [selectedIsPaid, setSelectedIsPaid] = useState<boolean | undefined>(isPaid);
+    const [selectedStatuses, setSelectedStatuses] = useState<ORDER_STATUS[]>([...statuses]);
 
     const changeFilterDebounce = useDebounce(changeFilter, 500);
 
     const elements = [
         {
-            label: "Role",
+            label: "Is Paid",
             builder: (): ReactElement => (
-                <div className="flex gap-10">
+                <div className="flex gap-10 mt-4">
                     <CustomRadio
-                        id="filterRoleAdmin"
-                        name="role"
-                        value="admin"
-                        label="Admin"
-                        onClick={() =>
-                            selectedRole === USER_ROLE.ADMIN
-                                ? setSelectedRole(undefined)
-                                : setSelectedRole(USER_ROLE.ADMIN)
-                        }
-                        checked={selectedRole === "admin"}
+                        id="filterIsPaid"
+                        name="isPaid"
+                        value="true"
+                        label="Paid"
+                        onClick={() => (selectedIsPaid ? setSelectedIsPaid(undefined) : setSelectedIsPaid(true))}
+                        checked={selectedIsPaid === true}
                     />
                     <CustomRadio
-                        id="filterRoleUser"
-                        name="role"
-                        value="customer"
-                        label="Customer"
+                        id="filterIsNotPaid"
+                        name="isPaid"
+                        value="false"
+                        label="Not Paid"
                         onClick={() =>
-                            selectedRole === USER_ROLE.CUSTOMER
-                                ? setSelectedRole(undefined)
-                                : setSelectedRole(USER_ROLE.CUSTOMER)
+                            selectedIsPaid === undefined || selectedIsPaid
+                                ? setSelectedIsPaid(false)
+                                : setSelectedIsPaid(undefined)
                         }
-                        checked={selectedRole === "customer"}
+                        checked={selectedIsPaid === false}
                     />
                 </div>
             ),
@@ -51,50 +48,51 @@ export default function Filter() {
         {
             label: "Status",
             builder: (): ReactElement => (
-                <div className="flex gap-10">
-                    <CustomRadio
-                        id="filterNormalStatus"
-                        name="status"
-                        value="normal"
-                        label="Normal"
-                        onClick={() =>
-                            selectedStatus === USER_STATUS.NORMAL
-                                ? setSelectedStatus(undefined)
-                                : setSelectedStatus(USER_STATUS.NORMAL)
-                        }
-                        checked={selectedStatus === "normal"}
-                    />
-                    <CustomRadio
-                        id="filterBlockedStatus"
-                        name="status"
-                        value="blocked"
-                        label="Blocked"
-                        onClick={() =>
-                            selectedStatus === USER_STATUS.BLOCKED
-                                ? setSelectedStatus(undefined)
-                                : setSelectedStatus(USER_STATUS.BLOCKED)
-                        }
-                        checked={selectedStatus === "blocked"}
-                    />
+                <div className="mt-4 grid-cols-2 grid gap-x-12 w-max gap-y-1">
+                    {ORDER_STATUS_LIST.map((status) => (
+                        <div className="inline-block mb-2.5" key={status}>
+                            <CustomCheckbox
+                                id={`filterCategory${status}`}
+                                key={status}
+                                label={status.substring(0, 1).toUpperCase() + status.substring(1)}
+                                onChange={(e) =>
+                                    setSelectedStatuses((s) =>
+                                        e.target.checked ? [...s, status] : s.filter((c) => c !== status)
+                                    )
+                                }
+                                checked={selectedStatuses.includes(status)}
+                                name="category"
+                                value={status}
+                            />
+                        </div>
+                    ))}
                 </div>
             ),
         },
     ];
 
     function handleSearch() {
-        changeFilterDebounce(searchRef.current!.value, selectedRole, selectedStatus);
+        changeFilterDebounce({
+            searchTerm: searchRef.current?.value,
+            isPaid: selectedIsPaid,
+            statuses: selectedStatuses,
+        });
     }
 
     function applyFilter() {
-        changeFilter(searchTerm, selectedRole, selectedStatus);
+        changeFilter({
+            searchTerm,
+            isPaid: selectedIsPaid,
+            statuses: selectedStatuses,
+        });
         setOpen(false);
     }
 
     function resetFilter() {
-        setSelectedRole(undefined);
-        setSelectedStatus(undefined);
+        setSelectedStatuses([]);
+        setSelectedIsPaid(undefined);
 
-        changeFilter(searchTerm);
+        changeFilter({ searchTerm });
         setOpen(false);
     }
 
