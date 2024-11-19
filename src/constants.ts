@@ -86,8 +86,13 @@ export const ORDER_STATUS_LIST = [
     ORDER_STATUS.CANCELLED,
 ] as const;
 
-// STYLES
+// PROMOTE
+export enum DISCOUNT_TYPE {
+    FIXED = "fixed",
+    PERCENT = "percent",
+}
 
+// STYLES
 export const ORDER_STATUS_STYLES: Record<ORDER_STATUS, { bg: string; text: string; border: string; label: string }> = {
     [ORDER_STATUS.PENDING]: {
         bg: "bg-gray-100",

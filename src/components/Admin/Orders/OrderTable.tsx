@@ -6,7 +6,7 @@ import useOrders from "@/hooks/Admin/Orders/useOrders";
 export default function ProductTable() {
     const orders = useOrders();
 
-    if (orders.error) toast.error("Invalid query parameters", { toastId: "user-table" });
+    if (orders.error) toast.error("Invalid query parameters", { toastId: "order-table" });
 
     const data = orders.data ?? { orders: [], totalDocuments: 0 };
 

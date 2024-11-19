@@ -49,7 +49,7 @@ const adminLazyPages = [
 
     {
         path: "vouchers",
-        component: lazy(async () => sleep().then(() => import("./pages/Admin/Vouchers"))),
+        component: lazy(async () => sleep().then(() => import("./pages/Admin/Vouchers/Vouchers"))),
     },
     {
         path: "reports",

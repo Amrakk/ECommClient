@@ -5,7 +5,7 @@ import useProducts from "@/hooks/Admin/Products/useProducts";
 export default function ProductTable() {
     const products = useProducts();
 
-    if (products.error) toast.error("Invalid query parameters", { toastId: "user-table" });
+    if (products.error) toast.error("Invalid query parameters", { toastId: "product-table" });
 
     const data = products.data ?? { products: [], totalDocuments: 0 };
 

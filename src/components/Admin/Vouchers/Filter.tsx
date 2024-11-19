@@ -1,71 +1,77 @@
+import { DISCOUNT_TYPE } from "@/constants";
 import { IoIosArrowDown } from "react-icons/io";
 import { ReactElement, useRef, useState } from "react";
 import { useDebounce } from "@/hooks/Shared/useDebounce";
 import CustomRadio from "@/components/Shared/CustomRadio";
 import FilterContent from "@/components/Shared/FilterContent";
-import { ORDER_STATUS, ORDER_STATUS_LIST } from "@/constants";
-import CustomCheckbox from "@/components/Shared/CustomCheckbox";
-import useOrderFilter from "@/hooks/Admin/Orders/useOrderFilter";
+import useVoucherFilter from "@/hooks/Admin/Vouchers/useVoucherFilter";
 
 export default function Filter() {
     const searchRef = useRef<HTMLInputElement>(null);
-    const { searchTerm, isPaid, statuses, changeFilter } = useOrderFilter();
+    const { code, discountType, used, changeFilter } = useVoucherFilter();
 
     const [open, setOpen] = useState(false);
-    const [selectedIsPaid, setSelectedIsPaid] = useState<boolean | undefined>(isPaid);
-    const [selectedStatuses, setSelectedStatuses] = useState<ORDER_STATUS[]>([...statuses]);
+    const [selectedIsUsed, setSelectedIsUsed] = useState<boolean | undefined>(used);
+    const [selectedDiscountType, setSelectedDiscountType] = useState<DISCOUNT_TYPE | undefined>(discountType);
 
     const changeFilterDebounce = useDebounce(changeFilter, 500);
 
     const elements = [
         {
-            label: "Is Paid",
+            label: "Is Used",
             builder: (): ReactElement => (
                 <div className="flex gap-10 mt-4">
                     <CustomRadio
-                        id="filterIsPaid"
-                        name="isPaid"
+                        id="filterIsUsed"
+                        name="isUsed"
                         value="true"
-                        label="Paid"
-                        onClick={() => (selectedIsPaid ? setSelectedIsPaid(undefined) : setSelectedIsPaid(true))}
-                        checked={selectedIsPaid === true}
+                        label="Used"
+                        onClick={() => (selectedIsUsed ? setSelectedIsUsed(undefined) : setSelectedIsUsed(true))}
+                        checked={selectedIsUsed === true}
                     />
                     <CustomRadio
                         id="filterIsNotPaid"
-                        name="isPaid"
+                        name="isUsed"
                         value="false"
-                        label="Not Paid"
+                        label="Not Used"
                         onClick={() =>
-                            selectedIsPaid === undefined || selectedIsPaid
-                                ? setSelectedIsPaid(false)
-                                : setSelectedIsPaid(undefined)
+                            selectedIsUsed === undefined || selectedIsUsed
+                                ? setSelectedIsUsed(false)
+                                : setSelectedIsUsed(undefined)
                         }
-                        checked={selectedIsPaid === false}
+                        checked={selectedIsUsed === false}
                     />
                 </div>
             ),
         },
         {
-            label: "Status",
+            label: "Discount Type",
             builder: (): ReactElement => (
-                <div className="mt-4 grid-cols-2 grid gap-x-12 w-max gap-y-1">
-                    {ORDER_STATUS_LIST.map((status) => (
-                        <div className="inline-block mb-2.5" key={status}>
-                            <CustomCheckbox
-                                id={`filterCategory${status}`}
-                                key={status}
-                                label={status.substring(0, 1).toUpperCase() + status.substring(1)}
-                                onChange={(e) =>
-                                    setSelectedStatuses((s) =>
-                                        e.target.checked ? [...s, status] : s.filter((c) => c !== status)
-                                    )
-                                }
-                                checked={selectedStatuses.includes(status)}
-                                name="category"
-                                value={status}
-                            />
-                        </div>
-                    ))}
+                <div className="flex gap-10">
+                    <CustomRadio
+                        id="filterFixedType"
+                        name="discountType"
+                        value="fixed"
+                        label="Fixed"
+                        onClick={() =>
+                            selectedDiscountType === DISCOUNT_TYPE.FIXED
+                                ? setSelectedDiscountType(undefined)
+                                : setSelectedDiscountType(DISCOUNT_TYPE.FIXED)
+                        }
+                        checked={selectedDiscountType === DISCOUNT_TYPE.FIXED}
+                    />
+                    <CustomRadio
+                        id="filterPercentageType"
+                        name="discountType"
+                        value="percentage"
+                        label="Percentage"
+                        onClick={() =>
+                            selectedDiscountType === DISCOUNT_TYPE.PERCENT
+                                ? setSelectedDiscountType(undefined)
+                                : setSelectedDiscountType(DISCOUNT_TYPE.PERCENT)
+                        }
+                        checked={selectedDiscountType === DISCOUNT_TYPE.PERCENT}
+                    />
                 </div>
             ),
         },
@@ -73,26 +79,26 @@ export default function Filter() {
 
     function handleSearch() {
         changeFilterDebounce({
-            searchTerm: searchRef.current?.value,
-            isPaid: selectedIsPaid,
-            statuses: selectedStatuses,
+            code: searchRef.current?.value,
+            used: selectedIsUsed,
+            discountType: selectedDiscountType,
         });
     }
 
     function applyFilter() {
         changeFilter({
-            searchTerm,
-            isPaid: selectedIsPaid,
-            statuses: selectedStatuses,
+            code,
+            used: selectedIsUsed,
+            discountType: selectedDiscountType,
         });
         setOpen(false);
     }
 
     function resetFilter() {
-        setSelectedStatuses([]);
-        setSelectedIsPaid(undefined);
+        setSelectedIsUsed(undefined);
+        setSelectedDiscountType(undefined);
 
-        changeFilter({ searchTerm });
+        changeFilter({ code });
         setOpen(false);
     }
 
@@ -101,7 +107,7 @@ export default function Filter() {
             <div className="flex items-center">
                 <input
                     type="text"
-                    placeholder={"Search by name, email, phone number"}
+                    placeholder={"Search by voucher code"}
                     ref={searchRef}
                     onChange={handleSearch}
                     className="border border-gray-300 px-4 py-2 rounded flex-1 focus:outline-none focus:border-gray-500"
