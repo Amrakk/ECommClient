@@ -56,8 +56,8 @@ const adminLazyPages = [
         component: lazy(async () => sleep().then(() => import("./pages/Admin/Reports"))),
     },
     {
-        path: "settings",
-        component: lazy(async () => sleep().then(() => import("./pages/Admin/Settings"))),
+        path: "advanced",
+        component: lazy(async () => sleep().then(() => import("./pages/Admin/Advanced"))),
     },
 ];
 

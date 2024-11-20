@@ -12,5 +12,3 @@ product detail
 advance report
 
 settings (advance features)
-
-header ? (maybe reused from customer part, add breadcrumb if possible)

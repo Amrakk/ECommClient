@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware";
 interface UserStore {
     user?: User;
     setUser: (user: User) => void;
-    logout: () => void;
+    logout: () => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -14,7 +14,7 @@ export const useUserStore = create<UserStore>()(
         (set) => ({
             user: undefined,
             setUser: (user: User) => set({ user }),
-            logout: () => set({ user: undefined }),
+            logout: async () => set({ user: undefined }),
         }),
         { name: "user" }
     )

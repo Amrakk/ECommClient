@@ -17,6 +17,7 @@ export default function CustomRadio(props: Props) {
                     className="peer h-5 w-5 cursor-pointer appearance-none rounded-full border border-black border-opacity-25 checked:border-black checked:border-opacity-50 transition-all"
                     value={props.value}
                     checked={props.checked}
+                    onChange={() => {}}
                     onClick={props.onClick}
                     id={props.id}
                 />

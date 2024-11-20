@@ -1,3 +1,6 @@
+export const DEFAULT_AVATAR_URL = import.meta.env.VITE_DEFAULT_AVATAR_URL;
+export const DEFAULT_PRODUCT_IMAGE_URL = import.meta.env.VITE_DEFAULT_PRODUCT_IMAGE_URL;
+
 export const PaginationLimitOptions = [
     { name: "1", value: "1" },
     { name: "10", value: "10" },
