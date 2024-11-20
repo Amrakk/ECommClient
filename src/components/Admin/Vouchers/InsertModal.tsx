@@ -113,7 +113,6 @@ export default function InsertModal(props: Props) {
 
     return (
         <>
-            {/* TODO: redesign this */}
             <BaseModal
                 isShowing={props.isShowing}
                 hide={props.hide}
@@ -123,15 +122,15 @@ export default function InsertModal(props: Props) {
                     return (
                         <>
                             <div className="flex flex-col gap-4 border-b border-gray-600 p-4 md:p-5">
-                                <div className="max-w">
-                                    <label className="relative flex justify-center items-center group p-2 text-xl">
+                                <div className="min-w-72">
+                                    <label className="relative flex justify-center items-center group p-2 text-xl min-w-48">
                                         <input
                                             type="checkbox"
                                             onClick={() => setIsGenerateMode(!isGenerateMode)}
                                             className="absolute left-1/2 -translate-x-1/2 w-[50%] peer appearance-none rounded-md cursor-pointer"
                                         />
-                                        <span className="w-[45%] flex items-center flex-shrink-0 p-1 bg-gray-300 rounded-full duration-300 ease-in-out peer-checked:bg-black after:w-[45%] after:h-5 after:bg-white after:rounded-full after:shadow-md after:duration-300 peer-checked:after:translate-x-[120%] group-hover:after:translate-x-1"></span>
-                                        <div className="absolute flex justify-around w-[45%]">
+                                        <span className="min-w-48 flex items-center flex-shrink-0 p-1 bg-gray-300 rounded-full duration-300 ease-in-out peer-checked:bg-black after:min-w-[45%] after:h-5 after:bg-white after:rounded-full after:shadow-md after:duration-300 peer-checked:after:translate-x-[120%] group-hover:after:translate-x-1"></span>
+                                        <div className="absolute flex justify-around min-w-48 ml-2">
                                             <div className="text-gray-500 font-bold select-none text-sm">Single</div>
                                             <div className="text-black font-bold text-sm select-none">Generate</div>
                                         </div>
@@ -139,9 +138,10 @@ export default function InsertModal(props: Props) {
                                 </div>
 
                                 <div className="flex flex-row gap-5">
-                                    <div className="flex-1 flex-grow">
+                                    <div className="flex-1 flex-shrink">
                                         <CustomTextField
                                             id="prefix-code"
+                                            key={"prefix-code"}
                                             label={isGenerateMode ? "Prefix" : "Code"}
                                             onChange={(e) =>
                                                 setFormValues({
@@ -155,7 +155,7 @@ export default function InsertModal(props: Props) {
                                     </div>
 
                                     {isGenerateMode ? (
-                                        <div className="flex-1 flex-shrink">
+                                        <div className="flex-1 flex-shrink fade-in">
                                             <CustomTextField
                                                 id="count"
                                                 label="Count"
@@ -172,7 +172,7 @@ export default function InsertModal(props: Props) {
                                 </div>
 
                                 <div className="flex flex-row gap-5">
-                                    <div className="size-full z-50">
+                                    <div className="w-full z-50">
                                         <Dropdown
                                             direction="down"
                                             variant="secondary"
@@ -186,7 +186,7 @@ export default function InsertModal(props: Props) {
                                         />
                                     </div>
 
-                                    <div className="w-full">
+                                    <div className="size-full">
                                         <div className="flex-1 flex-grow">
                                             <CustomTextField
                                                 id="value"

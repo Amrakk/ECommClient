@@ -59,10 +59,10 @@ export default function Dropdown(props: Props) {
     }
 
     return (
-        <div className="relative ml-auto isolate" ref={dropdownRef}>
+        <div className="relative ml-auto isolate size-full" ref={dropdownRef}>
             <button
                 type="button"
-                className={`flex justify-between items-center p-2 rounded-md w-full font-bold select-none ${
+                className={`flex justify-between items-center p-2 rounded-md size-full font-bold select-none ${
                     props.variant == "secondary" ? "bg-white text-black border-2 " : "bg-black text-white"
                 }`}
                 onClick={() => setOpen((s) => !s)}
