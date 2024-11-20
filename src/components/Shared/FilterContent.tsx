@@ -43,7 +43,7 @@ export default function FilterContent(props: Props) {
 
             <hr className="border-gray-400 my-2" />
 
-            <div className="w-full text-left p-4 bg-white flex justify-end">
+            <div className="w-full text-left p-4 bg-white flex justify-end select-none">
                 <button
                     className="bg-black text-white px-4 py-2 rounded hover:bg-opacity-75 ml-2"
                     onClick={props.apply}

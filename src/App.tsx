@@ -49,7 +49,7 @@ const adminLazyPages = [
 
     {
         path: "vouchers",
-        component: lazy(async () => sleep().then(() => import("./pages/Admin/Vouchers/Vouchers"))),
+        component: lazy(async () => sleep().then(() => import("./pages/Admin/Vouchers"))),
     },
     {
         path: "reports",
@@ -64,7 +64,7 @@ const adminLazyPages = [
 function App() {
     return (
         <>
-            <ToastContainer />
+            <ToastContainer autoClose={2000} />
             <Loading />
             <Routes>
                 <Route path="/" element={<CustomerRoute />}>

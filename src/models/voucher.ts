@@ -19,3 +19,22 @@ export interface VoucherFilter {
     used?: boolean;
     discountType?: DISCOUNT_TYPE;
 }
+
+export interface GenerateCodes {
+    prefix?: string;
+    count: number;
+    discount: {
+        type: DISCOUNT_TYPE;
+        value: number;
+    };
+    expirationDate: Date;
+}
+
+export interface InsertVoucher {
+    code: string;
+    discount: {
+        type: DISCOUNT_TYPE;
+        value: number;
+    };
+    expirationDate: Date;
+}

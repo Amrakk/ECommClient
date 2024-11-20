@@ -65,12 +65,15 @@ export default function ProductTable() {
         <div className="text-right">Created At</div>,
     ];
 
+    const sizes = ["10%", "15%", "10%", "15%", "10%", "15%"];
+
     return (
         <>
             <Table
                 columns={columns}
                 rows={rows}
                 total={totalDocuments}
+                sizes={sizes}
                 isLoading={orders.isFetching}
                 navigatePath="/admin/products"
             />

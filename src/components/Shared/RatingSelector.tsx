@@ -46,7 +46,7 @@ export default function RatingSelector(props: Props) {
         setRating(curRating);
     }
 
-    function handleMouseLeave(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    function handleMouseLeave() {
         if (!selectedRating) setRating(0);
         else setRating(selectedRating);
     }

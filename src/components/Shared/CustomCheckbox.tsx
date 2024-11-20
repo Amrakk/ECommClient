@@ -37,7 +37,7 @@ export default function CustomCheckbox(props: Props) {
                     </svg>
                 </span>
             </label>
-            <label className="ml-2 cursor-pointer text-sm" htmlFor={props.id}>
+            <label className="ml-2 cursor-pointer text-sm select-none" htmlFor={props.id}>
                 {props.label}
             </label>
         </div>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Table<T extends { _id: string; data: any[] }>({
     columns,
+    sizes,
     rows,
     total,
     isLoading,
@@ -12,6 +13,7 @@ export default function Table<T extends { _id: string; data: any[] }>({
     columns: any[];
     rows: T[];
     total: number;
+    sizes?: string[];
     isLoading?: boolean;
     navigatePath?: string;
 }) {
@@ -29,7 +31,11 @@ export default function Table<T extends { _id: string; data: any[] }>({
                         <thead className="bg-black text-white sticky top-0">
                             <tr>
                                 {columns.map((column, i) => (
-                                    <th className="px-4 py-2" key={i}>
+                                    <th
+                                        className="px-4 py-2 select-none"
+                                        key={i}
+                                        style={{ width: sizes?.[i] ?? "auto" }}
+                                    >
                                         {column}
                                     </th>
                                 ))}
@@ -48,7 +54,7 @@ export default function Table<T extends { _id: string; data: any[] }>({
                                     <tr
                                         key={row._id}
                                         className="border-gray-200 cursor-pointer bg-white hover:bg-gray-200 transition-all duration-100 fade-in"
-                                        onClick={() => handleRowClick(row._id)}
+                                        onClick={navigatePath ? () => handleRowClick(row._id) : undefined}
                                     >
                                         {row.data.map((value, y) => (
                                             <td

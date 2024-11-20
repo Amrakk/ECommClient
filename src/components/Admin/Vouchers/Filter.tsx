@@ -113,7 +113,7 @@ export default function Filter() {
                     className="border border-gray-300 px-4 py-2 rounded flex-1 focus:outline-none focus:border-gray-500"
                 />
                 <button
-                    className="bg-black text-white px-4 py-2 rounded hover:bg-opacity-75 ml-2 font-bold"
+                    className="bg-black text-white px-4 py-2 rounded hover:bg-opacity-75 ml-2 font-bold select-none"
                     onClick={handleSearch}
                 >
                     Search

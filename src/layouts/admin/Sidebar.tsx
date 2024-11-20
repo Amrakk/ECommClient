@@ -1,6 +1,6 @@
 import { RxDashboard } from "react-icons/rx";
 import { FaBox, FaGear } from "react-icons/fa6";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { RiDiscountPercentFill } from "react-icons/ri";
 import ecommLogo from "@/assets/EComm-transparent-crop.webp";
 import { FaChartPie, FaUsers, FaShoppingCart } from "react-icons/fa";
@@ -17,11 +17,12 @@ const menuItems = [
 
 export default function Sidebar() {
     const { pathname } = useLocation();
+    const navigate = useNavigate();
 
     return (
-        <div className="bg-black h-full">
-            <div className="">
-                <img src={ecommLogo} className="mx-auto size-full object-center " />
+        <div className="bg-black h-full select-none">
+            <div className="cursor-pointer" onClick={() => navigate("/admin/dashboard")}>
+                <img src={ecommLogo} className="mx-auto size-full object-center" />
             </div>
 
             <ul className="space-y-5">
