@@ -6,7 +6,7 @@ import type { Credential } from "@/models/credential.js";
 export default function useLogin() {
     const loginMutate = useMutation({
         mutationKey: ["login"],
-        mutationFn: (data: Credential) => API.post("/login", data),
+        mutationFn: (data: Credential) => API.post("/auth/login", data),
     });
 
     return loginMutate;

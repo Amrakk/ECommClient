@@ -1,4 +1,4 @@
-import Header from "@/layouts/Header";
+import Header from "@/layouts/admin/Header";
 import { Outlet } from "react-router-dom";
 
 export default function CustomerRoute() {
