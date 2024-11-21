@@ -45,23 +45,23 @@ export interface UpdateByUser {
 }
 
 export async function insertUser(data: InsertUser): Promise<UserDetail> {
-    return API.post<IResponse<UserDetail[]>>("/vouchers", data).then((res) => res.data.data![0]);
+    return API.post<IResponse<UserDetail[]>>("/users", data).then((res) => res.data.data![0]);
 }
 
-export async function updateUserByAdmin(_id: string, data: UpdateByAdmin): Promise<UserDetail> {
-    return API.patch<IResponse<UserDetail>>(`/vouchers/${_id}`, data).then((res) => res.data.data!);
+export async function updateUserByAdmin(props: { _id: string; data: UpdateByAdmin }): Promise<UserDetail> {
+    return API.patch<IResponse<UserDetail>>(`/users/${props._id}`, props.data).then((res) => res.data.data!);
 }
 
-export async function updateUserByUser(_id: string, data: UpdateByUser): Promise<UserDetail> {
-    return API.patch<IResponse<UserDetail>>(`/vouchers/${_id}`, data).then((res) => res.data.data!);
+export async function updateUserByUser(props: { _id: string; data: UpdateByUser }): Promise<UserDetail> {
+    return API.patch<IResponse<UserDetail>>(`/users/${props._id}`, props.data).then((res) => res.data.data!);
 }
 
 // TODO: Test this
-export async function updateUserAvatar(_id: string, avatar: File): Promise<{ url: string }> {
+export async function updateUserAvatar(props: { _id: string; avatar: File }): Promise<{ url: string }> {
     const formData = new FormData();
-    formData.append("image", avatar);
+    formData.append("image", props.avatar);
 
-    return API.patch<IResponse<{ url: string }>>(`/vouchers/${_id}/avatar`, formData, {
+    return API.patch<IResponse<{ url: string }>>(`/users/${props._id}/avatar`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
@@ -69,5 +69,5 @@ export async function updateUserAvatar(_id: string, avatar: File): Promise<{ url
 }
 
 export async function deleteUser(_id: string): Promise<UserDetail> {
-    return API.delete<IResponse<void>>(`/vouchers/${_id}`).then((res) => res.data.data!);
+    return API.delete<IResponse<void>>(`/users/${_id}`).then((res) => res.data.data!);
 }

@@ -16,5 +16,5 @@ export async function updateCart(_id: string, data: UpsertCart): Promise<CartDet
 }
 
 export async function deleteCart(_id: string): Promise<CartDetail> {
-    return API.delete<IResponse<CartDetail>>(`/Carts/${_id}`).then((res) => res.data.data!);
+    return API.delete<IResponse<CartDetail>>(`/carts/${_id}`).then((res) => res.data.data!);
 }

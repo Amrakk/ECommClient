@@ -7,7 +7,7 @@ interface GetShippingFee {
     wardCode: string;
 }
 
-export async function GetShippingFee(data: GetShippingFee): Promise<{ shippingFee: number }> {
+export async function getShippingFee(data: GetShippingFee): Promise<{ shippingFee: number }> {
     return API.get<IResponse<{ shippingFee: number }>>("/services/calculate-fee", { params: data }).then(
         (res) => res.data.data!
     );

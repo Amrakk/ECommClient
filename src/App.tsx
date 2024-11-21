@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { Routes, Route, Navigate } from "react-router-dom";
 
@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/Errors/NotFound";
 import Loading from "./components/Shared/Loading";
 import AdminRoute from "./components/Route/AdminRoute";
+import useAddresses from "./hooks/Shared/useAddresses";
 import CustomerRoute from "./components/Route/CustomerRoute";
 
 function sleep(ms: number = 200) {
@@ -61,6 +62,12 @@ const adminLazyPages = [
 ];
 
 function App() {
+    const { assignAddresses } = useAddresses();
+
+    useEffect(() => {
+        assignAddresses.mutateAsync();
+    }, []);
+
     return (
         <>
             <ToastContainer autoClose={2000} />

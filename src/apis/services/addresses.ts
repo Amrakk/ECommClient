@@ -47,13 +47,13 @@ export async function crawlAddresses(): Promise<AddressCrawlStatus> {
 }
 
 export async function getProvinces(): Promise<Province[]> {
-    return API.get<IResponse<Province[]>>("/services/get-addresses/provinces").then((res) => res.data.data!);
+    return API.get<Province[]>("/services/get-addresses/provinces").then((res) => res.data);
 }
 
 export async function getDistricts(): Promise<District[]> {
-    return API.get<IResponse<District[]>>("/services/get-addresses/districts").then((res) => res.data.data!);
+    return API.get<District[]>("/services/get-addresses/districts").then((res) => res.data);
 }
 
 export async function getWards(): Promise<Ward[]> {
-    return API.get<IResponse<Ward[]>>("/services/get-addresses/wards").then((res) => res.data.data!);
+    return API.get<Ward[]>("/services/get-addresses/wards").then((res) => res.data);
 }

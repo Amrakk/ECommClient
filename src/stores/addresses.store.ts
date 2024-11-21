@@ -27,7 +27,7 @@ interface AddressesStore {
     setWards: (wards: Ward[]) => void;
 }
 
-export const useCartStore = create<AddressesStore>()((set) => ({
+export const useAddressesStore = create<AddressesStore>()((set) => ({
     provinces: [],
     districts: [],
     wards: [],
