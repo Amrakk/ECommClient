@@ -1,11 +1,13 @@
+import { USER_ROLE } from "@/constants";
 import Header from "@/layouts/admin/Header";
 import Sidebar from "@/layouts/admin/Sidebar";
+import { useUserStore } from "@/stores/user.store";
 import { Outlet, Navigate, useLocation, matchPath } from "react-router-dom";
 
 const existPaths = [
     "/reports",
+    "/advanced",
     "/vouchers",
-    "/settings",
     "/dashboard",
     "/users/:id?",
     "/orders/:id?",
@@ -13,7 +15,7 @@ const existPaths = [
 ];
 
 export default function AdminRoute() {
-    const user = "admin";
+    const user = useUserStore((state) => state.user);
     const location = useLocation();
 
     const isValidPath = existPaths.some((path) =>
@@ -26,7 +28,7 @@ export default function AdminRoute() {
         )
     );
 
-    if (user === "admin")
+    if (user?.role === USER_ROLE.ADMIN)
         return (
             <>
                 {isValidPath ? (

@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { DISCOUNT_TYPE } from "@/constants";
 import { useSearchParams } from "react-router-dom";
 
-export default function useUserFilter() {
+export default function useVoucherFilter() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const code = searchParams.get("code") ?? undefined;

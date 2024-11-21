@@ -13,3 +13,7 @@ export async function getOrders(query?: OrderFilter): Promise<GetOrdersResponse>
         (res) => res.data.data ?? { orders: [], totalDocuments: 0 }
     );
 }
+
+export async function getOrderById(_id: string): Promise<OrderDetail> {
+    return API.get<IResponse<OrderDetail>>(`/orders/${_id}`).then((res) => res.data.data!);
+}

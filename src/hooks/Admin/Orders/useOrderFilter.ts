@@ -2,7 +2,7 @@ import { ORDER_STATUS } from "@/constants";
 import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 
-export default function useUserFilter() {
+export default function useOrderFilter() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const searchTerm = searchParams.get("searchTerm") ?? undefined;

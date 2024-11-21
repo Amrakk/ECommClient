@@ -95,6 +95,19 @@ export enum DISCOUNT_TYPE {
     PERCENT = "percent",
 }
 
+// PAYMENT
+export enum PAYMENT_TYPE {
+    COD = "COD",
+    MOMO = "Momo",
+    PAYOS = "Payos",
+}
+
+export enum PAYMENT_STATUS {
+    PAID = "paid",
+    EXPIRED = "expired",
+    PENDING = "pending",
+}
+
 // STYLES
 export const ORDER_STATUS_STYLES: Record<ORDER_STATUS, { bg: string; text: string; border: string; label: string }> = {
     [ORDER_STATUS.PENDING]: {

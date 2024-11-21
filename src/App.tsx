@@ -46,7 +46,6 @@ const adminLazyPages = [
         path: "products/:id",
         component: lazy(async () => sleep().then(() => import("./pages/Admin/Products/Details"))),
     },
-
     {
         path: "vouchers",
         component: lazy(async () => sleep().then(() => import("./pages/Admin/Vouchers"))),

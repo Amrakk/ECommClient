@@ -1,10 +1,34 @@
 import { API } from "@/apis/api";
 
+import type { DISCOUNT_TYPE } from "@/constants";
+import type { VoucherDetail } from "@/models/voucher";
 import type { IResponse } from "@/interfaces/response";
-import type { GenerateCodes, InsertVoucher, VoucherDetail } from "@/models/voucher";
 
-export async function insertVoucher(data: InsertVoucher): Promise<VoucherDetail[]> {
-    return API.post<IResponse<VoucherDetail[]>>("/vouchers", data).then((res) => res.data.data!);
+export interface GenerateCodes {
+    prefix?: string;
+    count: number;
+    discount: {
+        type: DISCOUNT_TYPE;
+        value: number;
+    };
+    expirationDate: Date;
+}
+
+export interface InsertVoucher {
+    code: string;
+    discount: {
+        type: DISCOUNT_TYPE;
+        value: number;
+    };
+    expirationDate: Date;
+}
+
+export async function validateCode(code: string): Promise<VoucherDetail> {
+    return API.get<IResponse<VoucherDetail>>(`/vouchers/code/${code}`).then((res) => res.data.data!);
+}
+
+export async function insertVoucher(data: InsertVoucher): Promise<VoucherDetail> {
+    return API.post<IResponse<VoucherDetail[]>>("/vouchers", data).then((res) => res.data.data![0]);
 }
 
 export async function generateVouchers(data: GenerateCodes): Promise<VoucherDetail[]> {

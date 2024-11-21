@@ -1,4 +1,4 @@
-import { SOCIAL_MEDIA_PROVIDER, USER_ROLE, USER_STATUS } from "@/constants";
+import type { SOCIAL_MEDIA_PROVIDER, USER_ROLE, USER_STATUS } from "@/constants";
 
 export class User {
     _id: string;

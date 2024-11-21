@@ -36,3 +36,13 @@ export interface ProductFilter {
     minPrice?: number;
     maxPrice?: number;
 }
+
+export interface ProductRatingDetail {
+    _id: string;
+    userId: string;
+    productId: string;
+    rating: number;
+    review: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
