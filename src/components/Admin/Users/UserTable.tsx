@@ -41,6 +41,9 @@ export default function UserTable() {
         "Status",
         "Phone Number",
     ];
+
+    const sizes = ["20%", "30%", "15%", "15%", "20%"];
+
     return (
         <>
             <Table
@@ -48,6 +51,7 @@ export default function UserTable() {
                 rows={rows}
                 total={totalDocuments}
                 isLoading={users.isFetching}
+                sizes={sizes}
                 navigatePath="/admin/users"
             />
         </>

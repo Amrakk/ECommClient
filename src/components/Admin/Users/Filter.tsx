@@ -26,7 +26,11 @@ export default function Filter() {
                         name="role"
                         value="admin"
                         label="Admin"
-                        onChange={(e) => setSelectedRole(e.target.value as USER_ROLE)}
+                        onClick={() =>
+                            selectedRole === USER_ROLE.ADMIN
+                                ? setSelectedRole(undefined)
+                                : setSelectedRole(USER_ROLE.ADMIN)
+                        }
                         checked={selectedRole === "admin"}
                     />
                     <CustomRadio
@@ -34,7 +38,11 @@ export default function Filter() {
                         name="role"
                         value="customer"
                         label="Customer"
-                        onChange={(e) => setSelectedRole(e.target.value as USER_ROLE)}
+                        onClick={() =>
+                            selectedRole === USER_ROLE.CUSTOMER
+                                ? setSelectedRole(undefined)
+                                : setSelectedRole(USER_ROLE.CUSTOMER)
+                        }
                         checked={selectedRole === "customer"}
                     />
                 </div>
@@ -49,7 +57,11 @@ export default function Filter() {
                         name="status"
                         value="normal"
                         label="Normal"
-                        onChange={(e) => setSelectedStatus(e.target.value as USER_STATUS)}
+                        onClick={() =>
+                            selectedStatus === USER_STATUS.NORMAL
+                                ? setSelectedStatus(undefined)
+                                : setSelectedStatus(USER_STATUS.NORMAL)
+                        }
                         checked={selectedStatus === "normal"}
                     />
                     <CustomRadio
@@ -57,7 +69,11 @@ export default function Filter() {
                         name="status"
                         value="blocked"
                         label="Blocked"
-                        onChange={(e) => setSelectedStatus(e.target.value as USER_STATUS)}
+                        onClick={() =>
+                            selectedStatus === USER_STATUS.BLOCKED
+                                ? setSelectedStatus(undefined)
+                                : setSelectedStatus(USER_STATUS.BLOCKED)
+                        }
                         checked={selectedStatus === "blocked"}
                     />
                 </div>
@@ -93,7 +109,7 @@ export default function Filter() {
                     className="border border-gray-300 px-4 py-2 rounded flex-1 focus:outline-none focus:border-gray-500"
                 />
                 <button
-                    className="bg-black text-white px-4 py-2 rounded hover:bg-opacity-75 ml-2 font-bold"
+                    className="bg-black text-white px-4 py-2 rounded hover:bg-opacity-75 ml-2 font-bold select-none"
                     onClick={handleSearch}
                 >
                     Search

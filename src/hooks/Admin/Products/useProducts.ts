@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import useProductFilter from "./useProductFilter";
 import usePagination from "@/hooks/Shared/usePagination";
 
-export default function useUsers() {
+export default function useProducts() {
     const { currentPage, limitPage } = usePagination();
     const { name, brands, categories, maxPrice, minPrice, minRating } = useProductFilter();
 

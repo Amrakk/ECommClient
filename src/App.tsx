@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { Routes, Route, Navigate } from "react-router-dom";
 
@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/Errors/NotFound";
 import Loading from "./components/Shared/Loading";
 import AdminRoute from "./components/Route/AdminRoute";
+import useAddresses from "./hooks/Shared/useAddresses";
 import CustomerRoute from "./components/Route/CustomerRoute";
 
 function sleep(ms: number = 200) {
@@ -46,7 +47,6 @@ const adminLazyPages = [
         path: "products/:id",
         component: lazy(async () => sleep().then(() => import("./pages/Admin/Products/Details"))),
     },
-
     {
         path: "vouchers",
         component: lazy(async () => sleep().then(() => import("./pages/Admin/Vouchers"))),
@@ -56,15 +56,21 @@ const adminLazyPages = [
         component: lazy(async () => sleep().then(() => import("./pages/Admin/Reports"))),
     },
     {
-        path: "settings",
-        component: lazy(async () => sleep().then(() => import("./pages/Admin/Settings"))),
+        path: "advanced",
+        component: lazy(async () => sleep().then(() => import("./pages/Admin/Advanced"))),
     },
 ];
 
 function App() {
+    const { assignAddresses } = useAddresses();
+
+    useEffect(() => {
+        assignAddresses.mutateAsync();
+    }, []);
+
     return (
         <>
-            <ToastContainer />
+            <ToastContainer autoClose={2000} />
             <Loading />
             <Routes>
                 <Route path="/" element={<CustomerRoute />}>

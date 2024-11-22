@@ -1,11 +1,11 @@
 import { toast } from "react-toastify";
 import { IoIosArrowDown } from "react-icons/io";
+import { ReactElement, useRef, useState } from "react";
 import useBrands from "@/hooks/Admin/Products/useBrands";
 import { useDebounce } from "@/hooks/Shared/useDebounce";
 import FilterContent from "@/components/Shared/FilterContent";
 import CustomCheckbox from "@/components/Shared/CustomCheckbox";
 import RatingSelector from "@/components/Shared/RatingSelector";
-import { ReactElement, useEffect, useRef, useState } from "react";
 import MultiRangeSlider from "@/components/Shared/MultiRangeSlider";
 import { PRODUCT_CATEGORY, PRODUCT_CATEGORY_LIST } from "@/constants";
 import useProductFilter from "@/hooks/Admin/Products/useProductFilter";
@@ -130,7 +130,7 @@ export default function Filter() {
     }
 
     function resetFilter() {
-        changeFilter({});
+        changeFilter({ name });
 
         setSelectedCategory([]);
         setSelectedBrands([]);
@@ -152,7 +152,7 @@ export default function Filter() {
                     className="border border-gray-300 px-4 py-2 rounded flex-1 focus:outline-none focus:border-gray-500"
                 />
                 <button
-                    className="bg-black text-white px-4 py-2 rounded hover:bg-opacity-75 ml-2 font-bold"
+                    className="bg-black text-white px-4 py-2 rounded hover:bg-opacity-75 ml-2 font-bold select-none"
                     onClick={handleSearch}
                 >
                     Search

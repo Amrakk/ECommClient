@@ -30,7 +30,11 @@ export default function Pagination(props: Props) {
     }, []);
 
     return (
-        <div className={`flex justify-center gap-4 ${props.disabled ? "opacity-40 pointer-events-none" : ""}`}>
+        <div
+            className={`flex justify-center gap-4 select-none ${
+                props.disabled ? "opacity-40 pointer-events-none" : ""
+            }`}
+        >
             <button
                 className="rounded-md p-1 hover:opacity-40 transition-opacity disabled:opacity-20"
                 disabled={!isTooFarFromStart}

@@ -59,11 +59,11 @@ export default function Dropdown(props: Props) {
     }
 
     return (
-        <div className="relative ml-auto isolate" ref={dropdownRef}>
+        <div className="relative ml-auto isolate size-full" ref={dropdownRef}>
             <button
                 type="button"
-                className={`flex justify-between items-center p-2 rounded-md w-full font-bold ${
-                    props.variant == "secondary" ? "bg-white text-black border-2" : "bg-black text-white"
+                className={`flex justify-between items-center p-2 rounded-md size-full font-bold select-none ${
+                    props.variant == "secondary" ? "bg-white text-black border-2 " : "bg-black text-white"
                 }`}
                 onClick={() => setOpen((s) => !s)}
                 ref={placeHolderRef}
@@ -82,7 +82,7 @@ export default function Dropdown(props: Props) {
                         {props.data.map((d) => (
                             <li key={d.value} className="bg-white">
                                 <button
-                                    className={`w-full hover:bg-opacity-40 text-left p-2 ${
+                                    className={`w-full hover:bg-opacity-40 text-left p-2 select-none ${
                                         props.variant == "secondary"
                                             ? "hover:bg-black"
                                             : "hover:bg-opacity-10 hover:bg-black"
