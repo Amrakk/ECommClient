@@ -1,12 +1,13 @@
 import { lazy, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-
+import { Routes, Route, Navigate, RouteProps } from "react-router-dom";
 import "./styles/style.css";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
 import NotFound from "./pages/Errors/NotFound";
 import AdminRoute from "./components/Route/AdminRoute";
-import CustomerRoute from "./components/Route/CustomerRoute";
+import CustomerRouteMiddleware, { CustomerRoutes } from "./components/Route/CustomerRoute";
+import { JSX } from "react/jsx-runtime";
+import TopProgressBar from "./components/Client/TopProgressBar";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // use React.lazy to load the Dashboard component asynchronously
 const lazyPages = [
@@ -19,30 +20,39 @@ const lazyPages = [
 function App() {
     return (
         <>
-            <Routes>
-                <Route path="/" element={<CustomerRoute />}>
-                    <Route path="" element={<Navigate to="/home" />} />
-                    <Route path="home" element={<Home />} />
-                    <Route path="login" element={<Login />} />
-                </Route>
-
-                <Route path="/admin" element={<AdminRoute />}>
-                    <Route path="" element={<Navigate to="/home" />} />
-                    {lazyPages.map((LazyPage) => (
-                        <Route
-                            key={LazyPage.path}
-                            path={LazyPage.path}
-                            element={
-                                <Suspense fallback={<div>Loading...</div>}>
-                                    <LazyPage.component />
-                                </Suspense>
-                            }
-                        />
-                    ))}
+            <TopProgressBar>
+                <Routes>
+                    <Route path="/" element={<CustomerRouteMiddleware />}>
+                        {CustomerRoutes.map((route) => {
+                            return route.props.children.map((child: { props: JSX.IntrinsicAttributes & RouteProps; }) => {
+                                if (child.props.path === undefined) {
+                                    return <Route {...child.props} />;
+                                }
+                                return <Route {...child.props} key={child.props.path} />;
+                            });
+                        })}
+                    </Route>
+                    <Route path="/admin" element={<AdminRoute />}>
+                        <Route path="" element={<Navigate to="/home" />} />
+                        {lazyPages.map((LazyPage) => {
+                            return (
+                                <Route
+                                    key={LazyPage.path}
+                                    path={LazyPage.path}
+                                    element={
+                                        <Suspense fallback={<div>Loading...</div>}>
+                                            <LazyPage.component />
+                                        </Suspense>
+                                    }
+                                />
+                            )
+                        })}
+                        <Route path="*" element={<NotFound />} />
+                    </Route>
                     <Route path="*" element={<NotFound />} />
-                </Route>
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+                </Routes>
+            </TopProgressBar>
+            <ToastContainer theme="dark" />
         </>
     );
 }
