@@ -1,0 +1,27 @@
+.floating-button {
+    background-color: rgba(0, 0, 0, 0);
+    height: 4rem;
+    width: 4rem;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.floating-button:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Active state - on click */
+.floating-button:active {
+    transform: scale(0.6); /* Shrink on click */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

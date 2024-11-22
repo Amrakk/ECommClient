@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { User } from "@/models/user";
-import useLogin from "@/hooks/useLogin";
+import useAuth from "@/hooks/Auth/useAuth";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "@/stores/user.store";
 
 export default function LoginForm() {
-    const { setUser } = useUserStore();
     const [error, setError] = useState(false);
-    const { mutateAsync, status } = useLogin();
+    const { loginMutate } = useAuth();
 
     const navigate = useNavigate();
 
@@ -20,11 +17,10 @@ export default function LoginForm() {
         const password = formData.get("password") as string;
 
         const data = { email, password };
-        mutateAsync(data)
-            .then((response) => {
-                const newUser = new User(response.data.email, response.data.role);
-                setUser(newUser);
-                navigate("/admin/dashboard");
+        loginMutate
+            .mutateAsync(data)
+            .then(() => {
+                navigate("/home");
             })
             .catch(() => {
                 setError(true);

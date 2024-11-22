@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 export const API = axios.create({
     baseURL: import.meta.env.VITE_API_URL + "/v1",
@@ -8,8 +8,12 @@ export const API = axios.create({
 API.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response.status === 401) {
-            window.location.href = "/login";
+        if (isAxiosError(error) && error.response) {
+            if (error.response.status === 401) {
+                window.location.href = "/home";
+            }
+
+            return Promise.reject(error.response.data);
         }
         return Promise.reject(error);
     }
