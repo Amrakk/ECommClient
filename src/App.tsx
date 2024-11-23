@@ -1,9 +1,8 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import "./styles/style.css";
-import "./styles/myStyle.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import Home from "./pages/Home";
