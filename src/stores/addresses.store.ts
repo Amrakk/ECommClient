@@ -1,17 +1,17 @@
 import { create } from "zustand";
 
-interface Province {
+export interface Province {
     province_name: string;
     province_id: number;
 }
 
-interface District {
+export interface District {
     district_id: number;
     district_name: string;
     province_id: number;
 }
 
-interface Ward {
+export interface Ward {
     ward_code: string;
     ward_name: string;
     district_id: number;

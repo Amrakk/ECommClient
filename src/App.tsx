@@ -62,11 +62,7 @@ const adminLazyPages = [
 ];
 
 function App() {
-    const { assignAddresses } = useAddresses();
-
-    useEffect(() => {
-        assignAddresses.mutateAsync();
-    }, []);
+    useAddresses();
 
     return (
         <>

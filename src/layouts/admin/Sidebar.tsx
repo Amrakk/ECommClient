@@ -28,14 +28,16 @@ export default function Sidebar() {
 
             <ul className="space-y-5">
                 {menuItems.map((item) => (
-                    <li
-                        key={item.to}
-                        className={`flex items-center space-x-3 cursor-pointer text-xl hover:text-white ${
-                            pathname.includes(item.to) ? "text-white font-bold" : "text-gray-400"
-                        }`}
-                    >
-                        {item.icon}
-                        <Link to={item.to}>{item.label}</Link>
+                    <li key={item.to} className="w-full">
+                        <Link
+                            to={item.to}
+                            className={`flex items-center space-x-3 cursor-pointer text-xl hover:text-white w-full ${
+                                pathname.includes(item.to) ? "text-white font-bold" : "text-gray-400"
+                            }`}
+                        >
+                            {item.icon}
+                            <div>{item.label}</div>
+                        </Link>
                     </li>
                 ))}
             </ul>

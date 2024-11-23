@@ -7,7 +7,9 @@ type Props = {
     type?: string;
     required?: boolean;
     isCurrency?: boolean;
+    backgroundColor?: string;
     rows?: number;
+    value?: string | number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     min?: number;
@@ -33,7 +35,7 @@ export default function CustomTextField(props: Props) {
     }, []);
 
     return (
-        <label htmlFor={props.id}>
+        <label className="" htmlFor={props.id}>
             <div className="relative">
                 {props.type === "textarea" ? (
                     <textarea
@@ -45,6 +47,7 @@ export default function CustomTextField(props: Props) {
                         }}
                         className="block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-black focus:border-black peer"
                         placeholder=" "
+                        value={props.value}
                     ></textarea>
                 ) : (
                     <input
@@ -61,12 +64,15 @@ export default function CustomTextField(props: Props) {
                         required={props.required}
                         min={props.min}
                         max={props.max}
+                        value={props.value}
                     />
                 )}
 
                 <label
                     htmlFor={props.id}
-                    className="absolute text-sm text-gray-500 bg-white duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-black peer-focus:font-bold peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+                    className={`absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 origin-[0] px-2 peer-focus:px-2 peer-focus:text-black peer-focus:font-bold peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 ${
+                        props.backgroundColor ?? "bg-white"
+                    }`}
                 >
                     {props.label}
                 </label>

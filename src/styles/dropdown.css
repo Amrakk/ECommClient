@@ -1,0 +1,4 @@
+/* width */
+.dropdown ::-webkit-scrollbar {
+    width: 2px;
+}

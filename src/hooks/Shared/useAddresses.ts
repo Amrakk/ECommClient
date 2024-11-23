@@ -1,4 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useAddressesStore } from "@/stores/addresses.store";
 import { getWards, getDistricts, getProvinces } from "@/apis/services";
 
@@ -7,17 +8,20 @@ export default function useAddresses() {
     const setDistricts = useAddressesStore((state) => state.setDistricts);
     const setProvinces = useAddressesStore((state) => state.setProvinces);
 
-    const assignAddresses = useMutation({
-        mutationKey: ["addresses"],
-        mutationFn: async () => {
-            return await Promise.all([getProvinces(), getDistricts(), getWards()]);
-        },
-        onSuccess: (data) => {
-            setProvinces(data[0]);
-            setDistricts(data[1]);
-            setWards(data[2]);
+    const assignAddresses = useQuery({
+        queryKey: ["addresses"],
+        queryFn: async () => {
+            return Promise.all([getProvinces(), getDistricts(), getWards()]);
         },
     });
+
+    useEffect(() => {
+        if (!assignAddresses.data) return;
+
+        setProvinces(assignAddresses.data[0]);
+        setDistricts(assignAddresses.data[1]);
+        setWards(assignAddresses.data[2]);
+    }, [assignAddresses.data]);
 
     return { assignAddresses };
 }
