@@ -1,25 +1,27 @@
+import "@/styles/dropdown.css";
 import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 
-export type Option = {
+export type Option<T = string> = {
     name: string;
-    value: string;
+    value: T;
 };
 
-type Props = {
+type Props<T> = {
     placeholder?: string;
-    data: Option[];
+    data: Option<T>[];
     direction?: "up" | "down";
-    onChange?: (data: Option) => void | Promise<void>;
+    compare?: (a?: T, b?: T) => boolean;
+    onChange?: (data: Option<T>) => void | Promise<void>;
     variant?: "primary" | "secondary";
     fixedPlaceholder?: boolean;
-    selected?: string;
+    selected?: T;
 };
 
-export default function Dropdown(props: Props) {
+export default function Dropdown<T>(props: Props<T>) {
     const [open, setOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState<T | undefined>(undefined);
     const [displayText, setDisplayText] = useState(props.placeholder ?? props.data[0].name);
     const placeHolderRef = useRef<HTMLButtonElement>(null);
 
@@ -38,17 +40,17 @@ export default function Dropdown(props: Props) {
 
     useEffect(() => {
         if (props.selected) {
-            const find = props.data.find((d) => d.value == props.selected);
+            const find = props.data.find((d) => props.compare?.(d.value, props.selected) ?? d.value === props.selected);
             if (find) {
                 setSelected(props.selected);
                 if (!props.fixedPlaceholder) setDisplayText(find.name);
             }
         } else {
-            setSelected("");
+            setSelected(undefined);
         }
     }, [props.data, props.selected, props.fixedPlaceholder]);
 
-    function handleSelect(data: Option) {
+    function handleSelect(data: Option<T>) {
         return () => {
             setOpen(false);
             setSelected(data.value);
@@ -59,7 +61,7 @@ export default function Dropdown(props: Props) {
     }
 
     return (
-        <div className="relative ml-auto isolate size-full" ref={dropdownRef}>
+        <div className="relative ml-auto isolate size-full z-30 dropdown" ref={dropdownRef}>
             <button
                 type="button"
                 className={`flex justify-between items-center p-2 rounded-md size-full font-bold select-none ${
@@ -68,19 +70,19 @@ export default function Dropdown(props: Props) {
                 onClick={() => setOpen((s) => !s)}
                 ref={placeHolderRef}
             >
-                {displayText}
+                <div className="w-[90%] truncate text-left">{displayText}</div>
                 <IoIosArrowDown className={`${open ? "-rotate-180" : "rotate-0"} transition-transform`} />
             </button>
             {open && (
                 <div
-                    className="absolute w-full drop-shadow-xl overflow-hidden rounded-md"
+                    className="absolute w-full drop-shadow-xl overflow-y-auto rounded-md max-h-60"
                     style={{
                         bottom: props.direction === "down" ? "unset" : `${placeHolderRef.current?.offsetHeight}px`,
                     }}
                 >
                     <ul>
                         {props.data.map((d) => (
-                            <li key={d.value} className="bg-white">
+                            <li key={`${JSON.stringify(d.value)}`} className="bg-white">
                                 <button
                                     className={`w-full hover:bg-opacity-40 text-left p-2 select-none ${
                                         props.variant == "secondary"

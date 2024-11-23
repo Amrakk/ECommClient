@@ -8,6 +8,7 @@ export default function Table<T extends { _id: string; data: any[] }>({
     rows,
     total,
     isLoading,
+    isPaginated = true,
     navigatePath,
 }: {
     columns: any[];
@@ -15,6 +16,7 @@ export default function Table<T extends { _id: string; data: any[] }>({
     total: number;
     sizes?: string[];
     isLoading?: boolean;
+    isPaginated?: boolean;
     navigatePath?: string;
 }) {
     const navigate = useNavigate();
@@ -75,9 +77,11 @@ export default function Table<T extends { _id: string; data: any[] }>({
                 </div>
             </div>
 
-            <div className="mt-10">
-                <Pagination total={total} />
-            </div>
+            {isPaginated && (
+                <div className="mt-10">
+                    <Pagination total={total} />
+                </div>
+            )}
         </>
     );
 }

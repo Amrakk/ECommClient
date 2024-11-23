@@ -32,16 +32,16 @@ export async function insertProduct(data: InsertProduct): Promise<ProductDetail>
     return API.post<IResponse<ProductDetail[]>>("/products", data).then((res) => res.data.data![0]);
 }
 
-export async function updateProduct(_id: string, data: UpdateProduct): Promise<ProductDetail> {
-    return API.patch<IResponse<ProductDetail>>(`/products/${_id}`, data).then((res) => res.data.data!);
+export async function updateProduct(data: { _id: string; data: UpdateProduct }): Promise<ProductDetail> {
+    return API.patch<IResponse<ProductDetail>>(`/products/${data._id}`, data.data).then((res) => res.data.data!);
 }
 
 // TODO: Test this
-export async function updateProductImage(_id: string, image: File): Promise<{ url: string }> {
+export async function updateProductImage(data: { _id: string; image: File }): Promise<{ url: string }> {
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("image", data.image);
 
-    return API.patch<IResponse<{ url: string }>>(`/products/${_id}/images`, formData, {
+    return API.patch<IResponse<{ url: string }>>(`/products/${data._id}/images`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },

@@ -1,13 +1,12 @@
+import { lazy, Suspense } from "react";
 import { JSX } from "react/jsx-runtime";
 import { ToastContainer } from "react-toastify";
-import { lazy, Suspense, useEffect } from "react";
 import useAddresses from "./hooks/Shared/useAddresses";
 import TopProgressBar from "./components/Client/TopProgressBar";
 import { Routes, Route, Navigate, RouteProps } from "react-router-dom";
 import CustomerRouteMiddleware, { CustomerRoutes } from "./components/Route/CustomerRoute";
 
 import "./styles/style.css";
-import "./styles/myStyle.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import NotFound from "./pages/Errors/NotFound";
@@ -62,11 +61,7 @@ const adminLazyPages = [
 ];
 
 function App() {
-    const { assignAddresses } = useAddresses();
-
-    useEffect(() => {
-        assignAddresses.mutateAsync();
-    }, []);
+    useAddresses();
 
     return (
         <>
@@ -74,12 +69,14 @@ function App() {
                 <Routes>
                     <Route path="/" element={<CustomerRouteMiddleware />}>
                         {CustomerRoutes.map((route) => {
-                            return route.props.children.map((child: { props: JSX.IntrinsicAttributes & RouteProps; }) => {
-                                if (child.props.path === undefined) {
-                                    return <Route {...child.props} />;
+                            return route.props.children.map(
+                                (child: { props: JSX.IntrinsicAttributes & RouteProps }) => {
+                                    if (child.props.path === undefined) {
+                                        return <Route {...child.props} />;
+                                    }
+                                    return <Route {...child.props} key={child.props.path} />;
                                 }
-                                return <Route {...child.props} key={child.props.path} />;
-                            });
+                            );
                         })}
                     </Route>
                     <Route path="/admin" element={<AdminRoute />}>
@@ -98,9 +95,9 @@ function App() {
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
-            <Loading />
+                <Loading />
             </TopProgressBar>
-            <ToastContainer  autoClose={2000} />
+            <ToastContainer autoClose={2000} />
         </>
     );
 }
