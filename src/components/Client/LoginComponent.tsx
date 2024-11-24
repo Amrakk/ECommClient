@@ -1,10 +1,13 @@
 import { Card, CardContent, Typography, Box, FormControl, FormLabel, TextField, FormGroup, FormControlLabel, Checkbox, Button, Divider } from "@mui/material"
-import { useState } from "react"
 import Grid from '@mui/material/Grid2';
 import GoogleIcon from '@mui/icons-material/Google';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CustomerPaths } from "../Route/CustomerRoute";
-import { onSubmitHandleLogin } from "@/logic/auth/LoginPage";
+import { onSubmitHandleLogin } from "@/clientLogic/auth/LoginPageLogic";
+import { useLoginMutation } from "@/hooks/Client/auth/useLogin";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@/stores/client/loadingSlice";
 
 
 
@@ -14,10 +17,13 @@ const LoginComponent = () => {
         email: '',
         password: '',
     })
+    const loginMutations = useLoginMutation()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const onSubmitHandle = async (e: any) => {
-        onSubmitHandleLogin(e, setErrors)
-        
+        onSubmitHandleLogin(e, setErrors, loginMutations, dispatch, navigate)
+
     }
 
     return (
@@ -84,7 +90,7 @@ const LoginComponent = () => {
                                         label="Remember me"
                                     />
                                 </FormGroup>
-                                <Button component={Link} to={CustomerPaths.auth.ForgotPassword} sx={{ textTransform: 'none' }} variant='text'>Forgot Password?</Button> 
+                                <Button component={Link} to={CustomerPaths.auth.ForgotPassword} sx={{ textTransform: 'none' }} variant='text'>Forgot Password?</Button>
                             </Box>
 
                             <Button sx={{ borderRadius: 2 }} type='submit' variant="contained">Login</Button>
@@ -97,7 +103,10 @@ const LoginComponent = () => {
                             <Typography variant='caption' color='textSecondary'>OR</Typography>
                         </Divider>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            <Button variant='outlined' startIcon={<GoogleIcon />} sx={{ borderRadius: 2, }}>Login with Google</Button>
+                            <Button variant='outlined' onClick={() => {
+                                dispatch(setLoading(true))
+                                window.location.href = `${import.meta.env.VITE_API_URL}/v1/auth/google`
+                            }} startIcon={<GoogleIcon />} sx={{ borderRadius: 2, }}>Login with Google</Button>
                         </Box>
                     </CardContent>
                 </Card>

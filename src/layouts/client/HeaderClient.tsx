@@ -2,13 +2,13 @@ import { AppBar, Avatar, Badge, Box, Button, IconButton, TextField, Toolbar } fr
 import { Search } from "@mui/icons-material";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { Link as RouterLink } from "react-router-dom";
+import IconHomePagePNG from '@/assets/EComm-transparent.png';
 
 const HeaderClient = () => {
     return (
         <AppBar position="sticky" sx={{ display: 'flex', justifyContent: 'center' }} >
             <Toolbar>
-                <Box component="img" src="src\assets\EComm-transparent.png"
+                <Box component="img" src= {IconHomePagePNG} alt="EComm"
                     sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 0, mr: 2, mt: 1, width: '9%'}} />
                 {/* <Box component="img" src="src\assets\ECommText.png"
                     sx={{ display: { xs: 'none', md: 'flex' }, height: 48, ml: -3}} /> */}

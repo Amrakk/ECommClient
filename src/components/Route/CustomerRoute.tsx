@@ -1,21 +1,39 @@
 import LoginPage from "@/pages/Client/Auth/LoginPage";
 import { Navigate, Outlet, Route, useLocation } from "react-router-dom";
-import HeaderClient from "@/layouts/HeaderClient";
+import HeaderClient from "@/layouts/client/HeaderClient";
 import HomePage from "@/pages/Client/Home/HomePage";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import darkTheme from "@/layouts/Theme";
+import darkTheme from "@/layouts/client/Theme";
 import SignUpPage from "@/pages/Client/Auth/SignUpPage";
 import ForgotPasswordPage from "@/pages/Client/Auth/ForgotPasswodPage";
+import NotFound from "@/pages/Errors/NotFound";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/client/store";
+import { LoadingScreen } from "../Client/iInitializingComponent";
 
-
-export default function CustomerRouteMiddleware() {
-    const location = useLocation();
-    if (location.pathname.includes("/auth")) {
+    
+export default function CustomerRouteMiddleware(props: any) {
+    const location = useLocation()
+    const user = useSelector((state: RootState) => state.user)
+    console.log(user)
+    
+    if(!props.isLoading){
+        if (location.pathname.includes("/auth")) {
+            return (
+                <>
+                    <ThemeProvider theme={darkTheme}>
+                        <CssBaseline />
+                        <Outlet />
+                    </ThemeProvider>
+                </>
+            )
+        }
         return (
             <>
                 <ThemeProvider theme={darkTheme}>
                     <CssBaseline />
+                    <HeaderClient />
                     <Outlet />
                 </ThemeProvider>
             </>
@@ -23,13 +41,15 @@ export default function CustomerRouteMiddleware() {
     }
     return (
         <>
-            <ThemeProvider theme={darkTheme}>
-                <CssBaseline />
-                <HeaderClient />
-                <Outlet />
-            </ThemeProvider>
-        </>
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <HeaderClient />
+            <LoadingScreen open={props.isLoading} />
+        </ThemeProvider>
+    </>
     )
+   
+   
 
 }
 
@@ -51,9 +71,12 @@ export const CustomerRoutes = [
             <Route path="login" element={< LoginPage />} />
             <Route path="signup" element={< SignUpPage />} />
             <Route path="forgot-password" element={<ForgotPasswordPage/>} />
+            <Route path="" element={ <Navigate to="login"/> } />
+            <Route path="*" element={<NotFound isDark= {true} />} />
         </Route>
-        <Route key={"navigateToHome"} index element={<Navigate to="/home" />} />
+        <Route key={"navigateToHome"}  index element={<Navigate to="/home" />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="*" element={<NotFound isDark= {false} />} />
     </>
-];
+]
 
