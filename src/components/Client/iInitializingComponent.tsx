@@ -1,5 +1,4 @@
-// src/components/LoadingScreen.tsx
-import { Box, Backdrop, Typography } from '@mui/material';
+import { Box, Backdrop } from '@mui/material';
 import { keyframes } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import Logo from '@/assets/EComm-transparent.png';
@@ -26,13 +25,6 @@ const StyledLogo = styled('img')({
   animation: `${pulse} 2s ease-in-out infinite`
 });
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette.common.white,
-  marginTop: 16,
-  fontWeight: 500,
-  textAlign: 'center'
-}));
-
 interface LoadingScreenProps {
   open: boolean;
 }
@@ -42,13 +34,13 @@ export const LoadingScreen = ({ open }: LoadingScreenProps) => {
     <Backdrop
       open={open}
       sx={{
-        background: (theme) =>
+        background: () =>
           `linear-gradient(135deg, 
         ${ColorSecondaryBlackOverlay(1)} 0%, 
         rgb(5, 20, 19) 100%)`,
         zIndex: (theme) => theme.zIndex.drawer + 1,
         flexDirection: 'column',
-        top: '70px', // Add top spacing for AppBar height
+        top: '70px', 
         height: 'calc(100% - 70px)'
       }}
     >

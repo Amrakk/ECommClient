@@ -1,13 +1,56 @@
 import { Box, Paper, SxProps, Theme, Typography } from "@mui/material";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { ColorPrimary } from "@/styles/ThemeColorClient";
-
+import { PRODUCT_CATEGORY_LIST } from "@/constants";
+import HomeIcon from '@mui/icons-material/Home';
+import BookIcon from '@mui/icons-material/Book';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import ComputerIcon from '@mui/icons-material/Computer';
+import { CustomerPaths } from "../Route/CustomerRoute";
+import { Link } from "react-router-dom";
 type Props = {
-    sx: SxProps<Theme>
+    sx?: SxProps<Theme>,
+    category: string,
 }
+
 const CategoryComponent = ( props: Props) => {
+    const getCategoryIcon = (category: string) => {
+        switch (category) {
+            case PRODUCT_CATEGORY_LIST[0]: {
+                return <HomeIcon sx={{ fontSize: 30 }} />
+            }
+            case PRODUCT_CATEGORY_LIST[1]: {
+                return <BookIcon sx={{ fontSize: 30 }} />
+            }
+            case PRODUCT_CATEGORY_LIST[2]: {
+                return <SportsSoccerIcon sx={{ fontSize: 30 }} />
+            }
+            case PRODUCT_CATEGORY_LIST[3]: {
+                return <ComputerIcon sx={{ fontSize: 30 }} />
+            }
+        }
+    }
+
+    const getLinkCategory = (category: string) => {
+        switch (category) {
+            case PRODUCT_CATEGORY_LIST[0]: {
+                return CustomerPaths.home.Category.Home
+            }
+            case PRODUCT_CATEGORY_LIST[1]: {
+                return CustomerPaths.home.Category.Books
+            }
+            case PRODUCT_CATEGORY_LIST[2]: {
+                return CustomerPaths.home.Category.Sports
+            }
+            case PRODUCT_CATEGORY_LIST[3]: {
+                return CustomerPaths.home.Category.Electronics
+            }
+        }
+    }
+
+
+
     return (
-        <Box>
+        <Box component={Link} to={getLinkCategory(props.category)} >
             <Paper
                 elevation={3}
                 sx={{
@@ -45,9 +88,9 @@ const CategoryComponent = ( props: Props) => {
                     ...props.sx
                 }}
             >
-                <ShoppingCartIcon sx={{ fontSize: 30 }} />
-                <Typography variant="body2" fontWeight="medium">
-                    Shopping
+                {getCategoryIcon(props.category)}
+            <Typography variant="body2" fontWeight="medium">
+                    {props.category.charAt(0).toUpperCase() + props.category.slice(1)}
                 </Typography>
             </Paper>
         </Box>
