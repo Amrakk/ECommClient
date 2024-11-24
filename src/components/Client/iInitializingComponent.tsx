@@ -1,9 +1,9 @@
 // src/components/LoadingScreen.tsx
-import { Box, Backdrop, Typography, CircularProgress } from '@mui/material';
+import { Box, Backdrop, Typography } from '@mui/material';
 import { keyframes } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import Logo from '@/assets/EComm-transparent.png';
-import { ColorPrimary, ColorSecondary, ColorSecondaryBlackOverlay } from '@/styles/ThemeColorClient';
+import { ColorSecondaryBlackOverlay } from '@/styles/ThemeColorClient';
 
 const pulse = keyframes`
   0% {

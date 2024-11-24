@@ -22,17 +22,7 @@ const CheckAuth = (props: any) => {
             }
             props.setIsCheckingAuth(false);
             dispatch(setUser(null));
-            zustandUserStore.setUser({
-                _id: 0,
-                email: "",
-                name: "",
-                role: "",
-                phone: "",
-                address: "",
-                avatar: "",
-                created_at: "",
-                updated_at: ""
-            });
+            zustandUserStore.setUser();
         });
     }, []);
 

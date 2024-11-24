@@ -9,17 +9,6 @@ import store from "./stores/client/store";
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 1 } } });
 
-<<<<<<< Updated upstream
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-=======
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
@@ -28,7 +17,6 @@ createRoot(document.getElementById("root")!).render(
                     <App />
                 </BrowserRouter>
             </Provider>
->>>>>>> Stashed changes
         </QueryClientProvider>
     </StrictMode>
 );

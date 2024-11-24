@@ -16,7 +16,7 @@ import { LoadingScreen } from "../Client/iInitializingComponent";
 export default function CustomerRouteMiddleware(props: any) {
     const location = useLocation()
     const user = useSelector((state: RootState) => state.user)
-    console.log(user)
+    console.log("user", user)
     
     if(!props.isLoading){
         if (location.pathname.includes("/auth")) {
