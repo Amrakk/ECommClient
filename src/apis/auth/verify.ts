@@ -1,14 +1,7 @@
 import { API } from "../api";
+import type { IResLogin, IResponse } from "@/interfaces/response";
 
-import type { CartDetail } from "@/models/cart";
-import type { UserDetail } from "@/models/user";
-import type { IResponse } from "@/interfaces/response";
-
-interface IResLogin {
-    user: UserDetail;
-    cart: CartDetail | null;
-}
 
 export async function verify(): Promise<IResLogin> {
-    return API.post<IResponse<IResLogin>>("/auth/verfiy").then((res) => res.data.data!);
+    return API.post<IResponse<IResLogin>>("/auth/verify").then((res) => res.data.data!);
 }

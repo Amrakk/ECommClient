@@ -20,11 +20,12 @@ import Grid from '@mui/material/Grid2';
 import { Email, Home, LockReset } from '@mui/icons-material';
 import ForgotPasswordPNG from '@/assets/forgot-password.png';
 import ArrowBack from '@mui/icons-material/ArrowBack';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CustomerPaths } from '@/components/Route/CustomerRoute';
 import { ColorPrimary } from '@/styles/ThemeColorClient';
-import { ForgotPasswordPageHandler } from '@/logic/auth/ForgotPasswodPage';
-import { useResetPassword } from '@/hooks/Client/useResetPassword';
+import { ForgotPasswordPageHandler } from '@/clientLogic/auth/ForgotPasswordPageLogic';
+import {  useResetPasswordMutation, useSendEmailOtpMutation } from '@/hooks/Client/auth/useResetPassword';
+import { useDispatch } from 'react-redux';
 
 
 const ForgotPasswordPage = () => {
@@ -39,7 +40,10 @@ const ForgotPasswordPage = () => {
         newPassword: '',
         confirmPassword: ''
     });
-    const resetPasswordMutation = useResetPassword();
+    const resetPasswordMutation = useResetPasswordMutation();
+    const sendOtpMutation = useSendEmailOtpMutation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const steps = [
         {
@@ -53,11 +57,12 @@ const ForgotPasswordPage = () => {
     ];
 
     const handleNext = () => {
-        ForgotPasswordPageHandler.onSubmitHandleStep1(email, setErrors, setActiveStep);
+        ForgotPasswordPageHandler.onSubmitHandleStep1(email, setErrors, setActiveStep, dispatch, sendOtpMutation);
 
     };
     const handleResetPassword = () => {
-        ForgotPasswordPageHandler.onSubmitHandleStep2(email ,newPassword, confirmPassword, otp, setErrors, resetPasswordMutation);
+        ForgotPasswordPageHandler.onSubmitHandleStep2(
+            email ,newPassword, confirmPassword, otp, setErrors, dispatch, resetPasswordMutation, navigate);
     };
 
     const handleBack = () => {

@@ -2,9 +2,13 @@ import { Card, CardContent, Typography, Box, FormControl, FormLabel, TextField, 
 import { useState } from "react"
 import Grid from '@mui/material/Grid2';
 import GoogleIcon from '@mui/icons-material/Google';
-import { onSubmitHandle } from "@/logic/auth/SignUpPage";
-import { Link } from "react-router-dom";
+import { onSubmitHandle } from "@/clientLogic/auth/SignUpPageLogic";
+import { Link, useNavigate } from "react-router-dom";
 import { CustomerPaths } from "@/components/Route/CustomerRoute";
+import { useRegisterMutation } from "@/hooks/Client/auth/useRegister";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@/stores/client/loadingSlice";
+import { set } from "lodash";
 
 
 
@@ -16,21 +20,24 @@ const SignUpPage = () => {
         email: '',
         passwordConfirm: '',
     })
+    const registerMutation = useRegisterMutation()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const onSubmitHandleForm = async (e: any) => {
-        onSubmitHandle(e, setErrors)
+        await onSubmitHandle(e, setErrors, registerMutation, dispatch, navigate)
     }
 
     return (
         <Grid container spacing={1} sx={{ height: '100vh', alignItems: 'center' }}>
             <Grid size={12} sx={{ display: 'flex', justifyContent: 'center', }}>
                 <Card elevation={0} variant='outlined' sx={{
-                    width: 500, borderRadius: 4, height: 'auto', mt:2
+                    width: 500, borderRadius: 4, height: 'auto', mt: 2
                 }} >
-                    <CardContent sx={{ display: 'flex', gap: 1, flexDirection: 'column', m: 2}}>
+                    <CardContent sx={{ display: 'flex', gap: 1, flexDirection: 'column', m: 2 }}>
                         <Typography variant="h4" fontWeight='medium' >Sign Up</Typography>
                         <Box component={'form'} onSubmit={onSubmitHandleForm} sx={{ display: 'flex', flexDirection: 'column', gap: 2, justifyContent: 'center' }}>
-                            <FormControl required  error={Boolean(errors.username)} >
+                            <FormControl required error={Boolean(errors.username)} >
                                 <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column' }} >
                                     <FormLabel htmlFor='username'>Username</FormLabel>
                                     <TextField
@@ -119,7 +126,10 @@ const SignUpPage = () => {
                             <Typography variant='caption' color='textSecondary'>OR</Typography>
                         </Divider>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            <Button variant='outlined' startIcon={<GoogleIcon />} sx={{ borderRadius: 2, }}>Sign up with Google</Button>
+                            <Button variant='outlined' onClick={() => {
+                                dispatch(setLoading(true))
+                                window.location.href = `${import.meta.env.VITE_API_URL}/v1/auth/google`
+                            }} startIcon={<GoogleIcon />} sx={{ borderRadius: 2, }}>Sign up with Google</Button>
                         </Box>
                     </CardContent>
                 </Card>

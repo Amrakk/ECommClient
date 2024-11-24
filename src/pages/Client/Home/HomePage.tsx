@@ -9,8 +9,7 @@ import TrustpilotComponent from "@/components/Client/TrustPilotComponent";
 import MainImageHome from "@/assets/home/EComm illustration.png";
 import VoucherImage from "@/assets/home/50_off.png";
 import VoucherCollectComponent from "@/components/Client/VoucherCollectComponent";
-
-
+import { PRODUCT_CATEGORY_LIST } from "@/constants";
 
 
 const HomePage = () => {
@@ -35,7 +34,12 @@ const HomePage = () => {
                             </Typography>
                             <Grid size={{ xs: 12, md: 12 }} container spacing={5} display='flex' flexDirection={{ lg: 'row', xs: 'column' }} justifyContent='center' alignItems='center'>
                                 <Grid size={{ xs: 12, md: 4 }} >
-                                    <Button variant="contained" color="primary" sx={{ mt: 2, width: { xs: '40%', md: '100%' } }}>
+                                    <Button onClick={() => {
+                                         document.getElementById('category-section')?.scrollIntoView({ 
+                                            behavior: 'smooth',
+                                            block: 'start'
+                                          });
+                                    } } variant="contained" color="primary" sx={{ mt: 2, width: { xs: '40%', md: '100%' } }}>
                                         <Typography variant="body2" sx={{ color: 'black', fontWeight: 'medium' }}>Shop Now</Typography>
                                     </Button>
                                 </Grid>
@@ -53,32 +57,31 @@ const HomePage = () => {
                     </Grid>
                 </Grid>
                 {/* Second Row */}
-                <Grid container size={12} spacing={5} sx={{ mt: 5 }} >
+                <Grid  container size={12} spacing={5} sx={{ mt: 5 }} >
                     <TrustUsComponent />
                 </Grid>
                 {/* Third Row */}
                 <Grid container size={12} spacing={2} sx={{ mt: 10 }} >
                     <Grid size={5} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        <Typography variant="h6"> Popular Categories</Typography>
+                        <Typography  variant="h6"> Popular Categories</Typography>
                     </Grid>
-                    <Grid size={7} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-end' }} >
-                        <CategoryComponent sx={{}} />
-                        <CategoryComponent sx={{}} />
-                        <CategoryComponent sx={{}} />
-                        <CategoryComponent sx={{}} />
+                    <Grid id="category-section"  size={7} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-end' }} >
+                        {PRODUCT_CATEGORY_LIST.slice(0, 4).map((category) => (
+                            <CategoryComponent key={category} category={category} />
+                        ))}
 
                     </Grid>
                 </Grid>
                 {/* Fourth Row */}
                 <Grid container size={12} spacing={5} sx={{ mt: 5 }} >
-                    <Grid size={12} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center' }}>
-                        <Typography variant="h6" sx={{ flexGrow: 1 }}  > Latest Products</Typography>
+                    <Grid  size={12} sx={{ display: 'flex', flexDirection: 'row', gap: 1, alignItems: 'center' }}>
+                        <Typography  variant="h6" sx={{ flexGrow: 1 }}  > Latest Products</Typography>
                         <Typography variant="body2"> See All</Typography>
                         <IconButton>
                             <ArrowForwardIosIcon sx={{ fontSize: 18 }} />
                         </IconButton>
                     </Grid>
-                    <Grid size={12} sx={{ display: 'flex', flexDirection: 'row', gap: 5, overflowX: 'auto' }} >
+                    <Grid  size={12} sx={{ display: 'flex', flexDirection: 'row', gap: 5, overflowX: 'auto' }} >
                         <ProductComponent />
                         <ProductComponent />
                         <ProductComponent />
