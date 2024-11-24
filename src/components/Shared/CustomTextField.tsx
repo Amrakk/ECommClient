@@ -14,6 +14,7 @@ type Props = {
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     min?: number;
     max?: number;
+    step?: number;
 };
 
 export default function CustomTextField(props: Props) {
@@ -64,6 +65,7 @@ export default function CustomTextField(props: Props) {
                         required={props.required}
                         min={props.min}
                         max={props.max}
+                        step={props.step}
                         value={props.value}
                     />
                 )}

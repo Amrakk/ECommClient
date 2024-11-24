@@ -87,15 +87,14 @@ export default function Addresses(props: Props) {
         await updateAction.mutateAsync({ _id: props.userId, data });
 
         await props.refetch();
-        setFormValues({});
         toast.success("User updated successfully", { toastId: "update-user" });
     }
 
     return (
         <div className="bg-white shadow rounded-lg p-6">
             <h3 className="text-2xl font-bold text-gray-800 mb-4">Addresses</h3>
-            <div className="flex flex-wrap gap-6">
-                <div className="flex flex-col gap-4 bg-gray-50 p-4 rounded-lg shadow border border-gray-200 w-[35%]">
+            <div className="grid grid-cols-3 gap-6">
+                <div className="flex flex-col gap-4 bg-gray-50 p-4 rounded-lg shadow border border-gray-200 max-h-[320px]">
                     <p className="text-gray-700 font-semibold">Add New Address</p>
 
                     <div className="size-full">
@@ -150,47 +149,50 @@ export default function Addresses(props: Props) {
                     </button>
                 </div>
 
-                {addresses && addresses.length > 0 ? (
-                    addresses.map((address, idx) => (
-                        <div
-                            key={idx}
-                            className="p-4 border border-gray-200 rounded-lg h-fit bg-gray-50 hover:shadow-md transition"
-                        >
-                            <div className="flex justify-between items-center mb-3">
-                                <p className="text-lg font-semibold text-gray-800">Address {idx + 1}</p>
-                                <FaTimes
-                                    className="text-red-500 hover:scale-110 transition cursor-pointer"
-                                    title="Remove Address"
-                                    onClick={() => handleRemove(idx)}
-                                />
-                            </div>
-                            <p className="text-gray-600">
-                                <span className="font-bold mr-3">Street:</span> {address.street}
-                            </p>
-                            <p className="text-gray-600">
-                                <span className="font-bold mr-3">Ward:</span> {address.ward.name} ({address.ward.code})
-                            </p>
-                            <p className="text-gray-600">
-                                <span className="font-bold mr-3">District:</span> {address.district.name} (
-                                {address.district.id})
-                            </p>
-                            <p className="text-gray-600">
-                                <span className="font-bold mr-3">Province:</span> {address.province.name} (
-                                {address.province.id})
-                            </p>
-                            {address.contactInfo && (
-                                <p className="text-gray-600">
-                                    <span className="font-bold mr-3">Contact Info:</span> {address.contactInfo}
+                <div className="flex flex-wrap gap-6 col-span-2">
+                    {addresses && addresses.length > 0 ? (
+                        addresses.map((address, idx) => (
+                            <div
+                                key={idx}
+                                className="p-4 border border-gray-200 rounded-lg h-fit bg-gray-50 hover:shadow-md transition max-w-96"
+                            >
+                                <div className="flex justify-between items-center mb-3">
+                                    <p className="text-lg font-semibold text-gray-800">Address {idx + 1}</p>
+                                    <FaTimes
+                                        className="text-red-500 hover:scale-110 transition cursor-pointer"
+                                        title="Remove Address"
+                                        onClick={() => handleRemove(idx)}
+                                    />
+                                </div>
+                                <p className="text-gray-600 truncate">
+                                    <span className="font-bold mr-3">Street:</span> {address.street}
                                 </p>
-                            )}
+                                <p className="text-gray-600 truncate">
+                                    <span className="font-bold mr-3">Ward:</span> {address.ward.name} (
+                                    {address.ward.code})
+                                </p>
+                                <p className="text-gray-600 truncate">
+                                    <span className="font-bold mr-3">District:</span> {address.district.name} (
+                                    {address.district.id})
+                                </p>
+                                <p className="text-gray-600 truncate">
+                                    <span className="font-bold mr-3">Province:</span> {address.province.name} (
+                                    {address.province.id})
+                                </p>
+                                {address.contactInfo && (
+                                    <p className="text-gray-600 truncate">
+                                        <span className="font-bold mr-3">Contact Info:</span> {address.contactInfo}
+                                    </p>
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center w-full">
+                            <h3 className="text-xl font-semibold text-gray-700">No Addresses Available</h3>
+                            <p className="text-gray-500 mt-2">This user has not provided any addresses.</p>
                         </div>
-                    ))
-                ) : (
-                    <div className="text-center w-full">
-                        <h3 className="text-xl font-semibold text-gray-700">No Addresses Available</h3>
-                        <p className="text-gray-500 mt-2">This user has not provided any addresses.</p>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );

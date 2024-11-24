@@ -27,6 +27,7 @@ type FormValues = {
 };
 
 export default function PersonalDetails(props: Props) {
+    const { user } = props;
     const { updateAction } = useUserActions();
 
     const [formValues, setFormValues] = useState<FormValues>({
@@ -43,6 +44,18 @@ export default function PersonalDetails(props: Props) {
         toast.error(`Invalid ${path.slice(0, 1).toUpperCase() + path.slice(1)}`, {
             toastId: "update-user",
         });
+    }
+
+    async function handleChangeStatus() {
+        await updateAction.mutateAsync({
+            _id: props.user._id,
+            data: {
+                status: user.status === USER_STATUS.NORMAL ? USER_STATUS.BLOCKED : USER_STATUS.NORMAL,
+            },
+        });
+
+        await props.refetch();
+        toast.success("User updated successfully", { toastId: "update-user" });
     }
 
     async function handleSubmit() {
@@ -82,20 +95,6 @@ export default function PersonalDetails(props: Props) {
         await props.refetch();
         toast.success("User updated successfully", { toastId: "update-user" });
     }
-
-    async function handleChangeStatus() {
-        await updateAction.mutateAsync({
-            _id: props.user._id,
-            data: {
-                status: user.status === USER_STATUS.NORMAL ? USER_STATUS.BLOCKED : USER_STATUS.NORMAL,
-            },
-        });
-
-        await props.refetch();
-        toast.success("User updated successfully", { toastId: "update-user" });
-    }
-
-    const { user } = props;
 
     return (
         <div className=" bg-gray-100">
