@@ -9,6 +9,8 @@ export const PaginationLimitOptions = [
     { name: "100", value: "100" },
 ];
 
+export const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png"];
+
 /******************/
 /******************/
 /**     ENUM     **/

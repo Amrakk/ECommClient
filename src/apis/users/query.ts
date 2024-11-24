@@ -10,7 +10,7 @@ interface GetUsersResponse {
     totalDocuments: number;
 }
 
-interface GetUserById {
+export interface GetUserById {
     _id: string;
     name: string;
     email: string;

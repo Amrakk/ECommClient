@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { DISCOUNT_TYPE } from "@/constants";
 import Dropdown from "@/components/Shared/Dropdown";
@@ -29,7 +29,8 @@ export default function InsertModal(props: Props) {
     });
 
     if (insertAction.error) {
-        toast.error((insertAction.error as any).error[0].message, {
+        const path = (insertAction.error as any).error[0].path[0]?.toLowerCase() as string;
+        toast.error(`Invalid ${path.slice(0, 1).toUpperCase() + path.slice(1)}`, {
             toastId: "insert-voucher",
         });
     }
@@ -110,6 +111,10 @@ export default function InsertModal(props: Props) {
         await vouchers.refetch();
         toast.success("Voucher created", { toastId: "insert-voucher" });
     }
+
+    useEffect(() => {
+        setFormValues({ discountType: DISCOUNT_TYPE.PERCENT });
+    }, [props.isShowing]);
 
     return (
         <>

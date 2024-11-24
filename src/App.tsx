@@ -1,13 +1,12 @@
+import { lazy, Suspense, useState } from "react";
 import { JSX } from "react/jsx-runtime";
-import { toast, ToastContainer } from "react-toastify";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import useAddresses from "./hooks/Shared/useAddresses";
 import Loading from "./components/Shared/Loading";
 import TopProgressBar from "./components/Client/TopProgressBar";
 import { Routes, Route, Navigate, RouteProps } from "react-router-dom";
 import CustomerRouteMiddleware, { CustomerRoutes } from "./components/Route/CustomerRoute";
 import "./styles/style.css";
-import "./styles/myStyle.css";
 import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./pages/Errors/NotFound";
 import AdminRoute from "./components/Route/AdminRoute";
@@ -61,12 +60,8 @@ const adminLazyPages = [
 ];
 
 function App() {
-    const { assignAddresses } = useAddresses();
+    useAddresses();
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-
-    useEffect(() => {
-        assignAddresses.mutateAsync();
-    }, []);
 
     return (
         <>
