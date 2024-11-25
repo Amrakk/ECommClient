@@ -36,7 +36,6 @@ export default function AddressCrawlingPanel() {
     }
 
     useEffect(() => {
-        console.log("Crawl Status: ", getAddressCrawlerStatusAction.data);
         setCrawlStatus(getAddressCrawlerStatusAction.data ?? defaultCrawlStatus);
         if (getAddressCrawlerStatusAction.data?.end)
             setCurrentTime(getAddressCrawlerStatusAction.data?.duration ?? "0s");

@@ -101,9 +101,6 @@ export default function Variants(props: Props) {
         toast.success("Variant updated successfully", { toastId: "insert-variant" });
     }
 
-    useEffect(() => {
-        console.log(JSON.stringify(formValues, undefined, 2));
-    }, [formValues]);
     return (
         <div className="bg-white shadow rounded-lg p-6">
             <h3 className="text-2xl font-bold text-gray-800 mb-4">Variants</h3>

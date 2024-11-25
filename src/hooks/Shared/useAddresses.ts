@@ -12,9 +12,6 @@ export default function useAddresses() {
     const setDistricts = useAddressesStore((state) => state.setDistricts);
     const setProvinces = useAddressesStore((state) => state.setProvinces);
 
-    // TODO: somehow notify for the admin that the addresses is not crawled yet,
-    // and they need to crawl it first before using it in the advanced panel. Try to use a toast or a modal.
-    // Tell the user SERVICE_UNAVAILABLE
     const assignAddresses = useQuery({
         queryKey: ["addresses"],
         queryFn: async () => {

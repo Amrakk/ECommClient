@@ -8,9 +8,17 @@ export default function useOrderFilter() {
     const searchTerm = searchParams.get("searchTerm") ?? undefined;
     const isPaid = searchParams.get("isPaid") === null ? undefined : searchParams.get("isPaid") === "true";
     const statuses = searchParams.getAll("statuses") as ORDER_STATUS[];
+    const startDate = searchParams.get("startDate") ?? undefined;
+    const endDate = searchParams.get("endDate") ?? undefined;
 
     const changeFilter = useCallback(
-        (props: { searchTerm?: string; isPaid?: boolean; statuses?: ORDER_STATUS[] }) => {
+        (props: {
+            searchTerm?: string;
+            isPaid?: boolean;
+            statuses?: ORDER_STATUS[];
+            startDate?: Date;
+            endDate?: Date;
+        }) => {
             setSearchParams((params) => {
                 if (props.searchTerm) params.set("searchTerm", props.searchTerm);
                 else params.delete("searchTerm");
@@ -22,6 +30,12 @@ export default function useOrderFilter() {
                 if (props.statuses && props.statuses.length > 0)
                     props.statuses.forEach((status) => params.append("statuses", status));
 
+                if (props.startDate) params.set("startDate", props.startDate.toISOString());
+                else params.delete("startDate");
+
+                if (props.endDate) params.set("endDate", props.endDate.toISOString());
+                else params.delete("endDate");
+
                 return params;
             });
         },
@@ -32,6 +46,8 @@ export default function useOrderFilter() {
         searchTerm,
         isPaid,
         statuses,
+        startDate,
+        endDate,
         changeFilter,
     };
 }

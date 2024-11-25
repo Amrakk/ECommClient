@@ -12,9 +12,9 @@ type Props = {
     value?: string | number;
     onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    min?: number;
-    max?: number;
-    step?: number;
+    min?: number | string;
+    max?: number | string;
+    step?: number | string;
 };
 
 export default function CustomTextField(props: Props) {

@@ -12,7 +12,6 @@ const menuItems = [
     { to: "/admin/orders", label: "Orders", icon: <FaShoppingCart className="text-lg transition-all" /> },
     { to: "/admin/products", label: "Products", icon: <FaBox className="text-lg transition-all" /> },
     { to: "/admin/vouchers", label: "Vouchers", icon: <RiDiscountPercentFill className="text-lg transition-all" /> },
-    { to: "/admin/reports", label: "Report & Analytics", icon: <FaChartPie className="text-lg transition-all" /> },
     { to: "/admin/advanced", label: "Advanced", icon: <IoSettingsSharp className="text-lg transition-all" /> },
 ];
 

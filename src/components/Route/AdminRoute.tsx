@@ -1,20 +1,12 @@
+import { lazy } from "react";
+import { sleep } from "@/utils/sleep";
 import { USER_ROLE } from "@/constants";
 import Header from "@/layouts/admin/Header";
 import Sidebar from "@/layouts/admin/Sidebar";
 import { useUserStore } from "@/stores/user.store";
-import { sleep } from "@/utils/sleep";
-import { lazy } from "react";
 import { Outlet, Navigate, useLocation, matchPath } from "react-router-dom";
 
-const existPaths = [
-    "/reports",
-    "/advanced",
-    "/vouchers",
-    "/dashboard",
-    "/users/:id?",
-    "/orders/:id?",
-    "/products/:id?",
-];
+const existPaths = ["/advanced", "/vouchers", "/dashboard", "/users/:id?", "/orders/:id?", "/products/:id?"];
 
 export const adminLazyPages = [
     {
@@ -48,10 +40,6 @@ export const adminLazyPages = [
     {
         path: "vouchers",
         component: lazy(async () => sleep().then(() => import("@/pages/Admin/Vouchers"))),
-    },
-    {
-        path: "reports",
-        component: lazy(async () => sleep().then(() => import("@/pages/Admin/Reports"))),
     },
     {
         path: "advanced",

@@ -155,8 +155,6 @@ export default function ProductDetails(props: Props) {
                                 <button
                                     className="rounded-md p-1 h-60 hover:opacity-40 transition-opacity disabled:opacity-20"
                                     onClick={() => {
-                                        console.log(product.images.length);
-                                        console.log(curImageIndex);
                                         if (curImageIndex < product.images.length - 1)
                                             setCurImageIndex(curImageIndex + 1);
                                     }}
