@@ -27,7 +27,11 @@ export default function usePagination() {
         if (!PaginationLimitOptions.some((value) => value.name === limitPage.toString())) {
             changePage(1, 10);
         }
-    }, [currentPage, limitPage, changePage]);
+    }, [limitPage, changePage]);
+
+    useEffect(() => {
+        changePage(1, limitPage);
+    }, [limitPage]);
 
     return { currentPage, limitPage, changePage };
 }

@@ -28,7 +28,7 @@ export default function Table<T extends { _id: string; data: any[] }>({
     return (
         <>
             <div className="overflow-x-auto rounded-xl">
-                <div className="h-[658px]">
+                <div className="h-[565px]">
                     <table className="w-full shadow-md rounded-xl table-fixed">
                         <thead className="bg-black text-white sticky top-0">
                             <tr>

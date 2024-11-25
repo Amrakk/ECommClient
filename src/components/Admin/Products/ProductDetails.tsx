@@ -418,7 +418,13 @@ export default function ProductDetails(props: Props) {
                             </div>
                         </div>
 
-                        <div className="flex space-x-4 float-end p-3">
+                        <div className="flex justify-between p-3">
+                            <div className="text-sm text-gray-500 align-bottom relative">
+                                <div className="absolute bottom-0 flex items-baseline gap-1">
+                                    <strong>Id: </strong>
+                                    {product._id}
+                                </div>
+                            </div>
                             <button
                                 type="button"
                                 className="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 transition-all"
