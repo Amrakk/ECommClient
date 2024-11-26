@@ -33,7 +33,6 @@ const defaultStatus: JobStatus = {
 };
 
 export default function PCYPanel() {
-    // TODO: add query to fetch the status with instantResponse query on first load
     const { analyzeAction, pcyStatusQuery } = usePCYActions();
 
     const [pcyStatus, setPCYStatus] = useState<JobStatus>(defaultStatus);

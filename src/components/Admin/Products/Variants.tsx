@@ -1,11 +1,11 @@
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { FaTimes } from "react-icons/fa";
+import { IProductVariant } from "@/models/product";
 import { GetProductByIdResponse } from "@/apis/products";
+import { QueryObserverResult } from "@tanstack/react-query";
 import CustomTextField from "@/components/Shared/CustomTextField";
 import useProductActions from "@/hooks/Admin/Products/useProductActions";
-import { IProductVariant } from "@/models/product";
-import { QueryObserverResult } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { FaTimes } from "react-icons/fa";
-import { toast } from "react-toastify";
 
 type Props = {
     productId: string;

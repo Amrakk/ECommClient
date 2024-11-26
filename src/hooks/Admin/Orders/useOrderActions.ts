@@ -12,5 +12,5 @@ export function useOrderActions() {
         mutationFn: OrderAPI.deleteOrder,
     });
 
-    return { updateOrder };
+    return { updateOrder, deleteOrder };
 }

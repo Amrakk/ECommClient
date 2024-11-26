@@ -1,10 +1,10 @@
 import { FaBox } from "react-icons/fa6";
+import { MdDashboard } from "react-icons/md";
+import { IoSettingsSharp } from "react-icons/io5";
 import { RiDiscountPercentFill } from "react-icons/ri";
+import { FaUsers, FaShoppingCart } from "react-icons/fa";
 import ecommLogo from "@/assets/EComm-transparent-crop.webp";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaChartPie, FaUsers, FaShoppingCart } from "react-icons/fa";
-import { IoSettingsSharp } from "react-icons/io5";
-import { MdDashboard } from "react-icons/md";
 
 const menuItems = [
     { to: "/admin/dashboard", label: "Dashboard", icon: <MdDashboard className="text-lg transition-all" /> },
