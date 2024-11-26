@@ -11,6 +11,7 @@ type Props<T> = {
     placeholder?: string;
     data: Option<T>[];
     direction?: "up" | "down";
+    maxHeight?: number;
     compare?: (a?: T, b?: T) => boolean;
     onChange?: (data: Option<T>) => void | Promise<void>;
     variant?: "primary" | "secondary";
@@ -75,9 +76,10 @@ export default function Dropdown<T>(props: Props<T>) {
             </button>
             {open && (
                 <div
-                    className="absolute w-full drop-shadow-xl overflow-y-auto rounded-md max-h-60"
+                    className={`absolute w-full drop-shadow-xl overflow-y-auto rounded-md`}
                     style={{
                         bottom: props.direction === "down" ? "unset" : `${placeHolderRef.current?.offsetHeight}px`,
+                        maxHeight: `${props.maxHeight ?? 240}px`,
                     }}
                 >
                     <ul>

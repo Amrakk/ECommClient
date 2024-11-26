@@ -75,7 +75,7 @@ export default function ProductTable() {
                 total={totalDocuments}
                 sizes={sizes}
                 isLoading={orders.isFetching}
-                navigatePath="/admin/products"
+                navigatePath="/admin/orders"
             />
         </>
     );

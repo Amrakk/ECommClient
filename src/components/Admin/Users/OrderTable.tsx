@@ -68,7 +68,14 @@ export default function OrderTable(props: Props) {
     return (
         <div className="flex flex-col gap-2 bg-white shadow rounded-lg p-6">
             <h3 className="text-xl font-semibold text-gray-800 mb-6">Orders History</h3>
-            <Table columns={columns} rows={rows} total={ordersData.length} sizes={sizes} isPaginated={false} />
+            <Table
+                columns={columns}
+                rows={rows}
+                total={ordersData.length}
+                sizes={sizes}
+                isPaginated={false}
+                height="h-auto"
+            />
         </div>
     );
 }

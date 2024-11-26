@@ -36,7 +36,6 @@ export async function updateProduct(data: { _id: string; data: UpdateProduct }):
     return API.patch<IResponse<ProductDetail>>(`/products/${data._id}`, data.data).then((res) => res.data.data!);
 }
 
-// TODO: Test this
 export async function updateProductImage(data: { _id: string; image: File }): Promise<{ url: string }> {
     const formData = new FormData();
     formData.append("image", data.image);

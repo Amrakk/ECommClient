@@ -30,6 +30,8 @@ export interface OrderFilter {
     searchTerm?: string;
     isPaid?: boolean;
     statuses?: ORDER_STATUS[];
+    startDate?: Date | string;
+    endDate?: Date | string;
 }
 
 export interface TransactionDetail {

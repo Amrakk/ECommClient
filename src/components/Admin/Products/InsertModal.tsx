@@ -46,8 +46,8 @@ export default function InsertModal(props: Props) {
             setFormValues({
                 ...formValues,
                 details: {
-                    ...formValues.details,
                     [curDetail?.key || ""]: curDetail?.value || "",
+                    ...formValues.details,
                 },
             });
             setCurDetail(undefined);
@@ -226,7 +226,10 @@ export default function InsertModal(props: Props) {
 
                                         <div className="w-1/2 border-2 rounded-md p-2 overflow-x-auto h-[49.63px]">
                                             {formValues.tags.map((tag, index) => (
-                                                <div className="inline-block mb-1.5 text-wrap max-w-[75%]">
+                                                <div
+                                                    key={`${tag}_${index}`}
+                                                    className="inline-block mb-1.5 text-wrap max-w-[75%]"
+                                                >
                                                     <span
                                                         key={`tag-${index}`}
                                                         className="size-min bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  border border-blue-400 flex gap-2 items-center select-none cursor-pointer fade-in"
@@ -237,7 +240,9 @@ export default function InsertModal(props: Props) {
                                                             })
                                                         }
                                                     >
-                                                        <div className="max-w-[150px] overflow-hidden">{tag}</div>
+                                                        <div className="max-w-[150px] overflow-hidden whitespace-nowrap">
+                                                            {tag}
+                                                        </div>
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             className="size-3"
@@ -313,7 +318,7 @@ export default function InsertModal(props: Props) {
                                                 onChange={(e) => {
                                                     setCurVariant({
                                                         ...curVariant,
-                                                        retailPrice: parseInt(e.target.value),
+                                                        retailPrice: parseInt(e.target.value.replace(/[^0-9]/g, "")),
                                                     });
                                                 }}
                                             />

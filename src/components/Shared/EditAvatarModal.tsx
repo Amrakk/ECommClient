@@ -5,7 +5,7 @@ import useUserActions from "@/hooks/Admin/Users/useUserActions";
 
 import type { GetUserById } from "@/apis/users";
 import type { QueryObserverResult } from "@tanstack/react-query";
-import { isValidImageFile } from "@/utils/isValidImageFile";
+import { isValidImage } from "@/utils/isValidImageFile";
 
 type Props = {
     userId: string;
@@ -39,13 +39,13 @@ export default function EditAvatarModal(props: Props) {
         setIsDragging(false);
 
         const files = e.dataTransfer.files;
-        if (files && files.length > 0 && isValidImageFile(files[0])) setFile(files[0]);
+        if (files && files.length > 0 && isValidImage(files[0])) setFile(files[0]);
         else toast.error("Invalid file format", { toastId: "invalid-file-format" });
     };
 
     async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const files = e.target.files;
-        if (files && files.length > 0 && isValidImageFile(files[0])) setFile(files[0]);
+        if (files && files.length > 0 && isValidImage(files[0])) setFile(files[0]);
         else toast.error("Invalid file format", { toastId: "invalid-file-format" });
     }
 
