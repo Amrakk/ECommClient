@@ -1,9 +1,6 @@
 import { ColorPrimary, ColorSecondary } from "@/styles/ThemeColorClient";
 import { createTheme, LinearProgress, responsiveFontSizes, styled } from "@mui/material";
 
-
-
-
 const darkTheme = createTheme({
     palette: {
         mode: 'dark',

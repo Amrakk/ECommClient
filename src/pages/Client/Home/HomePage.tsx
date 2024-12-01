@@ -2,15 +2,14 @@ import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CategoryComponent from "@/components/Client/CategoryComponent";
-import ProductComponent from "@/components/Client/ProductComponent";
+import ProductComponent from "@/components/Client/ProductCardComponent";
 import FooterComponent from "@/components/Client/FooterComponent";
 import TrustUsComponent from "@/components/Client/TrustUsComponent";
 import TrustpilotComponent from "@/components/Client/TrustPilotComponent";
 import MainImageHome from "@/assets/home/EComm illustration.png";
 import VoucherImage from "@/assets/home/50_off.png";
 import VoucherCollectComponent from "@/components/Client/VoucherCollectComponent";
-
-
+import { PRODUCT_CATEGORY_LIST } from "@/constants";
 
 
 const HomePage = () => {
@@ -35,7 +34,12 @@ const HomePage = () => {
                             </Typography>
                             <Grid size={{ xs: 12, md: 12 }} container spacing={5} display='flex' flexDirection={{ lg: 'row', xs: 'column' }} justifyContent='center' alignItems='center'>
                                 <Grid size={{ xs: 12, md: 4 }} >
-                                    <Button variant="contained" color="primary" sx={{ mt: 2, width: { xs: '40%', md: '100%' } }}>
+                                    <Button onClick={() => {
+                                        document.getElementById('category-section')?.scrollIntoView({
+                                            behavior: 'smooth',
+                                            block: 'start'
+                                        });
+                                    }} variant="contained" color="primary" sx={{ mt: 2, width: { xs: '40%', md: '100%' } }}>
                                         <Typography variant="body2" sx={{ color: 'black', fontWeight: 'medium' }}>Shop Now</Typography>
                                     </Button>
                                 </Grid>
@@ -61,11 +65,10 @@ const HomePage = () => {
                     <Grid size={5} sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                         <Typography variant="h6"> Popular Categories</Typography>
                     </Grid>
-                    <Grid size={7} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-end' }} >
-                        <CategoryComponent sx={{}} />
-                        <CategoryComponent sx={{}} />
-                        <CategoryComponent sx={{}} />
-                        <CategoryComponent sx={{}} />
+                    <Grid id="category-section" size={7} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2, justifyContent: 'flex-end' }} >
+                        {PRODUCT_CATEGORY_LIST.slice(0, 4).map((category) => (
+                            <CategoryComponent key={category} category={category} />
+                        ))}
 
                     </Grid>
                 </Grid>
@@ -78,11 +81,19 @@ const HomePage = () => {
                             <ArrowForwardIosIcon sx={{ fontSize: 18 }} />
                         </IconButton>
                     </Grid>
-                    <Grid size={12} sx={{ display: 'flex', flexDirection: 'row', gap: 5, overflowX: 'auto' }} >
-                        <ProductComponent />
-                        <ProductComponent />
-                        <ProductComponent />
-                        <ProductComponent />
+                    <Grid size={12} sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap : 3 }} >
+                        <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }} >
+                            <ProductComponent />
+                        </Grid>
+                        <Grid  size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
+                            <ProductComponent />
+                        </Grid>
+                        <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }} >
+                            <ProductComponent />
+                        </Grid>
+                        <Grid  size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
+                            <ProductComponent />
+                        </Grid>
                     </Grid>
                 </Grid>
                 {/* Fifth Row */}
@@ -91,7 +102,7 @@ const HomePage = () => {
                     <Grid size={6} sx={{ display: 'flex', justifyContent: 'center' }} >
                         <Box
                             component='img' src={VoucherImage} alt="50% off"
-                            sx={{ width: {lg: '50%', sm: '100%'}, height: 'auto', borderRadius: 5 }}
+                            sx={{ width: { lg: '50%', sm: '100%' }, height: 'auto', borderRadius: 5 }}
                         />
                     </Grid>
                     <Grid size={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -107,10 +118,7 @@ const HomePage = () => {
                 <Grid size={12} sx={{ mt: 5, mx: 20 }}>
                     <Divider />
                 </Grid>
-                {/* Sixth Row */}
-                <Grid container size={12} spacing={5} sx={{ mt: 2 }} >
-                    <FooterComponent />
-                </Grid>
+               
             </Grid >
         </Box >
     )

@@ -1,11 +1,7 @@
+import { ResetPasswordRequest } from "@/interfaces/request";
 import { API } from "../api";
 
-interface ResetPassword {
-    email: string;
-    otp: string;
-    password: string;
-}
 
-export async function resetPassword(data: ResetPassword): Promise<void> {
+export async function resetPassword(data: ResetPasswordRequest): Promise<void> {
     await API.post("/auth/reset-password", data);
 }

@@ -1,7 +1,7 @@
 import { API } from "@/apis/api";
 
 import type { PRODUCT_CATEGORY } from "@/constants";
-import type { IResponse } from "@/interfaces/response";
+import type { IResGetProductById, IResponse } from "@/interfaces/response";
 import type { ProductDetail, ProductFilter } from "@/models/product";
 
 interface GetProductsResponse {
@@ -26,4 +26,8 @@ export async function getBrands(query?: { categories?: PRODUCT_CATEGORY[] }): Pr
 
 export async function getProductById(_id: string): Promise<GetProductByIdResponse> {
     return API.get<IResponse<GetProductByIdResponse>>(`/products/${_id}`).then((res) => res.data.data!);
+}
+
+export async function getProductById2(_id: string): Promise<IResGetProductById> {
+    return API.get<IResponse<IResGetProductById>>(`/products/${_id}`).then((res) => res.data.data!);
 }
