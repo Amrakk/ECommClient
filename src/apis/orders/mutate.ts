@@ -42,12 +42,12 @@ export async function insertOrder(data: InsertOrder): Promise<OrderDetail> {
     return API.post<IResponse<OrderDetail[]>>("/orders", data).then((res) => res.data.data![0]);
 }
 
-export async function updateOrder(_id: string, data: UpdateOrder): Promise<OrderDetail> {
-    return API.patch<IResponse<OrderDetail>>(`/orders/${_id}`, data).then((res) => res.data.data!);
+export async function updateOrder(data: { _id: number; data: UpdateOrder }): Promise<OrderDetail> {
+    return API.patch<IResponse<OrderDetail>>(`/orders/${data._id}`, data.data).then((res) => res.data.data!);
 }
 
-export async function deleteOrder(_id: string): Promise<OrderDetail> {
-    return API.delete<IResponse<OrderDetail>>(`/orders/${_id}`).then((res) => res.data.data!);
+export async function deleteOrder(data: { _id: number }): Promise<OrderDetail> {
+    return API.delete<IResponse<OrderDetail>>(`/orders/${data._id}`).then((res) => res.data.data!);
 }
 
 export async function checkout(data: Checkout): Promise<ResCheckout> {

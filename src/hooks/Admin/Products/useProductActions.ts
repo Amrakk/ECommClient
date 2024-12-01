@@ -12,8 +12,8 @@ export default function useProductActions() {
         mutationFn: ProductAPI.updateProduct,
     });
 
-    const updateAvatarAction = useMutation({
-        mutationKey: ["product-update-avatar"],
+    const updateImageAction = useMutation({
+        mutationKey: ["product-image-avatar"],
         mutationFn: ProductAPI.updateProductImage,
     });
 
@@ -22,5 +22,5 @@ export default function useProductActions() {
         mutationFn: ProductAPI.deleteProduct,
     });
 
-    return { insertAction, updateAction, updateAvatarAction, deleteAction };
+    return { insertAction, updateAction, updateImageAction, deleteAction };
 }

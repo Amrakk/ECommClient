@@ -56,9 +56,7 @@ export async function updateUserByUser(props: { _id: string; data: UpdateByUser 
     return API.patch<IResponse<UserDetail>>(`/users/${props._id}`, props.data).then((res) => res.data.data!);
 }
 
-// TODO: Test this
 export async function updateUserAvatar(props: { _id: string; formData: FormData }): Promise<{ url: string }> {
-
     return API.patch<IResponse<{ url: string }>>(`/users/${props._id}/avatar`, props.formData, {
         headers: {
             "Content-Type": "multipart/form-data",

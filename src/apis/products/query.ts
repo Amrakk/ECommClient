@@ -9,7 +9,10 @@ interface GetProductsResponse {
     totalDocuments: number;
 }
 
-
+export interface GetProductByIdResponse {
+    product: ProductDetail;
+    relevantProducts: ProductDetail[];
+}
 
 export async function getProducts(query?: ProductFilter): Promise<GetProductsResponse> {
     return API.get<IResponse<GetProductsResponse>>("/products", { params: query }).then(
@@ -21,8 +24,8 @@ export async function getBrands(query?: { categories?: PRODUCT_CATEGORY[] }): Pr
     return API.get<IResponse<string[]>>("/products/brands", { params: query }).then((res) => res.data.data ?? []);
 }
 
-export async function getProductById(_id: string): Promise<ProductDetail> {
-    return API.get<IResponse<ProductDetail>>(`/products/${_id}`).then((res) => res.data.data!);
+export async function getProductById(_id: string): Promise<GetProductByIdResponse> {
+    return API.get<IResponse<GetProductByIdResponse>>(`/products/${_id}`).then((res) => res.data.data!);
 }
 
 export async function getProductById2(_id: string): Promise<IResGetProductById> {

@@ -2,7 +2,7 @@ import { API } from "@/apis/api";
 
 import { IResponse } from "@/interfaces/response";
 
-interface AddressCrawlStatus {
+export interface AddressCrawlStatus {
     isCrawling: boolean;
     start: Date | null;
     end: Date | null;
@@ -10,13 +10,13 @@ interface AddressCrawlStatus {
     stat: Stat;
 }
 
-interface Stat {
+export interface Stat {
     provinces: Unit;
     districts: Unit;
     wards: Unit;
 }
 
-interface Unit {
+export interface Unit {
     length: number;
     size: string;
 }
@@ -38,8 +38,10 @@ interface Ward {
     district_id: number;
 }
 
-export async function getAddressCrawlStatus(): Promise<AddressCrawlStatus> {
-    return API.get<IResponse<AddressCrawlStatus>>("/services/crawl-status").then((res) => res.data.data!);
+export async function getAddressCrawlStatus(filter?: { instantResponse?: boolean }): Promise<AddressCrawlStatus> {
+    return API.get<IResponse<AddressCrawlStatus>>("/services/crawl-status", { params: filter }).then(
+        (res) => res.data.data!
+    );
 }
 
 export async function crawlAddresses(): Promise<AddressCrawlStatus> {

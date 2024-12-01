@@ -4,6 +4,9 @@
         max-width: 1310px;
     }
 }
+body {
+    font-family: mulish, sans-serif;
+}
 h1,
 h2,
 h3,

@@ -5,11 +5,20 @@ import usePagination from "@/hooks/Shared/usePagination";
 
 export default function useOrders() {
     const { currentPage, limitPage } = usePagination();
-    const { searchTerm, isPaid, statuses } = useOrderFilter();
+    const { searchTerm, isPaid, statuses, startDate, endDate } = useOrderFilter();
 
     const orderQuery = useQuery({
-        queryKey: ["orders", currentPage, limitPage, searchTerm, isPaid, statuses],
-        queryFn: () => OrderAPI.getOrders({ page: currentPage, limit: limitPage, searchTerm, isPaid, statuses }),
+        queryKey: ["orders", currentPage, limitPage, searchTerm, isPaid, statuses, startDate, endDate],
+        queryFn: () =>
+            OrderAPI.getOrders({
+                page: currentPage,
+                limit: limitPage,
+                searchTerm,
+                isPaid,
+                statuses,
+                startDate,
+                endDate,
+            }),
     });
 
     return orderQuery;
