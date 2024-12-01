@@ -1,48 +1,36 @@
-import { ProductDetail } from '@/models/product';
-import {
-    Box,
-    Typography,
-    Rating,
-    Card,
-    Divider,
-    Button,
-    IconButton,
-    TextField,
-    Skeleton,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import Grid from '@mui/material/Grid2';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import BreadcrumbsComponent from '@/components/Client/BreadcrumbsComponent';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove'
-import TabComponent from '@/components/Client/TabComponent';
-import SliderComponent from '@/components/Client/SliderComponent';
-import { useProductDetailQuery } from '@/hooks/Client/home/product/useProduct';
-import { toast } from 'react-toastify';
-import { convertToVietnameseDong } from '@/utils/convertToVnd';
-import { addProductToNewCart, useGetCartByUser, useUpdateProductCart } from '@/hooks/Client/home/cart/useCart';
-import { UpsertCart } from '@/apis/carts';
-import { setLoading } from '@/stores/client/loadingSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/stores/client/store';
-import useUserActions from '@/hooks/Admin/Users/useUserActions';
-import { UpdateByAdmin, UpdateByUser } from '@/apis/users';
-import { useUpdateUserMutation } from '@/hooks/Client/home/useUser';
+import { ProductDetail } from "@/models/product";
+import { Box, Typography, Rating, Card, Divider, Button, IconButton, TextField, Skeleton } from "@mui/material";
+import { useEffect, useState } from "react";
+import Grid from "@mui/material/Grid2";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import BreadcrumbsComponent from "@/components/Client/BreadcrumbsComponent";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import TabComponent from "@/components/Client/TabComponent";
+import SliderComponent from "@/components/Client/SliderComponent";
+import { useProductDetailQuery } from "@/hooks/Client/home/product/useProduct";
+import { toast } from "react-toastify";
+import { convertToVietnameseDong } from "@/utils/convertToVnd";
+import { addProductToNewCart, useGetCartByUser, useUpdateProductCart } from "@/hooks/Client/home/cart/useCart";
+import { UpsertCart } from "@/apis/carts";
+import { setLoading } from "@/stores/client/loadingSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/stores/client/store";
+import { UpdateByUser } from "@/apis/users";
+import { useUpdateUserMutation } from "@/hooks/Client/home/useUser";
 
 const ProductDetailComponent = () => {
     const [selectedVariant, setSelectedVariant] = useState("");
     const [quantity, setQuantity] = useState(1);
     const productDetailQuery = useProductDetailQuery();
-    let isLoading = true
+    let isLoading = true;
     let product: ProductDetail | null = null;
     const addProductToNewCartMutate = addProductToNewCart();
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     const updateUserCart = useUpdateUserMutation();
     const addProductToOldCartMutate = useUpdateProductCart();
-    const {data: currentCart} = useGetCartByUser();
-
+    const { data: currentCart } = useGetCartByUser();
 
     useEffect(() => {
         if (productDetailQuery.isSuccess) {
@@ -60,14 +48,16 @@ const ProductDetailComponent = () => {
     }
 
     const minQuantity = 1;
-    const maxQuantity = isLoading ? 1 : product!.variants.find(variant => variant.id === selectedVariant)?.quantity || 1;
+    const maxQuantity = isLoading
+        ? 1
+        : product!.variants.find((variant) => variant.id === selectedVariant)?.quantity || 1;
 
-    function handleDecrement(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-        setQuantity(prevQuantity => Math.max(prevQuantity - 1, minQuantity));
+    function handleDecrement(_: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+        setQuantity((prevQuantity) => Math.max(prevQuantity - 1, minQuantity));
     }
 
-    function handleIncrement(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-        setQuantity(prevQuantity => Math.min(prevQuantity + 1, maxQuantity));
+    function handleIncrement(_: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+        setQuantity((prevQuantity) => Math.min(prevQuantity + 1, maxQuantity));
     }
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -89,28 +79,29 @@ const ProductDetailComponent = () => {
                     productId: product!._id,
                     variantId: selectedVariant,
                     quantity: quantity,
-                }
-            ]
+                },
+            ],
         };
 
         try {
             dispatch(setLoading(true));
             let response;
             if (user.cartId) {
-                currentCart?.items.forEach(item => {
+                currentCart?.items.forEach((item) => {
                     // Check if product already exists in cart
-                    if (item.product._id === productToCart.items[0].productId && item.variantId === productToCart.items[0].variantId) {
+                    if (
+                        item.product._id === productToCart.items[0].productId &&
+                        item.variantId === productToCart.items[0].variantId
+                    ) {
                         productToCart.items[0].quantity += item.quantity;
-                    }
-                    else {
+                    } else {
                         productToCart.items.push({
                             productId: item.product._id,
                             variantId: item.variantId,
                             quantity: item.quantity,
-                        })
+                        });
                     }
-                  
-                })
+                });
                 response = await addProductToOldCartMutate.mutateAsync({ cartId: user.cartId, data: productToCart });
             } else {
                 response = await addProductToNewCartMutate.mutateAsync(productToCart);
@@ -134,25 +125,42 @@ const ProductDetailComponent = () => {
     }
 
     return (
-        <Box sx={{
-            py: 4, margin: 'auto', maxWidth: {
-                lg: 1200,
-                xs: 320,
-                sm: 500,
-                md: 900,
-            },
-        }}>
+        <Box
+            sx={{
+                py: 4,
+                margin: "auto",
+                maxWidth: {
+                    lg: 1200,
+                    xs: 320,
+                    sm: 500,
+                    md: 900,
+                },
+            }}
+        >
             {/* Top Section - Images, Variants, Price, Actions */}
             <Grid container spacing={4}>
                 <Grid size={12}>
-                    <BreadcrumbsComponent customPath={[product == undefined ? "" : product!.category, product == undefined ? "" : product!.name]} />
+                    <BreadcrumbsComponent
+                        customPath={[
+                            product == undefined ? "" : product!.category,
+                            product == undefined ? "" : product!.name,
+                        ]}
+                    />
                 </Grid>
                 <Grid size={{ xs: 12, md: 7 }}>
-                    {isLoading ? <Skeleton animation="wave" variant='rectangular' sx={{ borderRadius: 2 }} height={500} width="100%" /> :
+                    {isLoading ? (
+                        <Skeleton
+                            animation="wave"
+                            variant="rectangular"
+                            sx={{ borderRadius: 2 }}
+                            height={500}
+                            width="100%"
+                        />
+                    ) : (
                         <>
                             <SliderComponent product={product!} />
                         </>
-                    }
+                    )}
                 </Grid>
 
                 {/* Right Side - Product Info & Actions */}
@@ -161,8 +169,10 @@ const ProductDetailComponent = () => {
                         {isLoading ? <Skeleton animation="wave" width="80%" /> : product!.name}
                     </Typography>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        {isLoading ? <Skeleton animation="wave" width="30%" /> : (
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                        {isLoading ? (
+                            <Skeleton animation="wave" width="30%" />
+                        ) : (
                             <>
                                 <Rating value={product!.ratings} readOnly precision={0.5} />
                                 <Typography variant="body2" sx={{ ml: 1 }}>
@@ -170,19 +180,31 @@ const ProductDetailComponent = () => {
                                 </Typography>
                             </>
                         )}
-
                     </Box>
 
                     <Typography variant="h5" gutterBottom>
-                        {isLoading ? <Skeleton animation="wave" width="50%" /> :
-                            convertToVietnameseDong(product!.variants.find(variant => variant.id === selectedVariant)?.retailPrice)}
+                        {isLoading ? (
+                            <Skeleton animation="wave" width="50%" />
+                        ) : (
+                            convertToVietnameseDong(
+                                product!.variants.find((variant) => variant.id === selectedVariant)?.retailPrice
+                            )
+                        )}
                     </Typography>
 
                     <Divider sx={{ opacity: 0.3 }} />
 
                     {/* Variants Selection */}
                     <Box sx={{ my: 3 }}>
-                        {isLoading ? <Skeleton animation="wave" variant='rectangular' sx={{ borderRadius: 2 }} height={100} width="100%" /> : (
+                        {isLoading ? (
+                            <Skeleton
+                                animation="wave"
+                                variant="rectangular"
+                                sx={{ borderRadius: 2 }}
+                                height={100}
+                                width="100%"
+                            />
+                        ) : (
                             <>
                                 <Typography
                                     variant="h6"
@@ -201,26 +223,31 @@ const ProductDetailComponent = () => {
                                                 onClick={() => setSelectedVariant(variant.id)}
                                                 sx={{
                                                     borderRadius: 2,
-                                                    cursor: 'pointer',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    border:
-                                                        variant.id === selectedVariant ? '2px solid' : '1px solid',
+                                                    cursor: "pointer",
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    border: variant.id === selectedVariant ? "2px solid" : "1px solid",
                                                     borderColor:
-                                                        variant.id === selectedVariant ? 'primary.main' : 'divider',
+                                                        variant.id === selectedVariant ? "primary.main" : "divider",
                                                     boxShadow: variant.id === selectedVariant ? 4 : 1,
-                                                    '&:hover': {
+                                                    "&:hover": {
                                                         boxShadow: 4,
                                                     },
                                                 }}
                                             >
-
-                                                <Box sx={{ height: 50, display: 'flex', alignItems: 'center', flexWrap: 'wrap' }} >
+                                                <Box
+                                                    sx={{
+                                                        height: 50,
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        flexWrap: "wrap",
+                                                    }}
+                                                >
                                                     <Typography
                                                         variant="body1"
                                                         sx={{
-                                                            fontWeight: 'medium',
-                                                            textTransform: 'none',
+                                                            fontWeight: "medium",
+                                                            textTransform: "none",
                                                         }}
                                                     >
                                                         {variant.id}
@@ -235,21 +262,15 @@ const ProductDetailComponent = () => {
                                     ))}
                                 </Grid>
                             </>
-                        )
-                        }
+                        )}
                     </Box>
-                    <Divider sx={{ opacity: 0.3, }} />
+                    <Divider sx={{ opacity: 0.3 }} />
                     {/* Quantity Selection */}
                     <Box sx={{ my: 3 }}>
-                        <Typography
-                            variant="h6"
-                            gutterBottom
-                            sx={{ fontWeight: 500, mb: 4 }}
-                            id="quantity-label"
-                        >
+                        <Typography variant="h6" gutterBottom sx={{ fontWeight: 500, mb: 4 }} id="quantity-label">
                             Quantity
                         </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                             <IconButton
                                 color="primary"
                                 onClick={handleDecrement}
@@ -262,20 +283,20 @@ const ProductDetailComponent = () => {
                                 type="number"
                                 variant="outlined"
                                 value={quantity}
-                                size='small'
+                                size="small"
                                 onChange={handleInputChange}
                                 inputProps={{
                                     min: minQuantity,
                                     max: maxQuantity,
-                                    'aria-labelledby': 'quantity-label',
+                                    "aria-labelledby": "quantity-label",
                                 }}
                                 sx={{
                                     width: 70,
-                                    '& input': {
-                                        textAlign: 'center',
-                                        MozAppearance: 'textfield',
-                                        '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
-                                            WebkitAppearance: 'none',
+                                    "& input": {
+                                        textAlign: "center",
+                                        MozAppearance: "textfield",
+                                        "&::-webkit-outer-spin-button, &::-webkit-inner-spin-button": {
+                                            WebkitAppearance: "none",
                                             margin: 0,
                                         },
                                     },
@@ -294,15 +315,12 @@ const ProductDetailComponent = () => {
 
                     {/* Action Buttons */}
 
-                    <Box sx={{ display: 'flex', gap: 2, my: 5 }} >
-                        <Button disabled={isLoading}
-                            variant="contained"
-                            size="large"
-                            fullWidth
-                        >
+                    <Box sx={{ display: "flex", gap: 2, my: 5 }}>
+                        <Button disabled={isLoading} variant="contained" size="large" fullWidth>
                             Buy Now
                         </Button>
-                        <Button disabled={isLoading}
+                        <Button
+                            disabled={isLoading}
                             variant="outlined"
                             size="large"
                             onClick={onClickProductToCart}
@@ -318,15 +336,15 @@ const ProductDetailComponent = () => {
             <Divider sx={{ mt: 6, opacity: 0.5 }} />
 
             {/* Bottom Section - Description, Details, Tags */}
-            {isLoading ? <></> :
+            {isLoading ? (
+                <></>
+            ) : (
                 <>
                     <TabComponent product={product!} />
-
                 </>
-            }
-
+            )}
         </Box>
     );
 };
 
-export default ProductDetailComponent
+export default ProductDetailComponent;

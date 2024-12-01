@@ -1,14 +1,9 @@
-import useSearchQuery from '@/hooks/Client/home/useSearch';
-import { useSearchParams } from 'react-router-dom';
+// import useSearchQuery from "@/hooks/Client/home/useSearch";
 
 const SearchPage = () => {
-    const searchQuery = useSearchQuery();
+    // const searchQuery = useSearchQuery();
 
-    return (
-        <div>
-            Search Page
-        </div>
-    )
-}
+    return <div>Search Page</div>;
+};
 
-export default SearchPage
+export default SearchPage;

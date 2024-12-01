@@ -4,7 +4,6 @@ import NotFound from "./pages/Errors/NotFound";
 import { ToastContainer } from "react-toastify";
 import Loading from "./components/Shared/Loading";
 import useAddresses from "./hooks/Shared/useAddresses";
-import Loading from "./components/Shared/Loading";
 import CheckAuth from "./components/Client/CheckAuthComponent";
 import TopProgressBar from "./components/Client/TopProgressBar";
 import { Routes, Route, Navigate, RouteProps } from "react-router-dom";
@@ -13,32 +12,31 @@ import usePaymentServiceStatus from "./hooks/Shared/usePaymentServiceStatus";
 import CustomerRouteMiddleware, { CustomerRoutes } from "./components/Route/CustomerRoute";
 import "./styles/style.css";
 import "react-toastify/dist/ReactToastify.css";
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
-
-
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
 
 function App() {
     useAddresses();
     usePaymentServiceStatus();
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
-
     return (
         <>
-            <CheckAuth setIsCheckingAuth={setIsCheckingAuth} >
+            <CheckAuth setIsCheckingAuth={setIsCheckingAuth}>
                 <TopProgressBar>
                     <Routes>
                         <Route path="/" element={<CustomerRouteMiddleware isLoading={isCheckingAuth} />}>
                             {CustomerRoutes.map((route) => {
-                                return route.props.children.map((child: { props: JSX.IntrinsicAttributes & RouteProps; }) => {
-                                    if (child.props.path === undefined) {
-                                        return <Route {...child.props} />;
+                                return route.props.children.map(
+                                    (child: { props: JSX.IntrinsicAttributes & RouteProps }) => {
+                                        if (child.props.path === undefined) {
+                                            return <Route {...child.props} />;
+                                        }
+                                        return <Route {...child.props} key={child.props.path} />;
                                     }
-                                    return <Route {...child.props} key={child.props.path} />;
-                                });
+                                );
                             })}
                         </Route>
                         <Route path="/admin" element={<AdminRoute />}>
@@ -62,7 +60,6 @@ function App() {
                 </TopProgressBar>
             </CheckAuth>
         </>
-
     );
 }
 

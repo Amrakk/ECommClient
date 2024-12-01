@@ -3,7 +3,6 @@ import axios, { isAxiosError } from "axios";
 export const API = axios.create({
     baseURL: import.meta.env.VITE_API_URL + "/v1",
     withCredentials: true,
-    timeout: 10000 
 });
 
 API.interceptors.response.use(
@@ -13,13 +12,13 @@ API.interceptors.response.use(
             if (!error.response) {
                 return Promise.reject({
                     code: 500,
-                    message: "Unable to connect to the server. Please check your internet connection."
+                    message: "Unable to connect to the server. Please check your internet connection.",
                 });
             }
             if (error.code === "ECONNABORTED") {
                 return Promise.reject({
                     code: 408,
-                    message: "Request timed out. Please try again."
+                    message: "Request timed out. Please try again.",
                 });
             }
             const isAdminURL = error.response.config.url?.includes("/admin");
@@ -30,7 +29,7 @@ API.interceptors.response.use(
         }
         return Promise.reject({
             code: 500,
-            message: "An unexpected error occurred. Please try again."
+            message: "An unexpected error occurred. Please try again.",
         });
     }
 );
