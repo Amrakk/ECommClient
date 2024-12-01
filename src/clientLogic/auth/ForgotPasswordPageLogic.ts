@@ -1,7 +1,6 @@
-import { AuthenticateAPI } from "@/apis/client/auth/api";
 import { toast } from "react-toastify";
 import { isEmail, isStrongPassword } from "validator";
-import { AxiosResponse } from 'axios';
+import { AxiosResponse } from "axios";
 import { UseMutationResult } from "@tanstack/react-query";
 import { Dispatch } from "react";
 import { UnknownAction } from "@reduxjs/toolkit";
@@ -15,14 +14,14 @@ export class ForgotPasswordPageHandler {
     }
 
     public static async onSubmitHandleStep1(
-        email: string, 
-        setErrors: (errors: any) => void, 
+        email: string,
+        setErrors: (errors: any) => void,
         setActiveStep: (step: (prevActiveStep: number) => number) => void,
         dispatch: Dispatch<UnknownAction>,
         emailSendMutation: UseMutationResult<AxiosResponse<any, any>, Error, string, unknown>
     ) {
         if (!isEmail(email)) {
-            this.setErrorMessages({ email: 'Email not valid' }, setErrors);
+            this.setErrorMessages({ email: "Email not valid" }, setErrors);
             return;
         }
 
@@ -31,21 +30,21 @@ export class ForgotPasswordPageHandler {
 
         try {
             await emailSendMutation.mutateAsync(email);
-            setActiveStep(prevActiveStep => prevActiveStep + 1);
-            toast.success('OTP has been sent to your email');
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            toast.success("OTP has been sent to your email");
         } catch (error) {
-            toast.error('Something went wrong');
+            toast.error("Something went wrong");
         } finally {
             dispatch(setLoading(false));
         }
     }
 
     public static async onSubmitHandleStep2(
-        email: string, 
-        password: string, 
+        email: string,
+        password: string,
         confirmPassword: string,
-        otp: string, 
-        setErrors: (errors: any) => void, 
+        otp: string,
+        setErrors: (errors: any) => void,
         dispatch: Dispatch<UnknownAction>,
         resetPasswordMutation: UseMutationResult<void, Error, resetPasswordRequest, unknown>,
         navigate: NavigateFunction
@@ -53,13 +52,14 @@ export class ForgotPasswordPageHandler {
         const errors: any = {};
 
         if (!isStrongPassword(password)) {
-            errors.newPassword = 'Password needs at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character';
+            errors.newPassword =
+                "Password needs at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character";
         }
         if (password !== confirmPassword) {
-            errors.confirmPassword = 'Password does not match';
+            errors.confirmPassword = "Password does not match";
         }
         if (otp.length !== 6) {
-            errors.otp = 'OTP is not valid';
+            errors.otp = "OTP is not valid";
         }
 
         if (Object.keys(errors).length > 0) {
@@ -73,8 +73,8 @@ export class ForgotPasswordPageHandler {
 
         try {
             await resetPasswordMutation.mutateAsync(request);
-            toast.success('Password has been reset, please re-login');
-            navigate('/auth/login');
+            toast.success("Password has been reset, please re-login");
+            navigate("/auth/login");
         } catch (error: any) {
             toast.error(error.message);
         } finally {

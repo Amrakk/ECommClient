@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slide, Fade } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Fade } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
 
@@ -12,20 +12,19 @@ interface DialogConfirmProps {
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
-      children: React.ReactElement<any, any>;
+        children: React.ReactElement<any, any>;
     },
-    ref: React.Ref<unknown>,
-  ) {
+    ref: React.Ref<unknown>
+) {
     return <Fade ref={ref} {...props} />;
-  });
+});
 
-const DialogConfirm = ({ open, onClose, onConfirm, title, content } : DialogConfirmProps) => {
-  
+const DialogConfirm = ({ open, onClose, onConfirm, title, content }: DialogConfirmProps) => {
     return (
-        <Dialog 
-            TransitionComponent={Transition} 
-            open={open} 
-            onClose={onClose} 
+        <Dialog
+            TransitionComponent={Transition}
+            open={open}
+            onClose={onClose}
             aria-labelledby="form-dialog-title"
             PaperProps={{
                 style: {

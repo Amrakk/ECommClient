@@ -1,5 +1,5 @@
 import { IoIosArrowDown } from "react-icons/io";
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { useDebounce } from "@/hooks/Shared/useDebounce";
 import CustomRadio from "@/components/Shared/CustomRadio";
 import FilterContent from "@/components/Shared/FilterContent";

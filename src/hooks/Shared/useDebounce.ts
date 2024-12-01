@@ -1,7 +1,7 @@
 import debounce from "lodash/debounce";
 import { useRef, useEffect, useCallback } from "react";
 
-export function useDebounce(p0: void, p1: number, cb: Function, delay: number) {
+export function useDebounce(cb: Function, delay: number) {
     const options = { leading: true, trailing: true };
     const cbRef = useRef(cb);
 

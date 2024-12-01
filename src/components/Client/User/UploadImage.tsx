@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
     Button,
     Dialog,
@@ -7,20 +7,20 @@ import {
     DialogActions,
     Box,
     CircularProgress,
-    Typography
-} from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import useUserActions from '@/hooks/Admin/Users/useUserActions';
-import { RootState } from '@/stores/client/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { setUser } from '@/stores/client/userSlice';
+    Typography,
+} from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import useUserActions from "@/hooks/Admin/Users/useUserActions";
+import { RootState } from "@/stores/client/store";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { setUser } from "@/stores/client/userSlice";
 
 const AvatarUploadDialog = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [preview, setPreview] = useState<string>('');
+    const [preview, setPreview] = useState<string>("");
     const [loading, setLoading] = useState(false);
-    const { updateAvatarAction  } = useUserActions();
+    const { updateAvatarAction } = useUserActions();
     const user = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
 
@@ -35,66 +35,65 @@ const AvatarUploadDialog = ({ open, onClose }: { open: boolean; onClose: () => v
     const handleUpload = async () => {
         if (!selectedFile) return;
         setLoading(true);
-        const formData = new FormData();
-        formData.append('image', selectedFile);
-        updateAvatarAction.mutateAsync({
-            _id: user!._id,
-            formData
-        }).then((res) => {
-            setLoading(false);
-            onClose();
-            const newUpdatedUser = { ...user, avatarUrl: res.url };
-            dispatch(setUser(newUpdatedUser));
-            toast.success('Avatar updated successfully');
-        }).catch((err) => {
-            setLoading(false);
-            console.error(err);
-            toast.error('Failed to update avatar');
-        })
+        updateAvatarAction
+            .mutateAsync({
+                _id: user!._id,
+                avatar: selectedFile,
+            })
+            .then((res) => {
+                setLoading(false);
+                onClose();
+                const newUpdatedUser = { ...user, avatarUrl: res.url };
+                dispatch(setUser(newUpdatedUser));
+                toast.success("Avatar updated successfully");
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.error(err);
+                toast.error("Failed to update avatar");
+            });
     };
 
     return (
-        <Dialog open={open} onClose={onClose}
-            PaperProps={{ sx: { borderRadius: 4} }}
-            maxWidth="sm" fullWidth>
-            <DialogTitle sx={{ textAlign: 'center' }}>Upload Avatar</DialogTitle>
+        <Dialog open={open} onClose={onClose} PaperProps={{ sx: { borderRadius: 4 } }} maxWidth="sm" fullWidth>
+            <DialogTitle sx={{ textAlign: "center" }}>Upload Avatar</DialogTitle>
             <DialogContent>
                 <Box
                     sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
                         gap: 2,
-                        p: 1    ,
+                        p: 1,
                     }}
                 >
                     <input
                         accept="image/*"
                         type="file"
                         onChange={handleFileSelect}
-                        style={{ display: 'none' }}
+                        style={{ display: "none" }}
                         id="avatar-upload"
                     />
-                    <label htmlFor="avatar-upload" style={{ width: '100%' }}>
+                    <label htmlFor="avatar-upload" style={{ width: "100%" }}>
                         <Box
                             sx={{
-                                border: '2px dashed #ccc',
-                                borderRadius: '50%', // Changed to circle for avatar
+                                border: "2px dashed #ccc",
+                                borderRadius: "50%", // Changed to circle for avatar
                                 p: 3,
-                                cursor: 'pointer',
-                                transition: 'all 0.2s ease',
-                                backgroundColor: 'rgba(0,0,0,0.02)',
-                                '&:hover': {
-                                    borderColor: 'primary.main',
-                                    backgroundColor: 'rgba(0,0,0,0.05)'
+                                cursor: "pointer",
+                                transition: "all 0.2s ease",
+                                backgroundColor: "rgba(0,0,0,0.02)",
+                                "&:hover": {
+                                    borderColor: "primary.main",
+                                    backgroundColor: "rgba(0,0,0,0.05)",
                                 },
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
                                 width: 250,
                                 height: 250,
-                                margin: '0 auto',
-                                justifyContent: 'center'
+                                margin: "0 auto",
+                                justifyContent: "center",
                             }}
                         >
                             {preview ? (
@@ -102,15 +101,15 @@ const AvatarUploadDialog = ({ open, onClose }: { open: boolean; onClose: () => v
                                     src={preview}
                                     alt="Preview"
                                     style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        borderRadius: '50%'
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        borderRadius: "50%",
                                     }}
                                 />
                             ) : (
                                 <>
-                                    <AccountCircleIcon sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
+                                    <AccountCircleIcon sx={{ fontSize: 60, color: "text.secondary", mb: 2 }} />
                                     <Typography variant="body1" color="text.secondary" align="center">
                                         Choose profile photo
                                     </Typography>
@@ -130,7 +129,7 @@ const AvatarUploadDialog = ({ open, onClose }: { open: boolean; onClose: () => v
                     variant="contained"
                     startIcon={loading ? <CircularProgress size={20} /> : null}
                 >
-                    {loading ? 'Uploading...' : 'Upload'}
+                    {loading ? "Uploading..." : "Upload"}
                 </Button>
             </DialogActions>
         </Dialog>

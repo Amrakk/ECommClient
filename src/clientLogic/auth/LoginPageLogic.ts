@@ -1,24 +1,25 @@
-import { Navigate, NavigateFunction } from 'react-router-dom';
-import { IResponseLogin } from "@/apis/client/auth/api";
+import { NavigateFunction } from "react-router-dom";
+import { IResLogin } from "@/interfaces/response";
 import { IResponse } from "@/interfaces/response";
-import { LoginRequest } from "@/models/request";
+import { LoginRequest } from "@/interfaces/request";
 import { setLoading } from "@/stores/client/loadingSlice";
 import { Dispatch, UnknownAction } from "@reduxjs/toolkit";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { isStrongPassword } from "validator";
 import isEmail from "validator/lib/isEmail";
 
-
 export const onSubmitHandleLogin = async (
     e: React.FormEvent<HTMLFormElement>,
-    setErrors: React.Dispatch<React.SetStateAction<{
-        email: string;
-        password: string;
-    }>>,
-    loginMutations: UseMutationResult<AxiosResponse<IResponse<IResponseLogin>, any>, Error, LoginRequest, unknown>,
+    setErrors: React.Dispatch<
+        React.SetStateAction<{
+            email: string;
+            password: string;
+        }>
+    >,
+    loginMutations: UseMutationResult<AxiosResponse<IResponse<IResLogin>, any>, Error, LoginRequest, unknown>,
     dispatch: Dispatch<UnknownAction>,
     navigate: NavigateFunction
 ) => {
@@ -30,22 +31,24 @@ export const onSubmitHandleLogin = async (
     };
 
     const newError = {
-        email: '',
-        password: ''
+        email: "",
+        password: "",
     };
 
     if (!isEmail(email.value)) {
-        newError.email = 'Email not valid';
-    } else if (password.value === '') {
-        newError.password = 'Password is required';
-    } else if (!isStrongPassword(password.value, {
-        minLength: 3,
-        minLowercase: 0,
-        minUppercase: 0,
-        minNumbers: 0,
-        minSymbols: 0,
-    })) {
-        newError.password = 'Password does not meet the requirements';
+        newError.email = "Email not valid";
+    } else if (password.value === "") {
+        newError.password = "Password is required";
+    } else if (
+        !isStrongPassword(password.value, {
+            minLength: 3,
+            minLowercase: 0,
+            minUppercase: 0,
+            minNumbers: 0,
+            minSymbols: 0,
+        })
+    ) {
+        newError.password = "Password does not meet the requirements";
     }
 
     if (newError.email || newError.password) {
@@ -61,8 +64,8 @@ export const onSubmitHandleLogin = async (
     try {
         await loginMutations.mutateAsync(data);
         dispatch(setLoading(false));
-        toast.success('Login successful');
-        navigate('/home');
+        toast.success("Login successful");
+        navigate("/home");
     } catch (error: any) {
         dispatch(setLoading(false));
         toast.error(error.message);

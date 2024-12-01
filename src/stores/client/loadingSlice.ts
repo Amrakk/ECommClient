@@ -1,14 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { stat } from "fs";
 
 const loadingSlice = createSlice({
-    name: 'loading',
+    name: "loading",
     initialState: false,
     reducers: {
-        setLoading: (state, action: { payload: boolean }) => {
-            return state = action.payload;
-        }
-    }
-})
+        setLoading: (_, action: { payload: boolean }) => {
+            return action.payload;
+        },
+    },
+});
 export const { setLoading } = loadingSlice.actions;
 export default loadingSlice;
