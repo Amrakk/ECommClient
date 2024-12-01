@@ -38,6 +38,10 @@ const TopProgressBar = ({ children }: { children: ReactNode }) => {
     const isLoading = useSelector((state: RootState)=> state.loading)
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location.pathname]);
+
 
     useEffect(() => {
         setPrevLocation(location.pathname);
@@ -49,10 +53,6 @@ const TopProgressBar = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         dispatch(setLoading(false));
     }, [prevLocation])
-
-    
-
-    
 
 
     return (

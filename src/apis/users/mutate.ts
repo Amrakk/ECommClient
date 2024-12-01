@@ -57,11 +57,9 @@ export async function updateUserByUser(props: { _id: string; data: UpdateByUser 
 }
 
 // TODO: Test this
-export async function updateUserAvatar(props: { _id: string; avatar: File }): Promise<{ url: string }> {
-    const formData = new FormData();
-    formData.append("image", props.avatar);
+export async function updateUserAvatar(props: { _id: string; formData: FormData }): Promise<{ url: string }> {
 
-    return API.patch<IResponse<{ url: string }>>(`/users/${props._id}/avatar`, formData, {
+    return API.patch<IResponse<{ url: string }>>(`/users/${props._id}/avatar`, props.formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },

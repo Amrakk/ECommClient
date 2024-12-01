@@ -149,3 +149,14 @@ export const ORDER_STATUS_STYLES: Record<ORDER_STATUS, { bg: string; text: strin
         label: "Cancelled",
     },
 };
+
+// Size according to MUI variant prop
+export const FONT_SIZE = {
+    body2: "0.875rem",
+    body1: "1rem",
+    h6: "1.25rem",
+    h5: "1.5rem",
+    h4: "2rem",
+    small: "0.8rem",
+    superSmall: "0.7rem",
+};

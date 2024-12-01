@@ -13,6 +13,12 @@ import { RootState } from "@/stores/client/store";
 import { LoadingScreen } from "../Client/iInitializingComponent";
 import { PRODUCT_CATEGORY_LIST } from "@/constants";
 import CategoryPage from "@/pages/Client/Home/CategoryPage";
+import SearchPage from "@/pages/Client/Home/SearchPage";
+import ProductDetailComponent from "../../pages/Client/Home/ProductDetailPage";
+import FooterComponent from "../Client/FooterComponent";
+import CartPage from "@/pages/Client/Home/CartPage";
+import ProtectedRoute from "../Client/ProtectedRoute";
+import ProfilePage from "@/pages/Client/User/ProfilePage";
 
 
 export default function CustomerRouteMiddleware(props: any) {
@@ -36,6 +42,7 @@ export default function CustomerRouteMiddleware(props: any) {
                     <CssBaseline />
                     <HeaderClient />
                     <Outlet />
+                    <FooterComponent />
                 </ThemeProvider>
             </>
         )
@@ -71,7 +78,12 @@ export const CustomerPaths =
             Sports: "/category/sports",
             Electronics: "/category/electronics",
             Others: "/category/others",
-        }
+        },
+        Search: "/search",
+        Product: {
+            Detail: "/product/:id",
+        },
+        User: "/user/profile",
     }
 }
 
@@ -89,13 +101,25 @@ export const CustomerRoutes = [
             <Route path="" element={<Navigate to="login" />} />
             <Route path="*" element={<NotFound isDark={true} />} />
         </Route>
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<Navigate to="/home" />} />
+
         <Route path="/category">
             <>
                 {categoryRoutes.map((route) => route)}
             </>
         </Route>
+        <>
+            {categoryRoutes.map((route) => route)}
+        </>
+        <Route path='/cart' element={<ProtectedRoute> <CartPage /> </ProtectedRoute>} />
+        <Route path="/search" element={<SearchPage />} />
 
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/user">
+            <Route path="profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        </Route>
+        <Route path="/product/:id" element={<ProductDetailComponent />} />
+
         <Route path="*" element={<NotFound isDark={true} />} />
     </>
 ]

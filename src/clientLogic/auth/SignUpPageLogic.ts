@@ -1,10 +1,8 @@
 import { SignUpRequest } from '@/interfaces/request';
 import { IResLogin } from '@/interfaces/response';
-import Theme from '@/layouts/Theme';
 import { setLoading } from '@/stores/client/loadingSlice';
 import { UnknownAction } from '@reduxjs/toolkit';
 import { UseMutationResult } from '@tanstack/react-query';
-import { set } from 'lodash';
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 import { toast } from 'react-toastify';

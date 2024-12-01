@@ -1,4 +1,5 @@
 import { USER_ROLE } from "@/constants";
+import { UserDetail } from "@/models/user";
 import { createSlice } from "@reduxjs/toolkit";
 
 
@@ -14,7 +15,7 @@ interface UserData {
 
 const userSlice = createSlice({
     name: "user",
-    initialState: null as UserData | null,
+    initialState: null as UserDetail | null,
     reducers: {
         setUser: (state, action) => {
             return state = action.payload;

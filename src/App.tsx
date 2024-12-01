@@ -11,6 +11,10 @@ import "react-toastify/dist/ReactToastify.css";
 import NotFound from "./pages/Errors/NotFound";
 import AdminRoute from "./components/Route/AdminRoute";
 import CheckAuth from "./components/Client/CheckAuthComponent";
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 
 function sleep(ms: number = 200) {
     return new Promise((resolve) => setTimeout(resolve, ms));

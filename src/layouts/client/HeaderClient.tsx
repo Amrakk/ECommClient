@@ -3,7 +3,7 @@ import { Search } from "@mui/icons-material";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import IconHomePagePNG from '@/assets/EComm-transparent.png';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import {
     Menu,
@@ -17,18 +17,42 @@ import {
     ShoppingBag as PurchaseIcon,
     Logout as LogoutIcon
 } from '@mui/icons-material';
+import { CustomerPaths } from "@/components/Route/CustomerRoute";
+import { useGetCartByUser } from "@/hooks/Client/home/cart/useCart";
+import { RootState } from "@/stores/client/store";
+import { useDispatch, useSelector } from "react-redux";
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import { logout } from "@/apis/auth";
+import { removeUser } from "@/stores/client/userSlice";
+import { setLoading } from "@/stores/client/loadingSlice";
+import { set } from "lodash";
+
 const HeaderClient = () => {
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const [searchValue, setSearchValue] = useState('');
+    const { data: data } = useGetCartByUser();
+    const dispatch = useDispatch();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const user = useSelector((state: RootState) => state.user);
+
+    const handleClose = async () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = async () => {
+        dispatch(setLoading(true))
+        await logout();
+        dispatch(removeUser());
+        localStorage.removeItem('user');
+        dispatch(setLoading(false))
+        setAnchorEl(null);
+    }
     return (
         <AppBar position="sticky" sx={{ display: 'flex', justifyContent: 'center' }} >
             <Toolbar>
@@ -41,6 +65,7 @@ const HeaderClient = () => {
                         size="small"
                         placeholder="Search..."
                         variant="outlined"
+                        onChange={(e) => setSearchValue(e.target.value)}
                         sx={{
                             width: {
                                 xs: '100%',
@@ -65,7 +90,9 @@ const HeaderClient = () => {
                         slotProps={{
                             input: {
                                 startAdornment: (
-                                    <IconButton size="small" sx={{ color: 'white' }}>
+                                    <IconButton onClick={() => {
+                                        navigate(CustomerPaths.home.Search + `?q=${searchValue}`)
+                                    }} size="small" sx={{ color: 'white' }}>
                                         <Search />
                                     </IconButton>
                                 ),
@@ -74,16 +101,14 @@ const HeaderClient = () => {
                     />
                 </Box>
                 <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', gap: { xs: 1, md: 2 } }} >
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="error">
-                            <NotificationsNoneIcon />
-                        </Badge>
-                    </IconButton>
-                    <IconButton color="inherit" >
-                        <Badge badgeContent={4} color="error">
-                            <ShoppingCartOutlinedIcon />
-                        </Badge>
-                    </IconButton>
+                    <Link to="/cart" style={{ textDecoration: 'none', color: 'white' }}>
+                        <IconButton color="inherit" >
+                            <Badge badgeContent={data?.items.length} color="error">
+                                <ShoppingCartOutlinedIcon />
+                            </Badge>
+                        </IconButton>
+                    </Link>
+
                     <IconButton
                         color="inherit"
                         onClick={handleClick}
@@ -92,7 +117,7 @@ const HeaderClient = () => {
                         aria-expanded={open ? 'true' : undefined}
                     >
                         <Avatar
-                            src="https://avatars.githubusercontent.com/u/472311"
+                            src={user?.avatarUrl}
                             sx={{
                                 width: 40,
                                 height: 40,
@@ -136,24 +161,53 @@ const HeaderClient = () => {
                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-                        <MenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <AccountIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText primary="My Account" />
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <PurchaseIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText primary="My Purchase" />
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            <ListItemIcon>
-                                <LogoutIcon fontSize="small" color="error" />
-                            </ListItemIcon>
-                            <ListItemText primary="Logout" sx={{ color: 'error.main' }} />
-                        </MenuItem>
+                        {user != null ?
+                            <Link to={CustomerPaths.home.User}>
+                                <MenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <AccountIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="My Profile" />
+                                </MenuItem>
+                            </Link> : <Link to={CustomerPaths.auth.Login}>
+                                <MenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <AccountIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Login" />
+                                </MenuItem>
+                            </Link>
+                        }
+
+                        {
+                            user != null ?
+                                <Link to="/purchase">
+                                    <MenuItem onClick={handleClose}>
+                                        <ListItemIcon>
+                                            <PurchaseIcon fontSize="small" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="My Purchase" />
+                                    </MenuItem>
+                                </Link> :
+                                <Link to={CustomerPaths.auth.SignUp}>
+                                    <MenuItem onClick={handleClose}>
+                                        <ListItemIcon>
+                                            <AppRegistrationIcon fontSize="small" />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Sign Up" />
+                                    </MenuItem>
+                                </Link>
+                        }
+
+                        {
+                            user != null ?
+                                <MenuItem onClick={handleLogout}>
+                                    <ListItemIcon>
+                                        <LogoutIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Logout" />
+                                </MenuItem> : null
+                        }
                     </Menu>
                 </Box>
             </Toolbar>

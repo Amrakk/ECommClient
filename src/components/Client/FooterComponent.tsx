@@ -8,12 +8,19 @@ const FooterComponent = () => {
             component="footer"
             sx={{
                 color: 'white',
-                py: 6,
                 mt: 'auto',
                 width: '100%',
+ 
             }}
         >
-            <Box>
+
+            <Box sx={{
+                display: 'flex',
+                m: 10 ,
+                alignItems: 'space-between',
+                flexDirection: 'column',
+                justifyContent: 'center',
+            }}>
                 <Grid container spacing={4}>
                     <Grid size={{ xs: 12, sm: 4 }}>
                         <Typography variant="h6" gutterBottom>

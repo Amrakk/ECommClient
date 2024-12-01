@@ -1,5 +1,6 @@
 import { RESPONSE_CODE, RESPONSE_MESSAGE } from "@/constants";
 import { CartDetail } from "@/models/cart";
+import { ProductDetail } from "@/models/product";
 import { UserDetail } from "@/models/user";
 
 export interface IResponse<T = undefined> {
@@ -16,4 +17,9 @@ export interface IResponse<T = undefined> {
 export interface IResLogin {
     user: UserDetail;
     cart: CartDetail | null;
+}
+
+export interface IResGetProductById {
+    product: ProductDetail;
+    totalDocuments: number;    
 }

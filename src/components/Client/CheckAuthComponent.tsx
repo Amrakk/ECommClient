@@ -18,8 +18,10 @@ const CheckAuth = (props: any) => {
             dispatch(setUser(data.user));
             zustandUserStore.setUser(data.user);
         }).catch((error) => {
+            
             if (error.code >= 400 ) {
                 toast.error(error.message);
+                return;
             }
             props.setIsCheckingAuth(false);
             dispatch(setUser(null));
