@@ -21,7 +21,6 @@ export const onSubmitHandleLogin = async (
     >,
     loginMutations: UseMutationResult<AxiosResponse<IResponse<IResLogin>, any>, Error, LoginRequest, unknown>,
     dispatch: Dispatch<UnknownAction>,
-    navigate: NavigateFunction
 ) => {
     e.preventDefault();
 
@@ -65,7 +64,7 @@ export const onSubmitHandleLogin = async (
         await loginMutations.mutateAsync(data);
         dispatch(setLoading(false));
         toast.success("Login successful");
-        navigate("/home");
+        location.href = "/";
     } catch (error: any) {
         dispatch(setLoading(false));
         toast.error(error.message);

@@ -95,16 +95,20 @@ const ProductDetailComponent = () => {
                     ) {
                         productToCart.items[0].quantity += item.quantity;
                     } else {
-                        productToCart.items.push({
-                            productId: item.product._id,
-                            variantId: item.variantId,
-                            quantity: item.quantity,
-                        });
+                        productToCart.items = [
+                            ...productToCart.items,
+                            {
+                                productId: item.product._id,
+                                variantId: item.variantId,
+                                quantity: item.quantity,
+                            },
+                        ];
                     }
                 });
                 response = await addProductToOldCartMutate.mutateAsync({ cartId: user.cartId, data: productToCart });
             } else {
                 response = await addProductToNewCartMutate.mutateAsync(productToCart);
+                // Update user cartId 
                 const update: UpdateByUser = {
                     cartId: response._id,
                     addresses: user.addresses,

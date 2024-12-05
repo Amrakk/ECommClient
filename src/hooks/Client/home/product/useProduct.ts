@@ -2,7 +2,7 @@ import { ProductAPI } from "@/apis/client/home/product/api"
 import { PRODUCT_CATEGORY } from "@/constants"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
-import {  getProductById2 } from "@/apis/products"
+import {  getProductById2, getProducts } from "@/apis/products"
 import {  getProductRatingByProductId } from "@/apis/productRatings"
 
 export const useProductByCategoryMutation = () => {
@@ -36,5 +36,14 @@ export const useProductRatingByIdQuery = () => {
         refetchOnWindowFocus: false
     })
     return productRatingById
+}
+
+export const useGetLatestProductsQuery = () => {
+    const latestProductsQuery = useQuery({
+        queryKey: ['latestProducts'],
+        queryFn: () => ProductAPI.getLatestProducts(),
+        refetchOnWindowFocus: false
+    })
+    return latestProductsQuery
 }
 

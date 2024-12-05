@@ -26,7 +26,7 @@ interface UpdateOrder {
     status?: ORDER_STATUS;
 }
 
-interface Checkout {
+export interface Checkout {
     shippingAddress: IAddress;
     paymentType: PAYMENT_TYPE;
     usePoints?: boolean;
