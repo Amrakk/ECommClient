@@ -24,7 +24,9 @@ export interface InsertVoucher {
 }
 
 export async function validateCode(code: string): Promise<VoucherDetail> {
-    return API.get<IResponse<VoucherDetail>>(`/vouchers/code/${code}`).then((res) => res.data.data!);
+    return API.post<IResponse<VoucherDetail>>(`/vouchers/code`, {
+        code: code
+    }).then((res) => res.data.data!);
 }
 
 export async function insertVoucher(data: InsertVoucher): Promise<VoucherDetail> {

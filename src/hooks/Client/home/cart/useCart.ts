@@ -1,6 +1,6 @@
 import { getCartById, insertCart, updateCart, UpsertCart } from "@/apis/carts";
 import { RootState } from "@/stores/client/store";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
 
@@ -22,10 +22,16 @@ export const useGetCartByUser = () => {
 
 
 export const addProductToNewCart = () => {
+    const user = useSelector((state: RootState) => state.user);
+    const queryClient = useQueryClient();
+    
     const addProductToNewCartMutation = useMutation({
         mutationKey: ["addProductToCart"],
         mutationFn: insertCart,
         onSuccess: (data) => {
+            queryClient.invalidateQueries({
+                queryKey: ["cart", user?._id]
+            });
             return data;
         }
     })
@@ -34,10 +40,15 @@ export const addProductToNewCart = () => {
 }
 
 export const useUpdateProductCart = () => {
+    const user = useSelector((state: RootState) => state.user);
+    const queryClient = useQueryClient();
     const addProductToCartMutation = useMutation({
         mutationKey: ["addProductToCart"],
         mutationFn: ({ cartId, data }: { cartId: string, data: UpsertCart }) => updateCart(cartId, data),
         onSuccess: (data) => {
+            queryClient.invalidateQueries({
+                queryKey: ["cart", user?._id]
+            });
             return data;
         }
     })

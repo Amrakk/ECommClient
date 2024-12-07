@@ -3,7 +3,7 @@ import { API } from "@/apis/api";
 import type { IResponse } from "@/interfaces/response";
 import type { ProductRatingDetail } from "@/models/product";
 
-interface InsertVoucher {
+export interface InsertRating {
     userId: string;
     productId: string;
     rating: number;
@@ -16,7 +16,7 @@ interface UpdateVoucher {
     review?: string;
 }
 
-export async function insertProductRating(data: InsertVoucher): Promise<ProductRatingDetail> {
+export async function insertProductRating(data: InsertRating): Promise<ProductRatingDetail> {
     return API.post<IResponse<ProductRatingDetail>>("/productRatings", data).then((res) => res.data.data!);
 }
 

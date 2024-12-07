@@ -6,59 +6,80 @@ import {
     MenuItem,
     Collapse,
     FormControl,
-    FormControlLabel,
     Typography,
     Paper,
     IconButton,
-    Radio,
     RadioGroup,
     Button,
+    FormControlLabel,
+    Radio,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useEffect, useRef, useState } from "react";
 import { ProductDetail, ProductFilter } from "@/models/product";
-import { PRODUCT_CATEGORY } from "@/constants";
+import { PRODUCT_CATEGORY, PRODUCT_CATEGORY_LIST } from "@/constants";
 import { useBrandsByCategory } from "@/hooks/Admin/Products/useBrands";
 import { convertToVietnameseDong } from "@/utils/convertToVnd";
-import { ProductAPI } from "@/apis/client/home/product/api";
 import { useDispatch } from "react-redux";
+import { useFilterProductQuery } from "@/hooks/Client/home/product/useFilterProduct";
 import { setLoading } from "@/stores/client/loadingSlice";
-import { useProductByCategoryMutation } from "@/hooks/Client/home/product/useProduct";
 
-interface FiltersComponentProps {
+interface FiltersComponentAllPageProps {
     setProductsData: React.Dispatch<React.SetStateAction<ProductDetail[]>>;
-    category: PRODUCT_CATEGORY;
     productsData: ProductDetail[];
+    setIsLoading : React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const FiltersComponent = (props: FiltersComponentProps) => {
-    type Panel = "category" | "price" | "rating" | "itemsPerPage";
-    const listBrand = useBrandsByCategory(props.category).data;
-    const [filter, setFilter] = useState<ProductFilter>({});
-    const useProductByCategory = useProductByCategoryMutation();
-    const dispatch = useDispatch();
+const FiltersComponentAllPage = (props: FiltersComponentAllPageProps) => {
+    type Panel = "category" | "price" | "rating" | "itemsPerPage" | "brand";
+    const [filter, setFilter] = useState<ProductFilter>({
+        categories: [
+            PRODUCT_CATEGORY.ELECTRONICS,
+        ],
+        brands: [],
+        minRating: undefined,
+        minPrice: 1,
+        maxPrice: 100000000
+    });
     const firstRender = useRef(true);
+    const useFilterProduct = useFilterProductQuery(filter);
+    const { data: listBrands,  isSuccess: isSuccessBrands } = useBrandsByCategory(filter.categories?.[0] || PRODUCT_CATEGORY.ELECTRONICS); ;
+    const dispatch = useDispatch();
 
     const [expanded, setExpanded] = useState<Record<Panel, boolean>>({
         category: true,
+        brand: true,
         price: true,
         rating: true,
         itemsPerPage: true,
     });
 
     useEffect(() => {
+        if(useFilterProduct.isSuccess){
+            props.setProductsData(useFilterProduct.data.products);
+        }
+    }, [useFilterProduct.data]);
+  
+
+    useEffect(() => {
+        if(filter.minPrice === filter.maxPrice) {
+            setFilter({
+                ...filter,
+                minPrice: 1,
+                maxPrice: 100000000
+            });
+        }
         if (firstRender.current) {
             firstRender.current = false;
             return;
         } else {
-            const delayDebounceFn = setTimeout(() => {
+            const delayDebounceFn = setTimeout(async ()  => {
+                props.setIsLoading(true);
                 dispatch(setLoading(true));
-                useProductByCategory.mutateAsync(props.category).then((data) => {
-                    const filteredProducts = ProductAPI.filterProducts(data, filter);
-                    props.setProductsData(filteredProducts);
-                    dispatch(setLoading(false));
-                });
+                await useFilterProduct.refetch(); 
+                dispatch(setLoading(false));
+                props.setIsLoading(false);
             }, 1000);
             return () => clearTimeout(delayDebounceFn);
         }
@@ -99,7 +120,7 @@ const FiltersComponent = (props: FiltersComponentProps) => {
                             }}
                         >
                             <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>
-                                Brands
+                                Category
                             </Typography>
                             <IconButton onClick={() => handleExpandClick("category")}>
                                 {expanded.category ? (
@@ -114,10 +135,60 @@ const FiltersComponent = (props: FiltersComponentProps) => {
                             <Box sx={{ ml: 2 }}>
                                 <RadioGroup
                                     name="brand"
+                                    value={filter.categories?.[0] || ""}
+                                    sx={{ display: "flex", flexDirection: "row", gap: 1 }}
+                                >
+                                    {PRODUCT_CATEGORY_LIST.map((item, index) => {
+                                        return (
+                                            <FormControlLabel
+                                                key={index}
+                                                value={item}
+                                                control={<Radio />}
+                                                label={item.charAt(0).toUpperCase() + item.slice(1)}
+                                                onChange={(_) => {
+                                                    setFilter({
+                                                        ...filter,
+                                                        categories: [item],
+                                                        brands: [],
+                                                    });
+                                                }}
+                                            />
+                                        );
+                                    })}
+                                </RadioGroup>
+                            </Box>
+                        </Collapse>
+                    </Box>
+                    <Box sx={{ mb: 3 }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                mb: 1,
+                                cursor: "pointer",
+                            }}
+                        >
+                            <Typography variant="subtitle1" sx={{ fontWeight: "medium" }}>
+                                Brands
+                            </Typography>
+                            <IconButton onClick={() => handleExpandClick("brand")}>
+                                {expanded.brand ? (
+                                    <ExpandMoreIcon fontSize="small" />
+                                ) : (
+                                    <ExpandLessIcon fontSize="small" />
+                                )}
+                            </IconButton>
+                        </Box>
+
+                        <Collapse in={expanded.brand}>
+                            <Box sx={{ ml: 2 }}>
+                                <RadioGroup
+                                    name="brand"
                                     value={filter.brands?.[0] || ""}
                                     sx={{ display: "flex", flexDirection: "row", gap: 1 }}
                                 >
-                                    {listBrand?.map((brand) => {
+                                    { !isSuccessBrands ? <Typography> Loading... </Typography> : listBrands?.map((brand) => {
                                         return (
                                             <FormControlLabel
                                                 key={brand}
@@ -164,9 +235,9 @@ const FiltersComponent = (props: FiltersComponentProps) => {
                         <Collapse in={expanded.price}>
                             <Box sx={{ px: 2, mt: 2 }}>
                                 <Slider
-                                    defaultValue={[0, 100000000]}
-                                    valueLabelDisplay="auto"
-                                    min={0}
+                                    defaultValue={[1, 100000000]}
+                                    valueLabelDisplay="off"
+                                    min={1}
                                     value={[filter.minPrice || 0, filter.maxPrice || 100000000]}
                                     valueLabelFormat={(value) => convertToVietnameseDong(value as number)}
                                     max={100000000}
@@ -181,8 +252,8 @@ const FiltersComponent = (props: FiltersComponentProps) => {
                                         mt: 1,
                                     }}
                                 >
-                                    <Typography variant="body2">0đ</Typography>
-                                    <Typography variant="body2">100,000,000đ</Typography>
+                                    <Typography variant="body2">{convertToVietnameseDong(filter.minPrice)}</Typography>
+                                    <Typography variant="body2">{convertToVietnameseDong(filter.maxPrice)}</Typography>
                                 </Box>
                             </Box>
                         </Collapse>
@@ -216,7 +287,7 @@ const FiltersComponent = (props: FiltersComponentProps) => {
                                 <Rating
                                     defaultValue={0}
                                     value={filter.minRating ?? 0}
-                                    precision={0.5}
+                                    precision={1}
                                     size="large"
                                     onChange={(_, value) => setFilter({ ...filter, minRating: value ?? undefined })}
                                 />
@@ -251,6 +322,9 @@ const FiltersComponent = (props: FiltersComponentProps) => {
                             <FormControl fullWidth size="small" disabled sx={{ borderRadius: 3 }}>
                                 <Select defaultValue={10} sx={{ borderRadius: 3 }}>
                                     <MenuItem value={10}>10</MenuItem>
+                                    <MenuItem value={20}>20</MenuItem>
+                                    <MenuItem value={30}>30</MenuItem>
+
                                 </Select>
                             </FormControl>
                         </Collapse>
@@ -259,7 +333,15 @@ const FiltersComponent = (props: FiltersComponentProps) => {
                         <Button
                             variant="outlined"
                             onClick={() => {
-                                setFilter({});
+                                setFilter({
+                                    categories: [
+                                        PRODUCT_CATEGORY.ELECTRONICS,
+                                    ],
+                                    brands: [],
+                                    minRating: undefined,
+                                    minPrice: 1,
+                                    maxPrice: 100000000
+                                });
                             }}
                             color="primary"
                         >
@@ -272,4 +354,4 @@ const FiltersComponent = (props: FiltersComponentProps) => {
     );
 };
 
-export default FiltersComponent;
+export default FiltersComponentAllPage;

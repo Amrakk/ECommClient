@@ -1,15 +1,13 @@
 import { Card, CardContent, Typography, Box, FormControl, FormLabel, TextField, FormGroup, FormControlLabel, Checkbox, Button, Divider } from "@mui/material"
 import Grid from '@mui/material/Grid2';
 import GoogleIcon from '@mui/icons-material/Google';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CustomerPaths } from "../Route/CustomerRoute";
 import { onSubmitHandleLogin } from "@/clientLogic/auth/LoginPageLogic";
 import { useLoginMutation } from "@/hooks/Client/auth/useLogin";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLoading } from "@/stores/client/loadingSlice";
-
-
 
 
 const LoginComponent = () => {
@@ -19,10 +17,9 @@ const LoginComponent = () => {
     })
     const loginMutations = useLoginMutation()
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const onSubmitHandle = async (e: any) => {
-        onSubmitHandleLogin(e, setErrors, loginMutations, dispatch, navigate)
+        onSubmitHandleLogin(e, setErrors, loginMutations, dispatch)
 
     }
 

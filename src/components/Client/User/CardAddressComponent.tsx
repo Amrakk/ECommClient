@@ -4,10 +4,16 @@ import {
   Typography,
 } from '@mui/material';
 import { IAddress } from '@/models/user';
-import { ColorSecondaryBlackOverlay } from '@/styles/ThemeColorClient';
+import { ColorPrimary, ColorSecondaryBlackOverlay } from '@/styles/ThemeColorClient';
 
+interface AddressCardProps {
+  address: IAddress;
+  onEdit: ( value?: string  ) => void;
+  isSelected?: boolean;
+  value?: string;
+}
 
- const AddressCard = ({ address , onEdit }: {address: IAddress, onEdit: () => void}) => {
+ const AddressCard = ( {address, onEdit, isSelected, value }: AddressCardProps) => {
 
     return (
         <Card 
@@ -16,11 +22,12 @@ import { ColorSecondaryBlackOverlay } from '@/styles/ThemeColorClient';
           '&:hover': { boxShadow: 6 },
           height: '100%',
           padding: 1,
-          backgroundColor: ColorSecondaryBlackOverlay(0.3),
+          backgroundColor: isSelected ?? false ? ColorSecondaryBlackOverlay(1) : ColorSecondaryBlackOverlay(0.3) ,
           borderRadius: 5,
-          boxShadow: 3
+          boxShadow: 3,
+          border: isSelected ?? false ? `2px solid ${ColorPrimary(0.5)}` : '',
         }}
-        onClick={onEdit}
+        onClick={ () => onEdit(value) }
       >
         <CardContent>
           <Typography variant="h6" gutterBottom>
@@ -30,7 +37,7 @@ import { ColorSecondaryBlackOverlay } from '@/styles/ThemeColorClient';
             {(address.street)}<br />
             {(address.ward.name)}, {String(address.district.name)}<br />
             {(address.province.name)}, {"Vietnam"}<br />
-            Contact: {String(address.contactInfo)}
+            Contact: {String(address.contactInfo ?? "")}
           </Typography>
         </CardContent>
       </Card>

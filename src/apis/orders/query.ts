@@ -49,7 +49,7 @@ interface ITransaction {
 }
 
 interface IOrderItem {
-    product: Pick<ProductDetail, "_id" | "name" | "images">;
+    product: Pick<ProductDetail, "_id" | "name" | "images" >;
     variant: Omit<IProductVariant, "quantity">;
     quantity: number;
     productRatingId?: string;

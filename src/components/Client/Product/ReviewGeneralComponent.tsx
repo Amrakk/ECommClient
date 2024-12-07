@@ -41,14 +41,14 @@ const ReviewCard = ({ totalResult }: ReviewCardProps) => {
                 {isLoading ? <Skeleton variant="rectangular" animation='wave' sx={{ borderRadius: 2 }} width={120} height={70} /> : (
                     <>
                         <Typography component="h2" variant="h4">
-                            {averageRating} / 5
+                            {averageRating.toFixed(1)} / 5
                         </Typography>
                         <Typography variant='body2' color='text.secondary'>
                             Based on {totalResult?.length} Reviews
                         </Typography>
                         <Rating
                             name="read-only"
-                            value={4.6}
+                            value={averageRating}
                             precision={0.1}
                             readOnly
                             sx={{ color: orange[500] }}

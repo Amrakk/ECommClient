@@ -17,6 +17,9 @@ import FooterComponent from "../Client/FooterComponent";
 import CartPage from "@/pages/Client/Home/CartPage";
 import ProtectedRoute from "../Client/ProtectedRoute";
 import ProfilePage from "@/pages/Client/User/ProfilePage";
+import AllProductPage from "@/pages/Client/Home/AllProductPage";
+import CheckoutPage from "@/pages/Client/Checkout/CheckoutPage";
+import TransactionDetailPage from "@/pages/Client/Checkout/TransactionDetailPage";
 
 export default function CustomerRouteMiddleware(props: any) {
     const location = useLocation();
@@ -67,12 +70,16 @@ export const CustomerPaths = {
             Sports: "/category/sports",
             Electronics: "/category/electronics",
             Others: "/category/others",
+            All: "/category/all",
         },
         Search: "/search",
         Product: {
-            Detail: "/product/:id",
+            Detail: "/product",
         },
         User: "/user/profile",
+        Checkout: "/cart/checkout",
+        Cart: "/cart",
+        TransactionDetail: "/transactionDetail",
     },
 };
 
@@ -92,10 +99,17 @@ export const CustomerRoutes = [
         <Route path="/home" element={<HomePage />} />
         <Route path="/" element={<Navigate to="/home" />} />
 
+
+
         <Route path="/category">
+            <Route path="" element={<Navigate to={CustomerPaths.home.Category.All} />} />
+            <Route path="all" element={<AllProductPage />} />
             <>{categoryRoutes.map((route) => route)}</>
         </Route>
         <>{categoryRoutes.map((route) => route)}</>
+
+
+
         <Route
             path="/cart"
             element={
@@ -105,6 +119,25 @@ export const CustomerRoutes = [
                 </ProtectedRoute>
             }
         />
+        <Route path="/cart/checkout" element={
+            <ProtectedRoute>
+                <CheckoutPage />
+            </ProtectedRoute>
+        } />
+
+        <Route path="/transactionDetail" element={
+            <ProtectedRoute>
+                <TransactionDetailPage />
+            </ProtectedRoute>
+        } />
+
+        <Route path= "/payment" element={
+            <ProtectedRoute>
+                <TransactionDetailPage />
+            </ProtectedRoute>
+        } />
+        
+
         <Route path="/search" element={<SearchPage />} />
 
         <Route path="/user">

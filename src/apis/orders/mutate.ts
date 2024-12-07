@@ -26,14 +26,14 @@ interface UpdateOrder {
     status?: ORDER_STATUS;
 }
 
-interface Checkout {
+export interface Checkout {
     shippingAddress: IAddress;
     paymentType: PAYMENT_TYPE;
     usePoints?: boolean;
     voucherCode?: string;
 }
 
-interface ResCheckout {
+export interface ResCheckout {
     order: OrderDetail;
     transaction: TransactionDetail;
 }

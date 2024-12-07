@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 
 export const useVerifyMutation = () => {
     const verifyMutate = useMutation({
-        mutationKey: ["verify"],
+        mutationKey: ["verifyUser"],
         mutationFn: AuthenticateAPI.verifyClient,
         onSuccess: (data) => {
             return data

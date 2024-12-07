@@ -9,8 +9,15 @@ import MainImageHome from "@/assets/home/EComm illustration.png";
 import VoucherImage from "@/assets/home/50_off.png";
 import VoucherCollectComponent from "@/components/Client/VoucherCollectComponent";
 import { PRODUCT_CATEGORY_LIST } from "@/constants";
+import { useGetLatestProductsQuery } from "@/hooks/Client/home/product/useProduct";
+import { ProductDetail } from "@/models/product";
+import { useNavigate } from "react-router-dom";
+import { CustomerPaths } from "@/components/Route/CustomerRoute";
 
 const HomePage = () => {
+    const { isLoading, data } = useGetLatestProductsQuery();
+    const navigate = useNavigate();
+
     return (
         <Box
             sx={{
@@ -117,7 +124,9 @@ const HomePage = () => {
                             Latest Products
                         </Typography>
                         <Typography variant="body2"> See All</Typography>
-                        <IconButton>
+                        <IconButton onClick={ () => {
+                            navigate(CustomerPaths.home.Category.All);
+                        }}>
                             <ArrowForwardIosIcon sx={{ fontSize: 18 }} />
                         </IconButton>
                     </Grid>
@@ -131,18 +140,28 @@ const HomePage = () => {
                             gap: 3,
                         }}
                     >
-                        <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
-                            <ProductComponent />
-                        </Grid>
-                        <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
-                            <ProductComponent />
-                        </Grid>
-                        <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
-                            <ProductComponent />
-                        </Grid>
-                        <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
-                            <ProductComponent />
-                        </Grid>
+                        {isLoading ? (
+                            <>
+                                <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
+                                    <ProductComponent isLoading />
+                                </Grid>
+                                <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
+                                    <ProductComponent isLoading />
+                                </Grid>
+                                <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
+                                    <ProductComponent isLoading />
+                                </Grid>
+                            </>
+
+                        ) : (
+                            data?.map((product: ProductDetail) => (
+                                <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
+                                    <ProductComponent key={product._id} product={product} />
+                                </Grid>
+                            ))
+                        )}
+
+
                     </Grid>
                 </Grid>
                 {/* Fifth Row */}

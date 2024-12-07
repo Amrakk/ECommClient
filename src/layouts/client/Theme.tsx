@@ -1,5 +1,5 @@
 import { ColorPrimary, ColorSecondary } from "@/styles/ThemeColorClient";
-import { createTheme, LinearProgress, responsiveFontSizes, styled } from "@mui/material";
+import { createTheme, LinearProgress, responsiveFontSizes, styled, Switch } from "@mui/material";
 
 const darkTheme = createTheme({
     palette: {
@@ -126,6 +126,19 @@ export const StyledLinearProgress = styled(LinearProgress)(() => ({
       backgroundColor: ColorSecondary(1),
     }
   }));
+
+ export const PointSwitch = styled(Switch)(({ theme }) => ({
+    '& .MuiSwitch-switchBase.Mui-checked': {
+      color: theme.palette.primary.main,
+      '&:hover': {
+        backgroundColor: theme.palette.primary,
+      },
+    },
+    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+      backgroundColor: theme.palette.primary.main,
+    },
+  }));
+  
   
 
 export default responsiveFontSizes(darkTheme);

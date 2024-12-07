@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { 
   Card,
   CardContent,
@@ -8,15 +8,24 @@ import {
   Box,
 } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import VoucherModal from './User/VoucherModalComponent';
 
 
 const VoucherCollectComponent = () => {
   const [collected, setCollected] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleCollect = () => {
+    setIsOpenModal(true);
     setCollected(true);
-    // Add your collection logic here
+    localStorage.setItem('isCollected', "true");
   };
+
+  useEffect(() => {
+    if(localStorage.getItem('isCollected') === "true") {
+      setCollected(true);
+    }
+  })
 
   return (
     <Card sx={{ p: 1 }}>
@@ -28,13 +37,13 @@ const VoucherCollectComponent = () => {
           </Typography>
         </Box>
         <Typography variant="h4" color="primary" gutterBottom>
-          $20 OFF
+        50% OFF
         </Typography>
         <Typography color="text.secondary" mb={2}>
          Valid until {new Date(new Date().setDate(new Date().getDate() + 2)).toLocaleDateString()}
         </Typography>
         <Typography variant="body2">
-          Minimum spend $0. Terms and conditions apply.
+          Minimum spend 0 đ. Terms and conditions apply.
         </Typography>
       </CardContent>
       <CardActions>
@@ -47,6 +56,7 @@ const VoucherCollectComponent = () => {
         >
           {collected ? 'Collected!' : 'Collect Now'}
         </Button>
+        <VoucherModal open={isOpenModal} onClose={() => setIsOpenModal(false)} voucherCode="VOUCHER50" />
       </CardActions>
     </Card>
   );

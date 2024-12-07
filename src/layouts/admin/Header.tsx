@@ -6,12 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { DEFAULT_AVATAR_URL } from "@/constants";
 import { useUserStore } from "@/stores/user.store";
 import { MdOutlinePowerSettingsNew } from "react-icons/md";
+import { logout } from "@/apis/auth";
+import { removeUser } from "@/stores/client/userSlice";
+import { useDispatch } from "react-redux";
 
 export default function Header() {
     const navigate = useNavigate();
     const { user } = useUserStore();
     const { logoutMutate } = useAuth();
     const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -27,8 +31,10 @@ export default function Header() {
     }, []);
 
     async function handleLogout() {
+        dispatch(removeUser());
         await logoutMutate.mutateAsync();
-        navigate("/login");
+        await logout();
+        window.location.reload();
     }
 
     return (

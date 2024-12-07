@@ -32,7 +32,7 @@ const UserReviewCard = ({ review }: UserReviewCardProps) => {
                     <>
                         <Stack direction="row" spacing={1} alignItems="center" mb={2}>
                             <Typography variant="caption" color="text.secondary"> {new Date(review!.createdAt).toLocaleDateString()}</Typography>
-                            <Rating name="read-only" value={4.5} readOnly precision={0.5} sx={{ mt: 1, mb: 2 }} />
+                            <Rating name="read-only" value={review?.rating} readOnly precision={0.1} sx={{ mt: 1, mb: 2 }} />
                         </Stack>
                         <Typography variant="body1">
                             {review?.review}

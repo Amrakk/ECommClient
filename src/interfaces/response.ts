@@ -22,4 +22,5 @@ export interface IResLogin {
 export interface IResGetProductById {
     product: ProductDetail;
     totalDocuments: number;    
+    relevantProducts: ProductDetail[];
 }
