@@ -92,6 +92,7 @@ const HeaderClient = () => {
                                 startAdornment: (
                                     <IconButton
                                         onClick={() => {
+                                            if(searchValue === "") return;
                                             navigate(CustomerPaths.home.Search + `?q=${searchValue}`);
                                         }}
                                         size="small"
@@ -186,7 +187,7 @@ const HeaderClient = () => {
                         )}
 
                         {user != null ? (
-                            <Link to="/purchase">
+                            <Link to={`${CustomerPaths.home.User}?type=2`}>
                                 <MenuItem onClick={handleClose}>
                                     <ListItemIcon>
                                         <PurchaseIcon fontSize="small" />

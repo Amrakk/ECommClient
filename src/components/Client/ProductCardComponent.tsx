@@ -25,7 +25,7 @@ const ProductComponent = (props: ProductComponentProps) => {
 
 
     return (
-        <Link to={`/product/${props.product?._id}`} style={{ textDecoration: 'none' }}>
+        <Link to={props.isLoading ? '#' : `/product/${props.product?._id}`} style={{ textDecoration: 'none', pointerEvents: props.isLoading ? 'none' : 'auto' }}>
             <Card sx={{ minWidth: 100 }}>
                 {props.isLoading ? (
                     <Skeleton animation="wave" variant="rectangular" sx={{ height: { xs: 100, sm: 150, md: 200 } }} />
@@ -106,7 +106,8 @@ const ProductComponent = (props: ProductComponentProps) => {
                                 color="primary"
                                 sx={{ fontWeight: 'medium', fontSize: { xs: FONT_SIZE.body2, sm: FONT_SIZE.body1, md: FONT_SIZE.h6 } }}
                             >
-                                {convertToVietnameseDong(props.product?.variants[0].importPrice)}
+                                {/* @ts-expect-error */}
+                                {props.product!.variants ? convertToVietnameseDong(props.product!.variants[0].retailPrice) : convertToVietnameseDong( props.product?.retailPrice )}
                             </Typography>
                         )}
                         <IconButton color="primary" disabled={props.isLoading}>

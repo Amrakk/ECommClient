@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function useOrderById(id: string) {
     const orderQuery = useQuery({
-        queryKey: ["order"],
+        queryKey: ["order", id],
         queryFn: () => OrderAPI.getOrderById(id),
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
 
     return orderQuery;

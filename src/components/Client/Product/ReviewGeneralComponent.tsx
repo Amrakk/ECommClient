@@ -41,7 +41,7 @@ const ReviewCard = ({ totalResult }: ReviewCardProps) => {
                 {isLoading ? <Skeleton variant="rectangular" animation='wave' sx={{ borderRadius: 2 }} width={120} height={70} /> : (
                     <>
                         <Typography component="h2" variant="h4">
-                            {averageRating} / 5
+                            {averageRating.toFixed(1)} / 5
                         </Typography>
                         <Typography variant='body2' color='text.secondary'>
                             Based on {totalResult?.length} Reviews

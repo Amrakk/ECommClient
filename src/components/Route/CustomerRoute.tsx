@@ -1,5 +1,5 @@
 import LoginPage from "@/pages/Client/Auth/LoginPage";
-import { Navigate, Outlet, Route, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, Route, useLocation } from "react-router-dom";
 import HeaderClient from "@/layouts/client/HeaderClient";
 import HomePage from "@/pages/Client/Home/HomePage";
 import { ThemeProvider } from "@mui/material/styles";
@@ -131,6 +131,12 @@ export const CustomerRoutes = [
             </ProtectedRoute>
         } />
 
+        <Route path= "/payment" element={
+            <ProtectedRoute>
+                <TransactionDetailPage />
+            </ProtectedRoute>
+        } />
+        
 
         <Route path="/search" element={<SearchPage />} />
 

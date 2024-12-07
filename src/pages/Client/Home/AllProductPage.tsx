@@ -1,17 +1,17 @@
 import BreadcrumbsComponent from "@/components/Client/BreadcrumbsComponent";
 import ProductComponent from "@/components/Client/ProductCardComponent";
-import { IconButton, Typography, Pagination } from "@mui/material";
+import { IconButton, Typography, Pagination, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import FilterAltRoundedIcon from "@mui/icons-material/FilterAltRounded";
 import { useEffect, useState } from "react";
 import { ProductDetail } from "@/models/product";
 import FiltersComponentAllPage from "@/components/Client/FilterComponentAllPage";
-import { set } from "lodash";
+import EmptySearchPNG from "@/assets/error/EmptySearch.png";
 
 const AllProductPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [productData, setProductsData] = useState<ProductDetail[]>([]);
-    const [totalProductPerPage, setTotalProductPerPage] = useState(10);
+    const [totalProductPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalProduct, setTotalProduct] = useState(0);
     const [listProductPage, setListProductPage] = useState<ProductDetail[]>();
@@ -61,13 +61,16 @@ const AllProductPage = () => {
             <Grid container spacing={2.5} size={{ lg: 9, md: 9, sm: 12 }} sx={{ display: "flex", pl: 2 }}>
                 <Grid size={12} sx={{ height: "5%" }}>
                     <Typography>
-                        Showing {totalProductPerPage} results in total {productData.length} results{" "}
+                        Showing {listProductPage?.length} results in total {productData.length} results{" "}
                     </Typography>
-                    {listProductPage?.length ==0 && listProductPage !== undefined ? <Typography>
-                        No product found
-                    </Typography> : null }
+                    {listProductPage?.length == 0 && listProductPage !== undefined && !isLoading ? <Typography>
+                        <Grid container gap={5} sx={{ m: 10, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+                            <Box component="img" src={EmptySearchPNG} alt="No search results found" sx={{ width: { lg: "25%", md: "50%", sm: "75%", xs: "100%" } }} />
+                            <Typography variant="h6" align="center">No product results found</Typography>
+                        </Grid>
+                    </Typography> : null}
                 </Grid>
-                {listProductPage == undefined ? (
+                {listProductPage == undefined || isLoading ? (
                     <>
                         <Grid size={{ lg: 3, md: 4, sm: 4, xs: 6 }}>
                             <ProductComponent isLoading={true} />
@@ -85,7 +88,7 @@ const AllProductPage = () => {
                             <ProductComponent isLoading={true} />
                         </Grid>
                     </>
-                )  : (
+                ) : (
                     listProductPage.map((item) => {
                         return (
                             <Grid key={item._id} size={{ lg: 3, md: 5, sm: 4, xs: 6 }}>

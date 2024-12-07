@@ -124,17 +124,26 @@ const CheckoutPage = () => {
     useEffect(() => {
         if (checkout) {
             checkoutMutation.mutateAsync(checkout).then((response) => {
-                dispatch(setLoading(false));
-                setCheckedGrow(false);
-                console.log(response);
-                setTimeout(() => {
-                    navigate(CustomerPaths.home.TransactionDetail, { state: { test: "testvalue" } })
-                }, 800);
+                if(currentTypePayment === PAYMENT_TYPE.COD){
+                    setCheckedGrow(false);
+                    setTimeout(() => {
+                        navigate(CustomerPaths.home.TransactionDetail, { state: { resCheckout: response} })
+                    }, 800);
+                } else{
+                    if(response.transaction.checkoutUrl){
+                        window.location.href = response.transaction.checkoutUrl;
+                    }
+                    else{
+                        toast.error("Error while checkout, please try again later");
+                    }
+                }
             }).catch((e) => {
                 toast.error("Error while checkout, please try again later");
-                console.log(e);
+                console.error(e);
             }).finally(() => {
-                dispatch(setLoading(false));
+                if(currentTypePayment === PAYMENT_TYPE.COD){
+                    dispatch(setLoading(false));
+                }
             })
         }
     }, [checkout])

@@ -18,6 +18,7 @@ import { isMobilePhone } from "validator";
 import AvatarUploadDialog from "@/components/Client/User/UploadImage";
 import DeleteAccountPage from "./DeleteAccountPage";
 import { useSearchParams } from "react-router-dom";
+import OrderListPage from "../Order/OrderListPage";
 
 function TabPanel(props: { children: React.ReactNode; value: number; index: number }) {
     const { children, value, index, ...other } = props;
@@ -238,7 +239,7 @@ function ProfilePage() {
             </TabPanel>
 
             <TabPanel value={tabValue} index={1}>
-                <Typography>My Order</Typography>
+                <OrderListPage />
             </TabPanel>
             <TabPanel value={tabValue} index={2}>
                 <DeleteAccountPage valuePage={tabValue} />

@@ -9,7 +9,6 @@ import {
     MenuItem,
     InputLabel,
     FormControl,
-    Checkbox,
     Alert,
     Skeleton,
     Snackbar,
@@ -44,7 +43,7 @@ const CartPage = () => {
     const dispatch = useDispatch();
     const { data: cart, isSuccess, isLoading } = useGetCartByUser();
     const updateCart = useUpdateProductCart();
-    const [selectedItems, setSelectedItems] = useState<ProductOwn[]>([]);
+    const [selectedItems] = useState<ProductOwn[]>([]);
     const [localCart, setLocalCart] = useState<CartDetailWithProduct>();
     const { isShowing, toggle } = useModal();
     const [productIdAboutToDelete, setProductIdAboutToDelete] = useState<ProductOwn>({

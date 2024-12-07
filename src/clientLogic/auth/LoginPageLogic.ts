@@ -1,4 +1,3 @@
-import { NavigateFunction } from "react-router-dom";
 import { IResLogin } from "@/interfaces/response";
 import { IResponse } from "@/interfaces/response";
 import { LoginRequest } from "@/interfaces/request";

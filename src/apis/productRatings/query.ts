@@ -7,7 +7,7 @@ interface ITimeBasedPagination {
     limit?: number;
 }
 
- interface GetProductRatingResponse {
+ export interface GetProductRatingResponse {
     productRatings: IResGetProductRatingByProductId[];
     next_from: Date | null;
 }

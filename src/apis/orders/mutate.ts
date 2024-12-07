@@ -33,7 +33,7 @@ export interface Checkout {
     voucherCode?: string;
 }
 
-interface ResCheckout {
+export interface ResCheckout {
     order: OrderDetail;
     transaction: TransactionDetail;
 }

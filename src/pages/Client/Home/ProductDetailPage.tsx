@@ -8,7 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import TabComponent from "@/components/Client/TabComponent";
 import SliderComponent from "@/components/Client/SliderComponent";
-import { useProductDetailQuery } from "@/hooks/Client/home/product/useProduct";
+import {  useProductDetailQuery } from "@/hooks/Client/home/product/useProduct";
 import { toast } from "react-toastify";
 import { convertToVietnameseDong } from "@/utils/convertToVnd";
 import { addProductToNewCart, useGetCartByUser, useUpdateProductCart } from "@/hooks/Client/home/cart/useCart";
@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/stores/client/store";
 import { UpdateByUser } from "@/apis/users";
 import { useUpdateUserMutation } from "@/hooks/Client/home/useUser";
+import ProductComponent from "@/components/Client/ProductCardComponent";
 
 const ProductDetailComponent = () => {
     const [selectedVariant, setSelectedVariant] = useState("");
@@ -31,6 +32,8 @@ const ProductDetailComponent = () => {
     const updateUserCart = useUpdateUserMutation();
     const addProductToOldCartMutate = useUpdateProductCart();
     const { data: currentCart } = useGetCartByUser();
+    let listRelatedProduct: ProductDetail[] = [];
+
 
     useEffect(() => {
         if (productDetailQuery.isSuccess) {
@@ -45,6 +48,8 @@ const ProductDetailComponent = () => {
     if (productDetailQuery.isSuccess) {
         isLoading = false;
         product = productDetailQuery.data.product;
+        listRelatedProduct = productDetailQuery.data.relevantProducts;
+        console.log(listRelatedProduct);
     }
 
     const minQuantity = 1;
@@ -320,12 +325,9 @@ const ProductDetailComponent = () => {
                     {/* Action Buttons */}
 
                     <Box sx={{ display: "flex", gap: 2, my: 5 }}>
-                        <Button disabled={isLoading} variant="contained" size="large" fullWidth>
-                            Buy Now
-                        </Button>
                         <Button
                             disabled={isLoading}
-                            variant="outlined"
+                            variant="contained"
                             size="large"
                             onClick={onClickProductToCart}
                             fullWidth
@@ -347,6 +349,57 @@ const ProductDetailComponent = () => {
                     <TabComponent product={product!} />
                 </>
             )}
+            <Box sx={{ mt: 6 }}>
+                <Typography variant="h5" gutterBottom>
+                    {listRelatedProduct.length === 0 ? "" : "Related Products"}
+                </Typography>
+                {isLoading ? (
+                    <Skeleton animation="wave" variant="rectangular" height={200} width="100%" />
+                ) : (
+                    <Box
+                        sx={{
+                            width: '100%',
+                            overflow: 'auto',
+                            '&::-webkit-scrollbar': {
+                                height: 6,
+                            },
+                            '&::-webkit-scrollbar-track': {
+                                backgroundColor: '#f1f1f1',
+                            },
+                            '&::-webkit-scrollbar-thumb': {
+                                backgroundColor: '#888',
+                                borderRadius: 3,
+                            },
+                            mt:4
+                        }}
+                    >
+                        <Grid
+                            container
+                            spacing={3}
+                            sx={{
+                                flexWrap: 'nowrap',
+                                pb: 2, // Add padding bottom to show scrollbar
+                            }}
+                        >
+                            {listRelatedProduct.map((relatedProduct, index) => (
+                                    <Grid
+                                   size ={{ 
+                                        xs: 7, 
+                                        sm: 3.5, 
+                                        md: 3, 
+                                        lg: 2.7 
+                                    }}
+                                    minWidth={170}
+                                    key={index}
+                                >
+                                    <ProductComponent product={relatedProduct} />
+                                </Grid>
+
+                            ))}
+                        </Grid>
+                    </Box>
+                )}
+            </Box>
         </Box>
     );
 };
