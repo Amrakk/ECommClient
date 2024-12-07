@@ -19,6 +19,7 @@ import {
     Divider,
     Stack,
     Button,
+    Tooltip,
 } from '@mui/material';
 import { ContactPhone, KeyboardArrowDown, KeyboardArrowUp, LocationOn, Payment, ShoppingBasket } from '@mui/icons-material';
 import Grid from '@mui/material/Grid2';
@@ -34,6 +35,8 @@ import ProductReviewModalComponent from '@/components/Client/ModalInsertReviewCo
 import { useInsertProductRatingMutation } from '@/hooks/Client/home/product/useProductRating';
 import { toast } from 'react-toastify';
 import { setLoading } from '@/stores/client/loadingSlice';
+import { useQueryClient } from '@tanstack/react-query';
+import { set } from 'lodash';
 
 
 
@@ -46,6 +49,7 @@ function formatAddress(address: IAddress) {
 function Row({ orderId, index }: { orderId: number, index: number }) {
     const insertProductRatingMutation = useInsertProductRatingMutation();
     const [open, setOpen] = useState(false);
+    const queryClient = useQueryClient();
     const { data: order, isSuccess: isSuccessListOrder } = useOrderById(String(orderId));
     const [isOpenReviewModal, setIsOpenReviewModal] = useState(false);
     const dispatch = useDispatch();
@@ -62,12 +66,23 @@ function Row({ orderId, index }: { orderId: number, index: number }) {
         }).then((response) => {
             console.log(response);
             toast.success("Review submitted successfully");
+            setIsOpenReviewModal(false);
+            queryClient.invalidateQueries({ queryKey: ["order", orderId] });
         }).catch((error) => {
             console.error(error);
             toast.error("Failed to submit review");
         }).finally(() => {
             dispatch(setLoading(false));
         })
+    }
+
+    const isDisableRatingProduct = (productId: string) => {
+        const orderItem = order?.items.find(item => item.product._id === productId);
+        return orderItem?.productRatingId != undefined ? true : false;
+    }
+
+    if (order?._id == 1733492350984) {
+        console.log(order);
     }
 
     const ChipSelected = ({ status }: { status: ORDER_STATUS }) => {
@@ -239,28 +254,30 @@ function Row({ orderId, index }: { orderId: number, index: number }) {
                                     <Stack spacing={2}>
                                         {/* Order Items */}
                                         {order?.items.map((item, index) => (
-                                                <Card key={index} elevation={3} sx={{ p: 2 }}>
-                                                    <Grid container spacing={2} alignItems="center">
-                                                        <Grid size={{ xs: 12, sm: 6 }}>
-                                                            <Box display="flex" alignItems="center">
-                                                                <img
-                                                                    src={item.product.images[0] ?? "https://placehold.co/200x200"}
-                                                                    alt={item.product.name}
-                                                                    style={{ width: 50, height: 50, marginRight: 10, borderRadius: 3 }}
-                                                                />
-                                                                <Box>
-                                                                    <Typography variant="subtitle1">
-                                                                        {item.product.name.length > 25 ? `${item.product.name.substring(0, 25)}...` : item.product.name}
-                                                                    </Typography>
-                                                                    <Typography variant="caption" color="text.secondary">
-                                                                        Variant ID: {item.variant.id}
-                                                                    </Typography>
-                                                                </Box>
-                                                                <Box display="flex" ml={3} >
-                                                                    {order!.status === ORDER_STATUS.COMPLETED && order!.isPaid === true ? (
+                                            <Card key={index} elevation={3} sx={{ p: 2 }}>
+                                                <Grid container spacing={2} alignItems="center">
+                                                    <Grid size={{ xs: 12, sm: 6 }}>
+                                                        <Box display="flex" alignItems="center">
+                                                            <img
+                                                                src={item.product.images[0] ?? "https://placehold.co/200x200"}
+                                                                alt={item.product.name}
+                                                                style={{ width: 50, height: 50, marginRight: 10, borderRadius: 3 }}
+                                                            />
+                                                            <Box>
+                                                                <Typography variant="subtitle1">
+                                                                    {item.product.name.length > 25 ? `${item.product.name.substring(0, 25)}...` : item.product.name}
+                                                                </Typography>
+                                                                <Typography variant="caption" color="text.secondary">
+                                                                    Variant ID: {item.variant.id}
+                                                                </Typography>
+                                                            </Box>
+                                                            <Box display="flex" ml={3} >
+                                                                {order!.status === ORDER_STATUS.COMPLETED && order!.isPaid === true ? (
+                                                                    <Tooltip title={isDisableRatingProduct(item.product._id) ? "You have already rated this product" : ""}>
                                                                         <Button
                                                                             variant="contained"
                                                                             color="primary"
+                                                                            disabled={isDisableRatingProduct(item.product._id)}
                                                                             onClick={(e) => {
                                                                                 e.preventDefault();
                                                                                 setIsOpenReviewModal(!isOpenReviewModal);
@@ -270,39 +287,40 @@ function Row({ orderId, index }: { orderId: number, index: number }) {
                                                                         >
                                                                             Write a Review
                                                                         </Button>
-                                                                    ) : null
-                                                                    }
-                                                                    <ProductReviewModalComponent
-                                                                        open={isOpenReviewModal}
-                                                                        onClose={(e) => {
-                                                                            e.preventDefault();
-                                                                            e.stopPropagation();
-                                                                            setIsOpenReviewModal(!isOpenReviewModal)
-                                                                        }}
-                                                                        onSubmit={handleSubmitReview}
-                                                                        productId={item.product._id}
-                                                                    />
-                                                                </Box>
+                                                                    </Tooltip>
+                                                                ) : null
+                                                                }
+                                                                <ProductReviewModalComponent
+                                                                    open={isOpenReviewModal}
+                                                                    onClose={(e) => {
+                                                                        e.preventDefault();
+                                                                        e.stopPropagation();
+                                                                        setIsOpenReviewModal(!isOpenReviewModal)
+                                                                    }}
+                                                                    onSubmit={handleSubmitReview}
+                                                                    productId={item.product._id}
+                                                                />
                                                             </Box>
-                                                        </Grid>
-                                                        <Grid size={{ xs: 12, sm: 6 }}>
-                                                            <Grid container spacing={2}>
-                                                                <Grid size={4}>
-                                                                    <Typography variant="body2" color="text.secondary">Quantity</Typography>
-                                                                    <Typography>{item.quantity}</Typography>
-                                                                </Grid>
-                                                                <Grid size={4}>
-                                                                    <Typography variant="body2" color="text.secondary">Price</Typography>
-                                                                    <Typography>{convertToVietnameseDong(item.variant.retailPrice)}</Typography>
-                                                                </Grid>
-                                                                <Grid size={4}>
-                                                                    <Typography variant="body2" color="text.secondary">Total</Typography>
-                                                                    <Typography>{convertToVietnameseDong(item.variant.retailPrice * item.quantity)}</Typography>
-                                                                </Grid>
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid size={{ xs: 12, sm: 6 }}>
+                                                        <Grid container spacing={2}>
+                                                            <Grid size={4}>
+                                                                <Typography variant="body2" color="text.secondary">Quantity</Typography>
+                                                                <Typography>{item.quantity}</Typography>
+                                                            </Grid>
+                                                            <Grid size={4}>
+                                                                <Typography variant="body2" color="text.secondary">Price</Typography>
+                                                                <Typography>{convertToVietnameseDong(item.variant.retailPrice)}</Typography>
+                                                            </Grid>
+                                                            <Grid size={4}>
+                                                                <Typography variant="body2" color="text.secondary">Total</Typography>
+                                                                <Typography>{convertToVietnameseDong(item.variant.retailPrice * item.quantity)}</Typography>
                                                             </Grid>
                                                         </Grid>
                                                     </Grid>
-                                                </Card>
+                                                </Grid>
+                                            </Card>
 
 
                                         ))}

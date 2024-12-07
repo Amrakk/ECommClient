@@ -14,6 +14,8 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { logout } from "@/apis/auth";
 import { removeUser } from "@/stores/client/userSlice";
 import { setLoading } from "@/stores/client/loadingSlice";
+import { USER_ROLE } from "@/constants";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const HeaderClient = () => {
     const navigate = useNavigate();
@@ -166,6 +168,17 @@ const HeaderClient = () => {
                         transformOrigin={{ horizontal: "right", vertical: "top" }}
                         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                     >
+
+                        { user != null && user.role === USER_ROLE.ADMIN ? (
+                            <Link to={"/admin/dashboard"}>
+                                <MenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <DashboardIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Admin Dashboard" />
+                                </MenuItem>
+                            </Link>
+                        ) : null }
                         {user != null ? (
                             <Link to={CustomerPaths.home.User}>
                                 <MenuItem onClick={handleClose}>

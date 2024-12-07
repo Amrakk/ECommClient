@@ -48,7 +48,7 @@ const ReviewCard = ({ totalResult }: ReviewCardProps) => {
                         </Typography>
                         <Rating
                             name="read-only"
-                            value={4.6}
+                            value={averageRating}
                             precision={0.1}
                             readOnly
                             sx={{ color: orange[500] }}

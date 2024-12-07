@@ -49,7 +49,6 @@ const ProductDetailComponent = () => {
         isLoading = false;
         product = productDetailQuery.data.product;
         listRelatedProduct = productDetailQuery.data.relevantProducts;
-        console.log(listRelatedProduct);
     }
 
     const minQuantity = 1;
@@ -113,7 +112,6 @@ const ProductDetailComponent = () => {
                 response = await addProductToOldCartMutate.mutateAsync({ cartId: user.cartId, data: productToCart });
             } else {
                 response = await addProductToNewCartMutate.mutateAsync(productToCart);
-                // Update user cartId 
                 const update: UpdateByUser = {
                     cartId: response._id,
                     addresses: user.addresses,
