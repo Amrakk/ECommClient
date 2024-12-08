@@ -15,7 +15,7 @@ import { logout } from "@/apis/auth";
 import { removeUser } from "@/stores/client/userSlice";
 import { setLoading } from "@/stores/client/loadingSlice";
 import { USER_ROLE } from "@/constants";
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const HeaderClient = () => {
     const navigate = useNavigate();
@@ -68,6 +68,11 @@ const HeaderClient = () => {
                         placeholder="Search..."
                         variant="outlined"
                         onChange={(e) => setSearchValue(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && searchValue !== "") {
+                                navigate(CustomerPaths.home.Search + `?q=${searchValue}`);
+                            }
+                        }}
                         sx={{
                             width: {
                                 xs: "100%",
@@ -94,7 +99,7 @@ const HeaderClient = () => {
                                 startAdornment: (
                                     <IconButton
                                         onClick={() => {
-                                            if(searchValue === "") return;
+                                            if (searchValue === "") return;
                                             navigate(CustomerPaths.home.Search + `?q=${searchValue}`);
                                         }}
                                         size="small"
@@ -168,8 +173,7 @@ const HeaderClient = () => {
                         transformOrigin={{ horizontal: "right", vertical: "top" }}
                         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                     >
-
-                        { user != null && user.role === USER_ROLE.ADMIN ? (
+                        {user != null && user.role === USER_ROLE.ADMIN ? (
                             <Link to={"/admin/dashboard"}>
                                 <MenuItem onClick={handleClose}>
                                     <ListItemIcon>
@@ -178,7 +182,7 @@ const HeaderClient = () => {
                                     <ListItemText primary="Admin Dashboard" />
                                 </MenuItem>
                             </Link>
-                        ) : null }
+                        ) : null}
                         {user != null ? (
                             <Link to={CustomerPaths.home.User}>
                                 <MenuItem onClick={handleClose}>

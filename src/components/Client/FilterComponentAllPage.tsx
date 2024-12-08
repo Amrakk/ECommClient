@@ -28,23 +28,23 @@ import { setLoading } from "@/stores/client/loadingSlice";
 interface FiltersComponentAllPageProps {
     setProductsData: React.Dispatch<React.SetStateAction<ProductDetail[]>>;
     productsData: ProductDetail[];
-    setIsLoading : React.Dispatch<React.SetStateAction<boolean>>
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const FiltersComponentAllPage = (props: FiltersComponentAllPageProps) => {
     type Panel = "category" | "price" | "rating" | "itemsPerPage" | "brand";
     const [filter, setFilter] = useState<ProductFilter>({
-        categories: [
-            PRODUCT_CATEGORY.ELECTRONICS,
-        ],
+        categories: [],
         brands: [],
         minRating: undefined,
         minPrice: 1,
-        maxPrice: 100000000
+        maxPrice: 100000000,
     });
     const firstRender = useRef(true);
     const useFilterProduct = useFilterProductQuery(filter);
-    const { data: listBrands,  isSuccess: isSuccessBrands } = useBrandsByCategory(filter.categories?.[0] || PRODUCT_CATEGORY.ELECTRONICS); ;
+    const { data: listBrands, isSuccess: isSuccessBrands } = useBrandsByCategory(
+        filter.categories?.[0] || PRODUCT_CATEGORY.ELECTRONICS
+    );
     const dispatch = useDispatch();
 
     const [expanded, setExpanded] = useState<Record<Panel, boolean>>({
@@ -56,29 +56,28 @@ const FiltersComponentAllPage = (props: FiltersComponentAllPageProps) => {
     });
 
     useEffect(() => {
-        if(useFilterProduct.isSuccess){
+        if (useFilterProduct.isSuccess) {
             props.setProductsData(useFilterProduct.data.products);
             props.setIsLoading(false);
         }
     }, [useFilterProduct.data]);
-  
 
     useEffect(() => {
-        if(filter.minPrice === filter.maxPrice) {
+        if (filter.minPrice === filter.maxPrice) {
             setFilter({
                 ...filter,
                 minPrice: 1,
-                maxPrice: 100000000
+                maxPrice: 100000000,
             });
         }
         if (firstRender.current) {
             firstRender.current = false;
             return;
         } else {
-            const delayDebounceFn = setTimeout(async ()  => {
+            const delayDebounceFn = setTimeout(async () => {
                 props.setIsLoading(true);
                 dispatch(setLoading(true));
-                await useFilterProduct.refetch(); 
+                await useFilterProduct.refetch();
                 dispatch(setLoading(false));
                 props.setIsLoading(false);
             }, 1000);
@@ -189,22 +188,26 @@ const FiltersComponentAllPage = (props: FiltersComponentAllPageProps) => {
                                     value={filter.brands?.[0] || ""}
                                     sx={{ display: "flex", flexDirection: "row", gap: 1 }}
                                 >
-                                    { !isSuccessBrands ? <Typography> Loading... </Typography> : listBrands?.map((brand) => {
-                                        return (
-                                            <FormControlLabel
-                                                key={brand}
-                                                value={brand}
-                                                control={<Radio />}
-                                                label={brand}
-                                                onChange={(e) => {
-                                                    setFilter({
-                                                        ...filter,
-                                                        brands: [(e.target as HTMLInputElement).value],
-                                                    });
-                                                }}
-                                            />
-                                        );
-                                    })}
+                                    {!isSuccessBrands ? (
+                                        <Typography> Loading... </Typography>
+                                    ) : (
+                                        listBrands?.map((brand) => {
+                                            return (
+                                                <FormControlLabel
+                                                    key={brand}
+                                                    value={brand}
+                                                    control={<Radio />}
+                                                    label={brand}
+                                                    onChange={(e) => {
+                                                        setFilter({
+                                                            ...filter,
+                                                            brands: [(e.target as HTMLInputElement).value],
+                                                        });
+                                                    }}
+                                                />
+                                            );
+                                        })
+                                    )}
                                 </RadioGroup>
                             </Box>
                         </Collapse>
@@ -325,7 +328,6 @@ const FiltersComponentAllPage = (props: FiltersComponentAllPageProps) => {
                                     <MenuItem value={10}>10</MenuItem>
                                     <MenuItem value={20}>20</MenuItem>
                                     <MenuItem value={30}>30</MenuItem>
-
                                 </Select>
                             </FormControl>
                         </Collapse>
@@ -335,13 +337,11 @@ const FiltersComponentAllPage = (props: FiltersComponentAllPageProps) => {
                             variant="outlined"
                             onClick={() => {
                                 setFilter({
-                                    categories: [
-                                        PRODUCT_CATEGORY.ELECTRONICS,
-                                    ],
+                                    categories: [],
                                     brands: [],
                                     minRating: undefined,
                                     minPrice: 1,
-                                    maxPrice: 100000000
+                                    maxPrice: 100000000,
                                 });
                             }}
                             color="primary"

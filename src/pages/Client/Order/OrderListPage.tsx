@@ -53,7 +53,7 @@ function Row({ orderId, index }: { orderId: number; index: number }) {
     const [open, setOpen] = useState(false);
     const queryClient = useQueryClient();
     const { data: order, isSuccess: isSuccessListOrder } = useOrderById(String(orderId));
-    const [isOpenReviewModal, setIsOpenReviewModal] = useState(false);
+    const [modalProductId, setModalProductId] = useState<string | undefined>(undefined);
     const dispatch = useDispatch();
 
     const handleSubmitReview = (rating: number, review: string, productId: string) => {
@@ -69,7 +69,7 @@ function Row({ orderId, index }: { orderId: number; index: number }) {
             })
             .then((_) => {
                 toast.success("Review submitted successfully");
-                setIsOpenReviewModal(false);
+                setModalProductId(undefined);
                 queryClient.invalidateQueries({ queryKey: ["order", orderId] });
             })
             .catch((error) => {
@@ -305,9 +305,7 @@ function Row({ orderId, index }: { orderId: number; index: number }) {
                                                                             )}
                                                                             onClick={(e) => {
                                                                                 e.preventDefault();
-                                                                                setIsOpenReviewModal(
-                                                                                    !isOpenReviewModal
-                                                                                );
+                                                                                setModalProductId(item.product._id);
                                                                             }}
                                                                             sx={{ textTransform: "none" }}
                                                                             startIcon={<RateReviewIcon />}
@@ -316,16 +314,6 @@ function Row({ orderId, index }: { orderId: number; index: number }) {
                                                                         </Button>
                                                                     </Tooltip>
                                                                 ) : null}
-                                                                <ProductReviewModalComponent
-                                                                    open={isOpenReviewModal}
-                                                                    onClose={(e) => {
-                                                                        e.preventDefault();
-                                                                        e.stopPropagation();
-                                                                        setIsOpenReviewModal(!isOpenReviewModal);
-                                                                    }}
-                                                                    onSubmit={handleSubmitReview}
-                                                                    productId={item.product._id}
-                                                                />
                                                             </Box>
                                                         </Box>
                                                     </Grid>
@@ -360,6 +348,15 @@ function Row({ orderId, index }: { orderId: number; index: number }) {
                                                 </Grid>
                                             </Card>
                                         ))}
+                                        <ProductReviewModalComponent
+                                            onClose={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                setModalProductId(undefined);
+                                            }}
+                                            onSubmit={handleSubmitReview}
+                                            productId={modalProductId}
+                                        />
 
                                         {/* Order Summary */}
                                         <Card elevation={3} sx={{ p: 2, mt: 2 }}>

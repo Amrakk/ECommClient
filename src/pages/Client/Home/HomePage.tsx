@@ -123,10 +123,22 @@ const HomePage = () => {
                             {" "}
                             Latest Products
                         </Typography>
-                        <Typography variant="body2"> See All</Typography>
-                        <IconButton onClick={ () => {
-                            navigate(CustomerPaths.home.Category.All);
-                        }}>
+                        <Typography
+                            variant="body2"
+                            sx={{ cursor: "pointer" }}
+                            className="select-none"
+                            onClick={() => {
+                                navigate(CustomerPaths.home.Category.All);
+                            }}
+                        >
+                            {" "}
+                            See All
+                        </Typography>
+                        <IconButton
+                            onClick={() => {
+                                navigate(CustomerPaths.home.Category.All);
+                            }}
+                        >
                             <ArrowForwardIosIcon sx={{ fontSize: 18 }} />
                         </IconButton>
                     </Grid>
@@ -152,7 +164,6 @@ const HomePage = () => {
                                     <ProductComponent isLoading />
                                 </Grid>
                             </>
-
                         ) : (
                             data?.map((product: ProductDetail) => (
                                 <Grid size={{ lg: 2.5, md: 3, sm: 4, xs: 6 }}>
@@ -160,8 +171,6 @@ const HomePage = () => {
                                 </Grid>
                             ))
                         )}
-
-
                     </Grid>
                 </Grid>
                 {/* Fifth Row */}
