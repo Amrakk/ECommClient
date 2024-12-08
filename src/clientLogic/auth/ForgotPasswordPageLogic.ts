@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { isEmail } from "validator";
+import { isEmail, isStrongPassword } from "validator";
 import { AxiosResponse } from "axios";
 import { UseMutationResult } from "@tanstack/react-query";
 import { Dispatch } from "react";
@@ -51,6 +51,17 @@ export class ForgotPasswordPageHandler {
     ) {
         const errors: any = {};
 
+        if (
+            !isStrongPassword(password, {
+                minLength: 3,
+                minLowercase: 0,
+                minUppercase: 0,
+                minNumbers: 0,
+                minSymbols: 0,
+            })
+        ) {
+            errors.password = "Password does not meet the requirements";
+        }
         if (password !== confirmPassword) {
             errors.confirmPassword = "Password does not match";
         }
