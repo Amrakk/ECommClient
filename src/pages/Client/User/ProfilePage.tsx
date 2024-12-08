@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Tabs, Tab, Typography, Card, TextField, IconButton, Avatar, Chip } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Card, TextField, IconButton, Avatar, Chip, Grow } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import EditIcon from "@mui/icons-material/Edit";
 import { ColorSecondaryBlackOverlay } from "@/styles/ThemeColorClient";
@@ -18,6 +18,7 @@ import { isMobilePhone } from "validator";
 import AvatarUploadDialog from "@/components/Client/User/UploadImage";
 import DeleteAccountPage from "./DeleteAccountPage";
 import { useSearchParams } from "react-router-dom";
+import OrderListPage from "../Order/OrderListPage";
 
 function TabPanel(props: { children: React.ReactNode; value: number; index: number }) {
     const { children, value, index, ...other } = props;
@@ -115,135 +116,133 @@ function ProfilePage() {
                 <Tab label="My Profile" />
                 <Tab label="My Order" />
                 <Tab label="Delete Account" />
-                <Tab label="Notifications" />
-                <Tab label="Billing" />
-                <Tab label="Data Export" />
             </Tabs>
 
             <TabPanel value={tabValue} index={0}>
-                <Card sx={{ p: 3 }}>
-                    <Grid container alignItems="center" spacing={2}>
-                        <Grid>
-                            {/* Upload Image Avatar URL */}
-                            <Box position="relative" display="inline-block">
-                                <Avatar
-                                    sx={{ width: { lg: 100, xs: 64 }, height: { lg: 100, xs: 64 } }}
-                                    alt={user!.name}
-                                    src={user?.avatarUrl ?? "https://via.placeholder.com/100"}
-                                />
+                <Grow in={tabValue === 0} timeout={500}>
+                    <Card sx={{ p: 3 }}>
+                        <Grid container alignItems="center" spacing={2}>
+                            <Grid>
+                                {/* Upload Image Avatar URL */}
+                                <Box position="relative" display="inline-block">
+                                    <Avatar
+                                        sx={{ width: { lg: 100, xs: 64 }, height: { lg: 100, xs: 64 } }}
+                                        alt={user!.name}
+                                        src={user?.avatarUrl ?? "https://via.placeholder.com/100"}
+                                    />
+                                    <IconButton
+                                        size="small"
+                                        sx={{
+                                            position: "absolute",
+                                            bottom: 0,
+                                            right: 0,
+                                            backgroundColor: "black",
+                                            boxShadow: 3,
+                                            "&:hover": { backgroundColor: ColorSecondaryBlackOverlay(1) },
+                                        }}
+                                        onClick={() => {
+                                            setOpenAvatarDialogUpload(true);
+                                        }}
+                                    >
+                                        <EditIcon color="primary" />
+                                    </IconButton>
+                                    <AvatarUploadDialog
+                                        onClose={() => {
+                                            setOpenAvatarDialogUpload(false);
+                                        }}
+                                        open={openAvatarDialogUpload}
+                                    />
+                                </Box>
+                            </Grid>
+                            <Grid>
+                                <Typography variant="h6">{user?.name}</Typography>
+                                <Chip label={"Loyalty Point: " + user?.loyaltyPoint} size="small" color="primary" />
+                            </Grid>
+                        </Grid>
+
+                        <Box mt={4}>
+                            <Grid size={12} sx={{ display: "flex", justifyContent: "space-between" }}>
+                                <Typography variant="h6">Personal Information</Typography>
                                 <IconButton
-                                    size="small"
-                                    sx={{
-                                        position: "absolute",
-                                        bottom: 0,
-                                        right: 0,
-                                        backgroundColor: "black",
-                                        boxShadow: 3,
-                                        "&:hover": { backgroundColor: ColorSecondaryBlackOverlay(1) },
-                                    }}
                                     onClick={() => {
-                                        setOpenAvatarDialogUpload(true);
+                                        onSaveProfile();
                                     }}
                                 >
-                                    <EditIcon color="primary" />
+                                    {isEditProfile ? <SaveIcon /> : <EditIcon />}
                                 </IconButton>
-                                <AvatarUploadDialog
-                                    onClose={() => {
-                                        setOpenAvatarDialogUpload(false);
-                                    }}
-                                    open={openAvatarDialogUpload}
-                                />
-                            </Box>
-                        </Grid>
-                        <Grid>
-                            <Typography variant="h6">{user?.name}</Typography>
-                            <Chip label={"Loyalty Point: " + user?.loyaltyPoint} size="small" color="primary" />
-                        </Grid>
-                    </Grid>
+                            </Grid>
+                            <Grid container spacing={2} mt={2}>
+                                <Grid size={{ xs: 12, sm: 6 }}>
+                                    <TextField
+                                        disabled={!isEditProfile}
+                                        label="Full Name"
+                                        onChange={(e) => {
+                                            setCopiedUserProfile({ ...copiedUserProfile, name: e.target.value });
+                                        }}
+                                        defaultValue={user!.name}
+                                        fullWidth
+                                    />
+                                </Grid>
+                                <Grid size={{ xs: 12, sm: 6 }}>
+                                    <TextField
+                                        disabled={!isEditProfile}
+                                        onChange={(e) => {
+                                            setCopiedUserProfile({ ...copiedUserProfile, email: e.target.value });
+                                        }}
+                                        label="Email Address"
+                                        type="email"
+                                        defaultValue={user!.email}
+                                        fullWidth
+                                    />
+                                </Grid>
+                                <Grid size={{ xs: 12, sm: 6 }}>
+                                    <TextField
+                                        label="Phone"
+                                        disabled={!isEditProfile}
+                                        onChange={(e) => {
+                                            setCopiedUserProfile({ ...copiedUserProfile, phoneNumber: e.target.value });
+                                        }}
+                                        defaultValue={user!.phoneNumber}
+                                        fullWidth
+                                        type="number"
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Box>
 
-                    <Box mt={4}>
-                        <Grid size={12} sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <Typography variant="h6">Personal Information</Typography>
-                            <IconButton
-                                onClick={() => {
-                                    onSaveProfile();
-                                }}
-                            >
-                                {isEditProfile ? <SaveIcon /> : <EditIcon />}
-                            </IconButton>
-                        </Grid>
-                        <Grid container spacing={2} mt={2}>
-                            <Grid size={{ xs: 12, sm: 6 }}>
-                                <TextField
-                                    disabled={!isEditProfile}
-                                    label="Full Name"
-                                    onChange={(e) => {
-                                        setCopiedUserProfile({ ...copiedUserProfile, name: e.target.value });
-                                    }}
-                                    defaultValue={user!.name}
-                                    fullWidth
-                                />
+                        <Box mt={3}>
+                            <AddressSection />
+                        </Box>
+                        <Box mt={4}>
+                            <Grid size={12} sx={{ display: "flex", justifyContent: "space-between" }}>
+                                <Typography variant="h6">Social Linked</Typography>
                             </Grid>
-                            <Grid size={{ xs: 12, sm: 6 }}>
-                                <TextField
-                                    disabled={!isEditProfile}
-                                    onChange={(e) => {
-                                        setCopiedUserProfile({ ...copiedUserProfile, email: e.target.value });
-                                    }}
-                                    label="Email Address"
-                                    type="email"
-                                    defaultValue={user!.email}
-                                    fullWidth
-                                />
+                            <Grid container spacing={2} mt={2}>
+                                {user!.socialMediaAccounts.map((social: ISocialMediaAccount) => {
+                                    if (social.provider === "google") {
+                                        return (
+                                            <Grid
+                                                key={social.accountId}
+                                                size={12}
+                                                sx={{ display: "flex", alignItems: "center" }}
+                                            >
+                                                <GoogleIcon color="primary" sx={{ mr: 1, fontSize: 40 }} />
+                                                <Typography variant="body1">Google - {social.accountId}</Typography>
+                                            </Grid>
+                                        );
+                                    }
+                                })}
                             </Grid>
-                            <Grid size={{ xs: 12, sm: 6 }}>
-                                <TextField
-                                    label="Phone"
-                                    disabled={!isEditProfile}
-                                    onChange={(e) => {
-                                        setCopiedUserProfile({ ...copiedUserProfile, phoneNumber: e.target.value });
-                                    }}
-                                    defaultValue={user!.phoneNumber}
-                                    fullWidth
-                                    type="number"
-                                />
-                            </Grid>
-                        </Grid>
-                    </Box>
-
-                    <Box mt={3}>
-                        <AddressSection />
-                    </Box>
-                    <Box mt={4}>
-                        <Grid size={12} sx={{ display: "flex", justifyContent: "space-between" }}>
-                            <Typography variant="h6">Social Linked</Typography>
-                        </Grid>
-                        <Grid container spacing={2} mt={2}>
-                            {user!.socialMediaAccounts.map((social: ISocialMediaAccount) => {
-                                if (social.provider === "google") {
-                                    return (
-                                        <Grid
-                                            key={social.accountId}
-                                            size={12}
-                                            sx={{ display: "flex", alignItems: "center" }}
-                                        >
-                                            <GoogleIcon color="primary" sx={{ mr: 1, fontSize: 40 }} />
-                                            <Typography variant="body1">Google - {social.accountId}</Typography>
-                                        </Grid>
-                                    );
-                                }
-                            })}
-                        </Grid>
-                    </Box>
-                </Card>
+                        </Box>
+                    </Card>
+                </Grow>
             </TabPanel>
 
             <TabPanel value={tabValue} index={1}>
-                <Typography>My Order</Typography>
+                <OrderListPage />
             </TabPanel>
-
             <TabPanel value={tabValue} index={2}>
-                <DeleteAccountPage />
+                <DeleteAccountPage valuePage={tabValue} />
             </TabPanel>
         </Box>
     );

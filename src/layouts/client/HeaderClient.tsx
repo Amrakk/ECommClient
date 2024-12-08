@@ -14,6 +14,8 @@ import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { logout } from "@/apis/auth";
 import { removeUser } from "@/stores/client/userSlice";
 import { setLoading } from "@/stores/client/loadingSlice";
+import { USER_ROLE } from "@/constants";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const HeaderClient = () => {
     const navigate = useNavigate();
@@ -92,6 +94,7 @@ const HeaderClient = () => {
                                 startAdornment: (
                                     <IconButton
                                         onClick={() => {
+                                            if(searchValue === "") return;
                                             navigate(CustomerPaths.home.Search + `?q=${searchValue}`);
                                         }}
                                         size="small"
@@ -165,6 +168,17 @@ const HeaderClient = () => {
                         transformOrigin={{ horizontal: "right", vertical: "top" }}
                         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                     >
+
+                        { user != null && user.role === USER_ROLE.ADMIN ? (
+                            <Link to={"/admin/dashboard"}>
+                                <MenuItem onClick={handleClose}>
+                                    <ListItemIcon>
+                                        <DashboardIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Admin Dashboard" />
+                                </MenuItem>
+                            </Link>
+                        ) : null }
                         {user != null ? (
                             <Link to={CustomerPaths.home.User}>
                                 <MenuItem onClick={handleClose}>
@@ -186,7 +200,7 @@ const HeaderClient = () => {
                         )}
 
                         {user != null ? (
-                            <Link to="/purchase">
+                            <Link to={`${CustomerPaths.home.User}?type=2`}>
                                 <MenuItem onClick={handleClose}>
                                     <ListItemIcon>
                                         <PurchaseIcon fontSize="small" />

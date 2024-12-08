@@ -12,6 +12,16 @@ export class ProductAPI {
         return products;
     }
 
+
+    public static async getLatestProducts() {
+        const response = await API.get<IResponse<ProductDetail[]>>('/products')
+        // @ts-ignore
+        const products = response.data.data!.products;
+        // @ts-ignore
+        products.sort((a: ProductDetail, b: ProductDetail) => { return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()});
+        return products.slice(0, 4);
+    }
+
     public static filterProducts(products: ProductDetail[], filter: ProductFilter){
         if(!products) return [];
         return products.filter((product: ProductDetail) => {
@@ -22,4 +32,6 @@ export class ProductAPI {
             return true;
         });
     }
+
+    
 }

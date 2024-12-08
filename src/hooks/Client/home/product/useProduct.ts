@@ -27,6 +27,7 @@ export const useProductDetailQuery = () => {
     return productDetailQuery
 }
 
+
 export const useProductRatingByIdQuery = () => {
     const { id } = useParams< {id : string}>();
     const productRatingById = useQuery({
@@ -36,5 +37,14 @@ export const useProductRatingByIdQuery = () => {
         refetchOnWindowFocus: false
     })
     return productRatingById
+}
+
+export const useGetLatestProductsQuery = () => {
+    const latestProductsQuery = useQuery({
+        queryKey: ['latestProducts'],
+        queryFn: () => ProductAPI.getLatestProducts(),
+        refetchOnWindowFocus: false
+    })
+    return latestProductsQuery
 }
 

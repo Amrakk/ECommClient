@@ -2,11 +2,15 @@ import { API } from "@/apis/api"
 import { IResponse } from "@/interfaces/response"
 import { ProductDetail } from "@/models/product"
 import { useQuery } from "@tanstack/react-query"
-import { AxiosResponse } from "axios"
 import { useSearchParams } from "react-router-dom"
 
-const searchProducts = async (search: string) : Promise<AxiosResponse<IResponse<ProductDetail[]>>>   => {
-    return await API.get<IResponse<ProductDetail[]>>(`/products?searchTerm=${search}`)
+export interface ResponseFilter {
+    products: ProductDetail[];
+    totalDocuments: number;
+}
+
+const searchProducts = async (search: string) : Promise<IResponse<ResponseFilter>>   => {
+    return API.get<IResponse<ResponseFilter>>(`/products?searchTerm=${search}`).then((res) => res.data)
 }
 
 
@@ -16,8 +20,9 @@ const useSearchQuery = () => {
     const search = searchParams.get('q');
     
     const searchQuery = useQuery({
-        queryKey: ['search'],
+        queryKey: ['search', search],
         queryFn: () => searchProducts(search!),
+        refetchOnWindowFocus: false,
     })
     return searchQuery
     

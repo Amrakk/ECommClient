@@ -99,6 +99,8 @@ const AddressSection = () => {
                 setCurrentAddress({
                     ...currentAddress,
                     province: { id: Number(id), name: value! },
+                    ward: { code: "", name: "" },
+                    district: { id: 0, name: "" },
                 });
                 break;
             case AddressType.district:

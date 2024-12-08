@@ -2,8 +2,8 @@ import { API } from "@/apis/api";
 
 import type { IResponse } from "@/interfaces/response";
 
-interface GetShippingFee {
-    districtId: string;
+export interface GetShippingFee {
+    districtId: number;
     wardCode: string;
 }
 
