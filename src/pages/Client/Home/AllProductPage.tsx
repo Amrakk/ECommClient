@@ -17,7 +17,6 @@ const AllProductPage = () => {
     const [listProductPage, setListProductPage] = useState<ProductDetail[]>();
 
 
-
     useEffect(() => {
         setTotalProduct(productData.length);
         setListProductPage(productData.slice(0, totalProductPerPage));

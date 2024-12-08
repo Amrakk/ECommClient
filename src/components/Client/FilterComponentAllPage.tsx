@@ -58,6 +58,7 @@ const FiltersComponentAllPage = (props: FiltersComponentAllPageProps) => {
     useEffect(() => {
         if(useFilterProduct.isSuccess){
             props.setProductsData(useFilterProduct.data.products);
+            props.setIsLoading(false);
         }
     }, [useFilterProduct.data]);
   

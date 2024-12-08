@@ -19,6 +19,7 @@ import { RootState } from "@/stores/client/store";
 import { UpdateByUser } from "@/apis/users";
 import { useUpdateUserMutation } from "@/hooks/Client/home/useUser";
 import ProductComponent from "@/components/Client/ProductCardComponent";
+import { IRelevantProduct } from "@/apis/products";
 
 const ProductDetailComponent = () => {
     const [selectedVariant, setSelectedVariant] = useState("");
@@ -32,7 +33,7 @@ const ProductDetailComponent = () => {
     const updateUserCart = useUpdateUserMutation();
     const addProductToOldCartMutate = useUpdateProductCart();
     const { data: currentCart } = useGetCartByUser();
-    let listRelatedProduct: ProductDetail[] = [];
+    let listRelatedProduct: IRelevantProduct[] = [];
 
 
     useEffect(() => {
@@ -390,7 +391,7 @@ const ProductDetailComponent = () => {
                                     minWidth={170}
                                     key={index}
                                 >
-                                    <ProductComponent product={relatedProduct} />
+                                    <ProductComponent relevantProducts={relatedProduct}/>
                                 </Grid>
 
                             ))}
