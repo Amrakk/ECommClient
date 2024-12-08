@@ -1,3 +1,4 @@
+import { IRelevantProduct } from "@/apis/products";
 import { RESPONSE_CODE, RESPONSE_MESSAGE } from "@/constants";
 import { CartDetail } from "@/models/cart";
 import { ProductDetail } from "@/models/product";
@@ -22,5 +23,5 @@ export interface IResLogin {
 export interface IResGetProductById {
     product: ProductDetail;
     totalDocuments: number;    
-    relevantProducts: ProductDetail[];
+    relevantProducts: IRelevantProduct[];
 }

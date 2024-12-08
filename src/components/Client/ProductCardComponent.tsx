@@ -4,16 +4,20 @@ import { FONT_SIZE } from "@/constants";
 import { ProductDetail } from "@/models/product";
 import { convertToVietnameseDong } from "@/utils/convertToVnd";
 import { Link } from "react-router-dom";
+import { IRelevantProduct } from "@/apis/products";
 
 interface ProductComponentProps {
     product?: ProductDetail ;
+    relevantProducts?: IRelevantProduct;
     isLoading?: boolean;
 }
 
 const ProductComponent = (props: ProductComponentProps) => {
+
+
     return (
         <Link
-            to={props.isLoading ? "#" : `/product/${props.product?._id}`}
+            to={props.isLoading ? "#" : `/product/${props.product != undefined ? props.product._id : props.relevantProducts?._id}`} 
             style={{ textDecoration: "none", pointerEvents: props.isLoading ? "none" : "auto" }}
         >
             <Card sx={{ minWidth: 100 }}>
@@ -44,7 +48,7 @@ const ProductComponent = (props: ProductComponentProps) => {
                         {props.isLoading ? (
                             <Skeleton animation="wave" width="60%" />
                         ) : (
-                            props.product?.brand ?? "Default Brand"
+                            props.product != undefined ? props.product.brand : ""
                         )}
                     </Typography>
                     <Typography
@@ -64,7 +68,7 @@ const ProductComponent = (props: ProductComponentProps) => {
                         {props.isLoading ? (
                             <Skeleton animation="wave" width="80%" />
                         ) : (
-                            props.product?.name ?? "Default Name"
+                            props.product != undefined ? props.product.name : props.relevantProducts?.name ?? ""
                         )}
                     </Typography>
                     <Typography
@@ -85,7 +89,7 @@ const ProductComponent = (props: ProductComponentProps) => {
                                 <Skeleton animation="wave" width="80%" />
                             </>
                         ) : (
-                            props.product?.description ?? "Default description"
+                            props.product != undefined ? props.product.description : ""
                         )}
                     </Typography>
                     <Box
@@ -106,8 +110,7 @@ const ProductComponent = (props: ProductComponentProps) => {
                                     fontSize: { xs: FONT_SIZE.body2, sm: FONT_SIZE.body1, md: FONT_SIZE.h6 },
                                 }}
                             >
-                                {/*@ts-expect-error */}
-                                {convertToVietnameseDong(props.product!.variants !== undefined ? props.product!.variants[0].retailPrice : props.product!.retailPrice )}
+                                {convertToVietnameseDong(props.product != undefined ? props.product!.variants[0].retailPrice : props.relevantProducts?.retailPrice ?? 0)}
                             </Typography>
                         )}
                         <IconButton color="primary" disabled={props.isLoading}>
