@@ -51,9 +51,16 @@ export class ForgotPasswordPageHandler {
     ) {
         const errors: any = {};
 
-        if (!isStrongPassword(password)) {
-            errors.newPassword =
-                "Password needs at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character";
+        if (
+            !isStrongPassword(password, {
+                minLength: 3,
+                minLowercase: 0,
+                minUppercase: 0,
+                minNumbers: 0,
+                minSymbols: 0,
+            })
+        ) {
+            errors.password = "Password does not meet the requirements";
         }
         if (password !== confirmPassword) {
             errors.confirmPassword = "Password does not match";
