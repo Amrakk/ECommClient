@@ -1,55 +1,42 @@
-import React, { useState } from 'react';
-import {
-    Modal,
-    Box,
-    Typography,
-    Rating,
-    TextField,
-    Button,
-    Stack,
-    Grow
-} from '@mui/material';
+import React, { useState } from "react";
+import { Modal, Box, Typography, Rating, TextField, Button, Stack, Grow } from "@mui/material";
 
 interface ProductReviewModalProps {
-    open: boolean;
     onClose: (e: React.MouseEvent) => void;
-    productId: string;
+    productId?: string;
     onSubmit: (rating: number, review: string, productId: string) => void;
 }
 
-const ProductReviewModalComponent: React.FC<ProductReviewModalProps> = ({
-    open,
-    onClose,
-    onSubmit,
-    productId
-}) => {
+const ProductReviewModalComponent: React.FC<ProductReviewModalProps> = ({ onClose, onSubmit, productId }) => {
     const [rating, setRating] = useState<number | null>(0);
-    const [review, setReview] = useState('');
+    const [review, setReview] = useState("");
 
     const handleSubmit = () => {
-        if (rating) {
+        if (rating && productId) {
             onSubmit(rating, review, productId);
             setRating(0);
-            setReview('');
+            setReview("");
         }
     };
 
     return (
-        <Modal open={open}  onClose={(e) => {
-            onClose(e as React.MouseEvent);
-        }}
-        sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}
+        <Modal
+            open={productId !== undefined}
+            onClose={(e) => {
+                onClose(e as React.MouseEvent);
+            }}
+            sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
         >
-            <Grow in={open} timeout={300} >
+            <Grow in={productId !== undefined} timeout={300}>
                 <Box
                     sx={{
-                        maxWidth: '90vw',
+                        maxWidth: "90vw",
                         width: 400,
-                        bgcolor: 'background.paper',
+                        bgcolor: "background.paper",
                         borderRadius: 3,
                         boxShadow: 24,
                         p: 4,
@@ -67,7 +54,7 @@ const ProductReviewModalComponent: React.FC<ProductReviewModalProps> = ({
                                 value={rating}
                                 onChange={(_, newValue) => setRating(newValue)}
                                 size="large"
-                                precision={0.5}
+                                precision={1}
                             />
                         </Box>
 
@@ -80,22 +67,17 @@ const ProductReviewModalComponent: React.FC<ProductReviewModalProps> = ({
                             fullWidth
                         />
 
-                        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+                        <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end" }}>
                             <Button variant="outlined" onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button
-                                variant="contained"
-                                onClick={handleSubmit}
-                                disabled={!rating}
-                            >
+                            <Button variant="contained" onClick={handleSubmit} disabled={!rating}>
                                 Submit Review
                             </Button>
                         </Box>
                     </Stack>
                 </Box>
             </Grow>
-
         </Modal>
     );
 };

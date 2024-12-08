@@ -8,7 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import TabComponent from "@/components/Client/TabComponent";
 import SliderComponent from "@/components/Client/SliderComponent";
-import {  useProductDetailQuery } from "@/hooks/Client/home/product/useProduct";
+import { useProductDetailQuery } from "@/hooks/Client/home/product/useProduct";
 import { toast } from "react-toastify";
 import { convertToVietnameseDong } from "@/utils/convertToVnd";
 import { addProductToNewCart, useGetCartByUser, useUpdateProductCart } from "@/hooks/Client/home/cart/useCart";
@@ -34,7 +34,6 @@ const ProductDetailComponent = () => {
     const addProductToOldCartMutate = useUpdateProductCart();
     const { data: currentCart } = useGetCartByUser();
     let listRelatedProduct: IRelevantProduct[] = [];
-
 
     useEffect(() => {
         if (productDetailQuery.isSuccess) {
@@ -357,43 +356,42 @@ const ProductDetailComponent = () => {
                 ) : (
                     <Box
                         sx={{
-                            width: '100%',
-                            overflow: 'auto',
-                            '&::-webkit-scrollbar': {
+                            width: "100%",
+                            overflow: "auto",
+                            "&::-webkit-scrollbar": {
                                 height: 6,
                             },
-                            '&::-webkit-scrollbar-track': {
-                                backgroundColor: '#f1f1f1',
+                            "&::-webkit-scrollbar-track": {
+                                backgroundColor: "#f1f1f1",
                             },
-                            '&::-webkit-scrollbar-thumb': {
-                                backgroundColor: '#888',
+                            "&::-webkit-scrollbar-thumb": {
+                                backgroundColor: "#888",
                                 borderRadius: 3,
                             },
-                            mt:4
+                            mt: 4,
                         }}
                     >
                         <Grid
                             container
                             spacing={3}
                             sx={{
-                                flexWrap: 'nowrap',
+                                flexWrap: "nowrap",
                                 pb: 2, // Add padding bottom to show scrollbar
                             }}
                         >
                             {listRelatedProduct.map((relatedProduct, index) => (
-                                    <Grid
-                                   size ={{ 
-                                        xs: 7, 
-                                        sm: 3.5, 
-                                        md: 3, 
-                                        lg: 2.7 
+                                <Grid
+                                    size={{
+                                        xs: 7,
+                                        sm: 3.5,
+                                        md: 3,
+                                        lg: 2.7,
                                     }}
                                     minWidth={170}
                                     key={index}
                                 >
-                                    <ProductComponent relevantProducts={relatedProduct}/>
+                                    <ProductComponent relevantProducts={relatedProduct} />
                                 </Grid>
-
                             ))}
                         </Grid>
                     </Box>

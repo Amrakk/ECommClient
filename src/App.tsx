@@ -56,7 +56,7 @@ function App() {
                         </Route>
                     </Routes>
                     <Loading />
-                    <ToastContainer autoClose={2000} />
+                    <ToastContainer autoClose={2000} closeOnClick={true} />
                 </TopProgressBar>
             </CheckAuth>
         </>

@@ -228,7 +228,11 @@ const CheckoutPage = () => {
                             </Box>
 
                             <RadioGroup defaultValue="express">
-                                <Paper variant="outlined" sx={{ mb: 1, p: 1.5, borderRadius: 2 }}>
+                                <Paper
+                                    variant="outlined"
+                                    sx={{ mb: 1, p: 1.5, borderRadius: 2 }}
+                                    className="cursor-pointer select-none"
+                                >
                                     <FormControlLabel
                                         value="regular"
                                         checked
@@ -265,8 +269,14 @@ const CheckoutPage = () => {
                                 onChange={(value) => {
                                     setCurrentTypePayment(value.target.value as PAYMENT_TYPE);
                                 }}
+                                value={currentTypePayment}
                             >
-                                <Paper variant="outlined" sx={{ mb: 1, p: 1.5, borderRadius: 2 }}>
+                                <Paper
+                                    variant="outlined"
+                                    sx={{ mb: 1, p: 1.5, borderRadius: 2 }}
+                                    onClick={(_) => setCurrentTypePayment(PAYMENT_TYPE.COD)}
+                                    className="cursor-pointer select-none"
+                                >
                                     <FormControlLabel
                                         value={PAYMENT_TYPE.COD}
                                         control={<Radio />}
@@ -277,7 +287,12 @@ const CheckoutPage = () => {
                                         }
                                     />
                                 </Paper>
-                                <Paper variant="outlined" sx={{ p: 1.5, borderRadius: 2 }}>
+                                <Paper
+                                    variant="outlined"
+                                    sx={{ p: 1.5, borderRadius: 2 }}
+                                    onClick={(_) => setCurrentTypePayment(PAYMENT_TYPE.PAYOS)}
+                                    className="cursor-pointer select-none"
+                                >
                                     <FormControlLabel
                                         value={PAYMENT_TYPE.PAYOS}
                                         control={<Radio />}
