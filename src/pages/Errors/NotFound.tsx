@@ -5,7 +5,6 @@ interface NotFoundProps {
 }
 
 export default function NotFound({ isDark = false }: NotFoundProps) {
-    console.log(isDark);
     return (
         <div className={`error_page_wrapper ${isDark ? "bg-gray-900" : "bg-white"}`}>
             <div className="error_wrap">
