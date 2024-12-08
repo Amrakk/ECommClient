@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { isEmail, isStrongPassword } from "validator";
+import { isEmail } from "validator";
 import { AxiosResponse } from "axios";
 import { UseMutationResult } from "@tanstack/react-query";
 import { Dispatch } from "react";
@@ -51,10 +51,6 @@ export class ForgotPasswordPageHandler {
     ) {
         const errors: any = {};
 
-        if (!isStrongPassword(password)) {
-            errors.newPassword =
-                "Password needs at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character";
-        }
         if (password !== confirmPassword) {
             errors.confirmPassword = "Password does not match";
         }
