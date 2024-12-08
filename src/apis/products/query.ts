@@ -11,7 +11,15 @@ interface GetProductsResponse {
 
 export interface GetProductByIdResponse {
     product: ProductDetail;
-    relevantProducts: ProductDetail[];
+    relevantProducts: IRelevantProduct[];
+}
+
+export interface IRelevantProduct {
+    _id: string;
+    name: string;
+    images: string[];
+    retailPrice: number;
+    ratings: number;
 }
 
 export async function getProducts(query?: ProductFilter): Promise<GetProductsResponse> {

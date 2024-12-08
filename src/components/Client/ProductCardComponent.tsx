@@ -6,7 +6,7 @@ import { convertToVietnameseDong } from "@/utils/convertToVnd";
 import { Link } from "react-router-dom";
 
 interface ProductComponentProps {
-    product?: ProductDetail;
+    product?: ProductDetail ;
     isLoading?: boolean;
 }
 
@@ -106,7 +106,8 @@ const ProductComponent = (props: ProductComponentProps) => {
                                     fontSize: { xs: FONT_SIZE.body2, sm: FONT_SIZE.body1, md: FONT_SIZE.h6 },
                                 }}
                             >
-                                {convertToVietnameseDong(props.product!.variants[0].retailPrice)}
+                                {/*@ts-expect-error */}
+                                {convertToVietnameseDong(props.product!.variants !== undefined ? props.product!.variants[0].retailPrice : props.product!.retailPrice )}
                             </Typography>
                         )}
                         <IconButton color="primary" disabled={props.isLoading}>

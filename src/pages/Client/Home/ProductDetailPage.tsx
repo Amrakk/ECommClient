@@ -390,7 +390,7 @@ const ProductDetailComponent = () => {
                                     minWidth={170}
                                     key={index}
                                 >
-                                    <ProductComponent product={relatedProduct} />
+                                    <ProductComponent product={relatedProduct}/>
                                 </Grid>
 
                             ))}
